@@ -76,10 +76,11 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              */
             var __content = {
                 directionsJSON: "",
-                questionsJSON: [], /* Contains the question obtained from content JSON. */
-                optionsJSON: [], /* Contains all the options for a particular question obtained from content JSON. */
-                answersJSON: [], /* Contains the answer for a particular question obtained from content JSON. */
-                userAnswersJSON: [], /* Contains the user answer for a particular question. */
+                appData: {},
+                questionsJSON: {}, /* Contains the question obtained from content JSON. */
+                optionsJSON: {}, /* Contains all the options for a particular question obtained from content JSON. */
+                answersJSON: {}, /* Contains the answer for a particular question obtained from content JSON. */
+                userAnswersJSON: {}, /* Contains the user answer for a particular question. */
                 activityType: null  /* Type of FIB activity. Possible Values :- FIBPassage.  */
             };
 
@@ -124,6 +125,8 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
+
+                __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
 
                 /* ------ VALIDATION BLOCK START -------- */
                 if (jsonContent.content === undefined) {
@@ -183,7 +186,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                             }
                         }
                     }
-                })
+                });
 
                 // Not Required for Cosmatt
                 
@@ -283,6 +286,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             * Parse and Update JSON based on cosmattmp specific requirements.
             */
             function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) {
+                
                 jsonContent.content.displaySubmit = activityAdaptor.displaySubmit;
 
                 __content.activityType = params.engineType;
@@ -291,14 +295,62 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 /* Activity Instructions. */
                 var tagName = jsonContent.content.instructions[0].tag;
                 __content.directionsJSON = jsonContent.content.instructions[0][tagName];
+                __content.appData = jsonContent["app-data"];
                 /* Put directions in JSON. */
                 jsonContent.content.directions = __content.directionsJSON;
-                $.each(jsonContent.content.stimulus, function (i) {
-                    if (this.tag === "image") {
-                        jsonContent.content.stimulus.mediaContent = params.questionMediaBasePath + this.image;
+                // $.each(jsonContent.content.stimulus, function (i) {
+                //     if (this.tag === "image") {
+                //         jsonContent.content.stimulus.mediaContent = params.questionMediaBasePath + this.image;
+                //     }
+                // });
+                var questionText = jsonContent.content.canvas.data.questiondata[0].text;
+
+                var interactionId = [];
+                var interactionTag = [];
+                /* String present in href of interaction tag. */
+                var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
+                /* Parse questiontext as HTML to get HTML tags. */
+                var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
+                 var j = 0;
+                $.each(parsedQuestionArray, function (i, el) {
+                    if (this.href === interactionReferenceString) {
+                        interactionId[j] = this.childNodes[0].nodeValue.trim();
+                        __interactionIds.push(interactionId[j]);
+                        interactionTag[j] = this.outerHTML.replace(/"/g, "'");
+                        j++;
                     }
                 });
-                __parseAndUpdateQuestionSetTypeJSON(jsonContent);
+
+                 $.each(interactionId, function(i) {
+                    var interactionId = this;
+                    //var id = __config.ENTRY_BOX_PREFIX +  __content.answersXML.length;
+                    /*
+                     * Add entry box.
+                     */
+                    questionText = questionText.replace(interactionTag[i],"");
+                    __content.answersJSON[interactionId] = jsonContent.responses[interactionId];
+                    __content.optionsJSON[interactionId] = jsonContent.content.interactions[interactionId];
+                });
+                /* Replace interaction tag with blank string. */
+                // jsonContent.content.canvas.data.questiondata[0].text = jsonContent.content.canvas.data.questiondata[0].text.replace(interactionTag, "");
+                // var questionText = "1.  " + jsonContent.content.canvas.data.questiondata[0].text;
+                // var correctAnswerNumber = jsonContent.responses[interactionId].correct;
+                // var interactionType = jsonContent.content.interactions[interactionId].type;
+                // var optionCount = jsonContent.content.interactions[interactionId][interactionType].length;
+
+                // /* Make optionsJSON and answerJSON from JSON. */
+                // for (var i = 0; i < optionCount; i++) {
+                //     var optionObject = jsonContent.content.interactions[interactionId][interactionType][i];
+                //     var option = optionObject[Object.keys(optionObject)].replace(/^\s+|\s+$/g, '');
+                //     __content.optionsJSON.push(__getHTMLEscapeValue(option));
+                //     optionObject[Object.keys(optionObject)] = option;
+                //     /* Update JSON after updating option. */
+                //     jsonContent.content.interactions[interactionId][interactionType][i] = optionObject;
+                //     if (Object.keys(optionObject) == correctAnswerNumber) {
+                //         __content.answersJSON[0] = optionObject[Object.keys(optionObject)];
+                //     }
+                // }
+                // __content.questionsJSON[0] = questionText + " ^^ " + __content.optionsJSON.toString() + " ^^ " + interactionId;
 
                 /* Returning processed JSON. */
                 return jsonContent;

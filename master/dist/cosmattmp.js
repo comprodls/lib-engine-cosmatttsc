@@ -373,7 +373,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!../html/cosmattmp.html',[],function () { return '\n<!-- Engine Renderer Template -->\n\n<div class="cosmattmp-body" id="cosmattmp-engine"> \n   <div class="row" rv-each-interact="content.interactions | propertyList">   \n      <div class="col-sm-12">      \n         <div class="form">      \n <!-- Paint the instructions or question text -->    \n            <div rv-text="content.canvas.data.questiondata | appendInteraction %interact%"></div>     \n\t\t\t<!-- Paint the options -->\n            <img rv-src="content.stimulus.mediaContent" class="col-sm-6 cosmattmp-img" rv-show="isMCQImageEngine"></img>\n            <ul class="list-unstyled nested-list col-sm-6">        \n               <li rv-each-element="content.interactions | getArray interact.key">\n                  <label class="radio radio-lg">\n \t\t\t\t\t <!-- Placeholder for radio buttons-->   \n                     <i></i>\n                     <span class="answer" class="invisible wrong pull-left"></span>\n                     <input type="radio" name="optionsRadios" class="option" id="option" rv-value="element.customAttribs.value">\n                     <span class="content" rv-text="element.customAttribs.value"></span>\n                  </label>\n               </li>                \n            </ul> \n         </div>   \n      </div>  \n   </div>\n   <div class="row">\n      <div class="col-sm-12">\n         <div rv-show="showFeedback.correct" rv-text="feedback.global.correct"></div>\n         <div rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect"></div>\n         <div rv-show="showFeedback.empty" rv-text="feedback.global.empty></div>\n      </div>\n      \n   </div>\n</div>';});
+define('text!../html/cosmattmp.html',[],function () { return '\r\n<!-- Engine Renderer Template -->\r\n\r\n<div class="cosmattmp-body" id="cosmattmp-engine"> \r\n   <div class="row" rv-each-interact="content.interactions | propertyList">   \r\n      <div class="col-sm-12">      \r\n         <div class="form">      \r\n <!-- Paint the instructions or question text -->    \r\n            <div rv-text="content.canvas.data.questiondata | appendInteraction %interact%"></div>     \r\n\t\t\t<!-- Paint the options -->\r\n            <img rv-src="content.stimulus.mediaContent" class="col-sm-6 cosmattmp-img" rv-show="isMCQImageEngine"></img>\r\n            <ul class="list-unstyled nested-list col-sm-6">        \r\n               <li rv-each-element="content.interactions | getArray interact.key">\r\n                  <label class="radio radio-lg">\r\n \t\t\t\t\t <!-- Placeholder for radio buttons-->   \r\n                     <i></i>\r\n                     <span class="answer" class="invisible wrong pull-left"></span>\r\n                     <input type="radio" name="optionsRadios" class="option" id="option" rv-value="element.customAttribs.value">\r\n                     <span class="content" rv-text="element.customAttribs.value"></span>\r\n                  </label>\r\n               </li>                \r\n            </ul> \r\n         </div>   \r\n      </div>  \r\n   </div>\r\n   <div class="row">\r\n      <div class="col-sm-12">\r\n         <div rv-show="showFeedback.correct" rv-text="feedback.global.correct"></div>\r\n         <div rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect"></div>\r\n         <div rv-show="showFeedback.empty" rv-text="feedback.global.empty></div>\r\n      </div>\r\n      \r\n   </div>\r\n</div>';});
 
 /*
  * Require-CSS RequireJS css! loader plugin
@@ -8228,10 +8228,11 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
              */
             var __content = {
                 directionsJSON: "",
-                questionsJSON: [], /* Contains the question obtained from content JSON. */
-                optionsJSON: [], /* Contains all the options for a particular question obtained from content JSON. */
-                answersJSON: [], /* Contains the answer for a particular question obtained from content JSON. */
-                userAnswersJSON: [], /* Contains the user answer for a particular question. */
+                appData: {},
+                questionsJSON: {}, /* Contains the question obtained from content JSON. */
+                optionsJSON: {}, /* Contains all the options for a particular question obtained from content JSON. */
+                answersJSON: {}, /* Contains the answer for a particular question obtained from content JSON. */
+                userAnswersJSON: {}, /* Contains the user answer for a particular question. */
                 activityType: null  /* Type of FIB activity. Possible Values :- FIBPassage.  */
             };
 
@@ -8276,6 +8277,8 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
 
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
+
+                __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
 
                 /* ------ VALIDATION BLOCK START -------- */
                 if (jsonContent.content === undefined) {
@@ -8335,7 +8338,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                             }
                         }
                     }
-                })
+                });
 
                 // Not Required for Cosmatt
                 
@@ -8435,6 +8438,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
             * Parse and Update JSON based on cosmattmp specific requirements.
             */
             function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) {
+                debugger;
                 jsonContent.content.displaySubmit = activityAdaptor.displaySubmit;
 
                 __content.activityType = params.engineType;
@@ -8443,14 +8447,62 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 /* Activity Instructions. */
                 var tagName = jsonContent.content.instructions[0].tag;
                 __content.directionsJSON = jsonContent.content.instructions[0][tagName];
+                __content.appData = jsonContent["app-data"];
                 /* Put directions in JSON. */
                 jsonContent.content.directions = __content.directionsJSON;
-                $.each(jsonContent.content.stimulus, function (i) {
-                    if (this.tag === "image") {
-                        jsonContent.content.stimulus.mediaContent = params.questionMediaBasePath + this.image;
+                // $.each(jsonContent.content.stimulus, function (i) {
+                //     if (this.tag === "image") {
+                //         jsonContent.content.stimulus.mediaContent = params.questionMediaBasePath + this.image;
+                //     }
+                // });
+                var questionText = jsonContent.content.canvas.data.questiondata[0].text;
+
+                var interactionId = [];
+                var interactionTag = [];
+                /* String present in href of interaction tag. */
+                var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
+                /* Parse questiontext as HTML to get HTML tags. */
+                var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
+                 var j = 0;
+                $.each(parsedQuestionArray, function (i, el) {
+                    if (this.href === interactionReferenceString) {
+                        interactionId[j] = this.childNodes[0].nodeValue.trim();
+                        __interactionIds.push(interactionId[j]);
+                        interactionTag[j] = this.outerHTML.replace(/"/g, "'");
+                        j++;
                     }
                 });
-                __parseAndUpdateQuestionSetTypeJSON(jsonContent);
+
+                 $.each(interactionId, function(i) {
+                    var interactionId = this;
+                    //var id = __config.ENTRY_BOX_PREFIX +  __content.answersXML.length;
+                    /*
+                     * Add entry box.
+                     */
+                    questionText = questionText.replace(interactionTag[i],"");
+                    __content.answersJSON[interactionId] = jsonContent.responses[interactionId];
+                    __content.optionsJSON[interactionId] = jsonContent.content.interactions[interactionId];
+                });
+                /* Replace interaction tag with blank string. */
+                // jsonContent.content.canvas.data.questiondata[0].text = jsonContent.content.canvas.data.questiondata[0].text.replace(interactionTag, "");
+                // var questionText = "1.  " + jsonContent.content.canvas.data.questiondata[0].text;
+                // var correctAnswerNumber = jsonContent.responses[interactionId].correct;
+                // var interactionType = jsonContent.content.interactions[interactionId].type;
+                // var optionCount = jsonContent.content.interactions[interactionId][interactionType].length;
+
+                // /* Make optionsJSON and answerJSON from JSON. */
+                // for (var i = 0; i < optionCount; i++) {
+                //     var optionObject = jsonContent.content.interactions[interactionId][interactionType][i];
+                //     var option = optionObject[Object.keys(optionObject)].replace(/^\s+|\s+$/g, '');
+                //     __content.optionsJSON.push(__getHTMLEscapeValue(option));
+                //     optionObject[Object.keys(optionObject)] = option;
+                //     /* Update JSON after updating option. */
+                //     jsonContent.content.interactions[interactionId][interactionType][i] = optionObject;
+                //     if (Object.keys(optionObject) == correctAnswerNumber) {
+                //         __content.answersJSON[0] = optionObject[Object.keys(optionObject)];
+                //     }
+                // }
+                // __content.questionsJSON[0] = questionText + " ^^ " + __content.optionsJSON.toString() + " ^^ " + interactionId;
 
                 /* Returning processed JSON. */
                 return jsonContent;
@@ -8784,4 +8836,4 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
     });
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-('/*******************************************************\n * \n * ----------------------\n * Engine Renderer Styles\n * ----------------------\n *\n * These styles do not include any product-specific branding\n * and/or layout / design. They represent minimal structural\n * CSS which is necessary for a default rendering of an\n * MCQSC activity\n *\n * The styles are linked/depending on the presence of\n * certain elements (classes / ids / tags) in the DOM (as would\n * be injected via a valid MCQSC layout HTML and/or dynamically\n * created by the MCQSC engine JS)\n *\n *\n *******************************************************/\n\n.cosmattmp-body .form *{\n    margin: 0;\n    padding: 0;\n}\n\n.cosmattmp-body .form .cosmattmp-img{\n    padding-top: 10px;\n}\n\n.cosmattmp-body .form ul li{\n    padding: .7em .4em .7em 1.8em;\n    position: relative;\n}\n\n.cosmattmp-body .form ul li.highlight{\n    background-color: #F2F2F2;\n    border-radius: 6px;\n}\n\n.cosmattmp-body .form ul li i{\n    height: 1.8em;\n    width: 1.8em;\n    border-radius: 50%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: block;\n    outline: 0;\n    border: 1px solid #BDBDBD;\n    background: #FFF;\n}\n\n.cosmattmp-body .form ul li i:after {\n    background-color: #3276B1;\n    content: \'\';\n    border-radius: 50%;\n    height: 1.1em;\n    width: 1.1em;\n    top: .3em;\n    left: .3em;\n    position: absolute;\n    opacity: 0;\n}\n\n.cosmattmp-body .form ul li.highlight i{\n    border-color: #3276B1;\n}\n\n.cosmattmp-body .form ul li.highlight i:after{\n    opacity: 1;\n}\n\n.cosmattmp-body .form ul li .radio{\n    line-height: 1.8em;\n    font-weight: normal;\n    cursor: pointer;\n    padding-left: 25px;\n}\n\n\n.cosmattmp-body .form ul li .radio input {\n    position: absolute;\n    left: -9999px;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i{\n    background: #fff0f0;\n    border-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i:after {\n    background-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i{\n    background: #f0fff0;\n    border-color: #7DC27D;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i:after {\n    background-color: #7DC27D;\n}\n\n.cosmattmp-body span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.5em auto -3.2em;\n}\n\n.cosmattmp-body span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.6em auto -3.2em;\n}\n\n.cosmattmp-body .answer{\n    margin-left: 20px;\n}\n\n.cosmattmp-body span.correct, .cosmattmp-body span.wrong{\n    margin-left: 0;\n}\n\n.cosmattmp-body .col-md-6.last-child {\n    min-height: 200px;\n    border-left: 1px solid #C2C2C2;\n    padding-left: 20px;\n}\n\n.cosmattmp-body .stimulus {\n    margin: 25px 0 25px 0;\n}\n#feedback-area {\n    margin-top: 18px;   \n    border: 1px solid #ddd;\n    border-radius: 4px;\n    padding: 20px;\n    margin: 10px 0px 10px 0px;\n    background-color: #eee;\n    color: #3D3D3D;\n}\n#feedback-area > h4 {\n    padding-bottom: 10px;\n    font-weight: 700;\n}\n/* CORRECT ANSWER icon/mark */\n.cosmattmp-body #feedback-area span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: #009900;\n    float: left;\n    font-size: 18px;\n    border: 2px solid #009900;\n    padding: 3px 5px 3px 5px;\n    border-radius: 16px;\n    margin: 10px;\n}\n.cosmattmp-body #feedback-area span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: red;\n    float: left;\n    font-size: 18px;\n    border: 2px solid red;\n    padding: 2px 6px 2px 6px;\n    border-radius: 16px;\n    margin: 10px;\n}.cosmatt-unitComboBox {\n  width: 100%;\n  height: 100%;\n}\n.cosmatt-unitComboBox .form-control {\n  display: block;\n  height: 34px;\n  padding: 6px 12px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  -webkit-border-radius: 4px;\n}\n.cosmatt-unitComboBox .unitTextBox {\n  display: inline;\n  max-width: 100px;\n}\n.cosmatt-unitComboBox .unitComboBox {\n  display: inline;\n  max-width: 100px;\n  padding: 0 6px;\n  margin-left: 10px;\n}\n.cosmatt-unitComboBox .form-control[disabled],\n.cosmatt-unitComboBox .form-control[readonly] {\n  background-color: #eee;\n  opacity: 1;\n}\n.cosmatt-motionProfile {\n  position: relative;\n}\n.cosmatt-motionProfile.unselectable {\n  -moz-user-select: -moz-none;\n  -khtml-user-select: none;\n  -webkit-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n}\n.cosmatt-motionProfile.assessment-mode {\n  box-shadow: 0 0 0 #ddd !important;\n  border: none !important;\n}\n.cosmatt-motionProfile #inputControls {\n  margin-top: 10px;\n}\n.cosmatt-motionProfile #profileButtons {\n  margin: 10px 0;\n}\n.cosmatt-motionProfile .profileButton {\n  margin-right: 10px;\n}\n.cosmatt-motionProfile #graphContainer .graphArea {\n  height: 400px;\n  min-width: 10px;\n  display: inline-block;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\n  pointer-events: none;\n  margin: 0px !important;\n  width: initial;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\n  background-color: transparent !important;\n  border-width: 0px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\n  border-width: 0px !important;\n  padding: 0px !important;\n  vertical-align: middle;\n}\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\n  max-width: 211px;\n}\n.cosmatt-motionProfile #tooltip {\n  padding: 4px 10px !important;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  border: solid 1px #000 !important;\n  z-index: 100 !important;\n  font-size: 12px !important;\n  color: #fff !important;\n  -webkit-border-radius: 3px !important;\n  -moz-border-radius: 3px !important;\n  border-radius: 3px !important;\n  position: absolute;\n  display: none;\n}\n');
+('/*******************************************************\n * \n * ----------------------\n * Engine Renderer Styles\n * ----------------------\n *\n * These styles do not include any product-specific branding\n * and/or layout / design. They represent minimal structural\n * CSS which is necessary for a default rendering of an\n * MCQSC activity\n *\n * The styles are linked/depending on the presence of\n * certain elements (classes / ids / tags) in the DOM (as would\n * be injected via a valid MCQSC layout HTML and/or dynamically\n * created by the MCQSC engine JS)\n *\n *\n *******************************************************/\n\n.cosmattmp-body .form *{\n    margin: 0;\n    padding: 0;\n}\n\n.cosmattmp-body .form .cosmattmp-img{\n    padding-top: 10px;\n}\n\n.cosmattmp-body .form ul li{\n    padding: .7em .4em .7em 1.8em;\n    position: relative;\n}\n\n.cosmattmp-body .form ul li.highlight{\n    background-color: #F2F2F2;\n    border-radius: 6px;\n}\n\n.cosmattmp-body .form ul li i{\n    height: 1.8em;\n    width: 1.8em;\n    border-radius: 50%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: block;\n    outline: 0;\n    border: 1px solid #BDBDBD;\n    background: #FFF;\n}\n\n.cosmattmp-body .form ul li i:after {\n    background-color: #3276B1;\n    content: \'\';\n    border-radius: 50%;\n    height: 1.1em;\n    width: 1.1em;\n    top: .3em;\n    left: .3em;\n    position: absolute;\n    opacity: 0;\n}\n\n.cosmattmp-body .form ul li.highlight i{\n    border-color: #3276B1;\n}\n\n.cosmattmp-body .form ul li.highlight i:after{\n    opacity: 1;\n}\n\n.cosmattmp-body .form ul li .radio{\n    line-height: 1.8em;\n    font-weight: normal;\n    cursor: pointer;\n    padding-left: 25px;\n}\n\n\n.cosmattmp-body .form ul li .radio input {\n    position: absolute;\n    left: -9999px;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i{\n    background: #fff0f0;\n    border-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i:after {\n    background-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i{\n    background: #f0fff0;\n    border-color: #7DC27D;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i:after {\n    background-color: #7DC27D;\n}\n\n.cosmattmp-body span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.5em auto -3.2em;\n}\n\n.cosmattmp-body span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.6em auto -3.2em;\n}\n\n.cosmattmp-body .answer{\n    margin-left: 20px;\n}\n\n.cosmattmp-body span.correct, .cosmattmp-body span.wrong{\n    margin-left: 0;\n}\n\n.cosmattmp-body .col-md-6.last-child {\n    min-height: 200px;\n    border-left: 1px solid #C2C2C2;\n    padding-left: 20px;\n}\n\n.cosmattmp-body .stimulus {\n    margin: 25px 0 25px 0;\n}\n#feedback-area {\n    margin-top: 18px;   \n    border: 1px solid #ddd;\n    border-radius: 4px;\n    padding: 20px;\n    margin: 10px 0px 10px 0px;\n    background-color: #eee;\n    color: #3D3D3D;\n}\n#feedback-area > h4 {\n    padding-bottom: 10px;\n    font-weight: 700;\n}\n/* CORRECT ANSWER icon/mark */\n.cosmattmp-body #feedback-area span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: #009900;\n    float: left;\n    font-size: 18px;\n    border: 2px solid #009900;\n    padding: 3px 5px 3px 5px;\n    border-radius: 16px;\n    margin: 10px;\n}\n.cosmattmp-body #feedback-area span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: red;\n    float: left;\n    font-size: 18px;\n    border: 2px solid red;\n    padding: 2px 6px 2px 6px;\n    border-radius: 16px;\n    margin: 10px;\n}.cosmatt-unitComboBox {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.cosmatt-unitComboBox .form-control {\r\n  display: block;\r\n  height: 34px;\r\n  padding: 6px 12px;\r\n  font-size: 14px;\r\n  line-height: 1.42857143;\r\n  color: #555;\r\n  background-color: #fff;\r\n  background-image: none;\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\r\n  -webkit-border-radius: 4px;\r\n}\r\n.cosmatt-unitComboBox .unitTextBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n}\r\n.cosmatt-unitComboBox .unitComboBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n  padding: 0 6px;\r\n  margin-left: 10px;\r\n}\r\n.cosmatt-unitComboBox .form-control[disabled],\r\n.cosmatt-unitComboBox .form-control[readonly] {\r\n  background-color: #eee;\r\n  opacity: 1;\r\n}\r\n.cosmatt-motionProfile {\r\n  position: relative;\r\n}\r\n.cosmatt-motionProfile.unselectable {\r\n  -moz-user-select: -moz-none;\r\n  -khtml-user-select: none;\r\n  -webkit-user-select: none;\r\n  -o-user-select: none;\r\n  user-select: none;\r\n}\r\n.cosmatt-motionProfile.assessment-mode {\r\n  box-shadow: 0 0 0 #ddd !important;\r\n  border: none !important;\r\n}\r\n.cosmatt-motionProfile #inputControls {\r\n  margin-top: 10px;\r\n}\r\n.cosmatt-motionProfile #profileButtons {\r\n  margin: 10px 0;\r\n}\r\n.cosmatt-motionProfile .profileButton {\r\n  margin-right: 10px;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea {\r\n  height: 400px;\r\n  min-width: 10px;\r\n  display: inline-block;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\r\n  pointer-events: none;\r\n  margin: 0px !important;\r\n  width: initial;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\r\n  background-color: transparent !important;\r\n  border-width: 0px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\r\n  border-width: 0px !important;\r\n  padding: 0px !important;\r\n  vertical-align: middle;\r\n}\r\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\r\n  max-width: 211px;\r\n}\r\n.cosmatt-motionProfile #tooltip {\r\n  padding: 4px 10px !important;\r\n  background-color: rgba(0, 0, 0, 0.8) !important;\r\n  border: solid 1px #000 !important;\r\n  z-index: 100 !important;\r\n  font-size: 12px !important;\r\n  color: #fff !important;\r\n  -webkit-border-radius: 3px !important;\r\n  -moz-border-radius: 3px !important;\r\n  border-radius: 3px !important;\r\n  position: absolute;\r\n  display: none;\r\n}\r\n');
