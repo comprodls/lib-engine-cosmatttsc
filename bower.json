@@ -2,6 +2,10 @@
   "name": "libs-engine-mcqsr",
   "version": "0.0.1",
   "description": "Compro MCQ Activity engine",
+  "dependencies": {
+    "flot": "~0.8.3",
+    "flot-axislabels": "*"
+  },
   "devDependencies": {
     "handlebars": "1.0.0",
     "jquery": "2.1.1",

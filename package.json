@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Compro MCQ Activity engine",  
   "main": "Gruntfile.js",
+  "dependencies": {
+    "lib-cosmatt-frontend": "git+https://d56a593564270a3b3e686bc3337d9bc60a62b8f2:x-oauth-basic@github.com/comprodls/libs-frontend-cosmatt.git#master"
+  },
   "devDependencies": {
     "bower": "1.8.0",
     "grunt": "1.0.1",
