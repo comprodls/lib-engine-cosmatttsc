@@ -109,6 +109,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
     */
     /********************************************************/  
     function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {        
+        debugger;
 
         /* ---------------------- BEGIN OF INIT ---------------------------------*/
         //Store the adaptor  

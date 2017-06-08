@@ -1,69 +1,79 @@
 {
-  "meta": {
-    "type": "cosmattmp",
-    "score": {
-      "default": 0,
-      "max": 1,
-      "min": 0
-    }
-  },
-  "content": {
-    "instructions": [
-      {
-        "tag": ""
-      } 
-    ],
-    "stimulus": [
-      {
-        "tag": ""
-      }
-    ],
-    "canvas": {
-      "layout": "cosmattmp",
-      "data": {
-        "questiondata": [
-          {
-            "text": "   What's the matter with this patient? <a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i1</a> "
-          }
-        ]
-      },
-      "raw": ""
-    },     
-    "interactions": {
-      "i1": {
-        "type": "cosmattmp",
-        "cosmattmp": [
-          {
-            "choiceA": "She has the flu." 
-          },
-          {
-            "choiceB": "She has the measles."
-          },
-          {
-            "choiceC": "She has malaria."
-          },
-          {
-            "choiceD": "She has a toothache."
-          }          
-        ]
-      }
+    "meta": {
+        "type": "COSMATTMP",
+        "score": {
+            "default": 0,
+            "max": 1,
+            "min": 0
+        }
     },
-    "hint": {}
-  },
-  "feedback": {
-    "global": {
-      "correct": "You have answered it correctly",
-      "incorrect": "Your answer is incorrect",
-      "empty": "You did not answer anything"
-    }
-  },
-  "responses": {
-    "i1": {
-      "correct": "choiceC"
-    }
-  },
-  "learning-objectives": [],
-  "tags": [
-    "test"
-  ]
+    "content": {
+        "instructions": [
+            {
+                "tag": "html",
+                "html": "Enter the correct values in input fields. Click <b>Submit</b> to check your answers."
+            }
+        ],
+        "stimulus": [
+            {
+                "tag": "",
+                "image": ""
+            }
+        ],
+        "canvas": {
+            "layout": "COSMATTMP",
+            "data": {
+                "questiondata": [
+                    {
+                        "text": "Create a profile using the widget for a move of 500 revolutions in a time of 4 seconds, followed by a dwell of 1 second. The distance covered during each segment should be equal.<a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i1</a><a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i2</a><a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i3</a><a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i4</a>"
+                    }
+                ]
+            },
+            "raw": ""
+        },
+        "interactions": {
+            "i1": {
+                "type": "moveDistance"
+            },
+            "i2": {
+                "type": "moveTime"
+            },
+            "i3": {
+                "type": "dwellTime"
+            },
+            "i4": {
+                "type": "velocityJerk"
+            }
+        },
+        "hint": {}
+    },
+    "feedback": {
+        "global": {
+            "correct": "Perfect. You got it correct",
+            "incorrect": "Sorry, Wrong response.",
+            "empty": "You did not enter anything."
+        }
+    },
+    "responses": {
+        "i1": {
+            "correct": "40",
+            "ignorewhitespace": true
+        },
+        "i2": {
+            "correct": "20",
+            "ignorewhitespace": true
+        },
+        "i3": {
+            "correct": "30",
+            "ignorewhitespace": true
+        },
+        "i4": {
+            "correct": "50",
+            "ignorewhitespace": true
+        }
+    },
+    "learning-objectives": [],
+    "tags": [
+        "test"
+    ]
 }
