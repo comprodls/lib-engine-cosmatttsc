@@ -3,8 +3,8 @@
  * Engine Module
  * -------------
  * 
- * Item Type: MCQSR Single Choice Quesion engine
- * Code: MCQSR
+ * Item Type: cosmattmp Single Choice Quesion engine
+ * Code: cosmattmp
  * Interface: ENGINE
  
  *  ENGINE Interface public functions
@@ -28,13 +28,13 @@
  * 2. Boostrap (TODO: version) 
  */
 
-define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets) representing the rendering UX
-        'css!../css/mcqsr.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
+define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/rivets) representing the rendering UX
+        'css!../css/cosmattmp.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
         'rivets',  // Rivets for data binding
         'sightglass'], //Required by Rivets
-        function (mcqsrTemplateRef) {
+        function (cosmattmpTemplateRef) {
 
-    mcqsr = function() {
+    cosmattmp = function() {
     
     "use strict";
         
@@ -82,8 +82,8 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
         /* CONSTANT for PLATFORM Save Status NO ERROR */
         STATUS_NOERROR: "NO_ERROR",
         TEMPLATES: {
-            /* Regular MCQSR Layout */
-            MCQSR: mcqsrTemplateRef
+            /* Regular cosmattmp Layout */
+            cosmattmp: cosmattmpTemplateRef
         }
     };
     // Array of all interaction tags in question
@@ -222,7 +222,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
 
      /* ---------------------- JSON PROCESSING FUNCTIONS START ---------------------------------*/
      /**
-     * Parse and Update JSON based on MCQSR specific requirements.
+     * Parse and Update JSON based on cosmattmp specific requirements.
      */
     function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) { 
         jsonContent.content.displaySubmit = activityAdaptor.displaySubmit;   
@@ -248,7 +248,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
 
     
     /**
-     * Parse and Update Question Set type JSON based on  MCQSR specific requirements.
+     * Parse and Update Question Set type JSON based on  cosmattmp specific requirements.
      */  
     function __parseAndUpdateQuestionSetTypeJSON(jsonContent) {
 
@@ -256,7 +256,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
         var interactionId = "";
         var interactionTag = "";
         /* String present in href of interaction tag. */
-        var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/mcqsr";
+        var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
         /* Parse questiontext as HTML to get HTML tags. */
         var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
         $.each( parsedQuestionArray, function(i, el) {
@@ -307,7 +307,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
      * Original JSON Object
      * ---------------------
      * 
-     * "MCQSR": [
+     * "cosmattmp": [
           {
             "choiceA": "She has the flu." 
           },
@@ -319,7 +319,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
         Modified JSON Object
         ----------------------
 
-        "MCQSR": [
+        "cosmattmp": [
           {
               "customAttribs" : {
                     "key" : "choiceA",
@@ -343,7 +343,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
     function __parseAndUpdateJSONForRivets(jsonContent){  
        var processedArray = [];
        for(var i=0; i <__interactionIds.length; i++){
-            jsonContent.content.interactions[__interactionIds[i]].MCQSR.forEach(function(obj, index){
+            jsonContent.content.interactions[__interactionIds[i]].cosmattmp.forEach(function(obj, index){
                 var processedObj = {};
                 processedObj.customAttribs = {};
                 Object.keys(obj).forEach(function(key){
@@ -352,7 +352,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
                 });
                 processedArray.push(processedObj);
             });
-            jsonContent.content.interactions[__interactionIds[i]].MCQSR = processedArray;  
+            jsonContent.content.interactions[__interactionIds[i]].cosmattmp = processedArray;  
        }
     } 
 
@@ -378,7 +378,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
         /* This formatter is used to append interaction property to the object
          * and return text of the question for particular interaction
          */
-        rivets.formatters.appendInteraction = function(obj, interaction, MCQSR){
+        rivets.formatters.appendInteraction = function(obj, interaction, cosmattmp){
             return obj[interaction].text;
         }
 
@@ -386,7 +386,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
          * interaction so that rivets can iterate over it.
          */
         rivets.formatters.getArray = function(obj, interaction){
-            return obj[interaction].MCQSR;
+            return obj[interaction].cosmattmp;
         }
 
         var isMCQImageEngine = false;
@@ -396,7 +396,7 @@ define(['text!../html/mcqsr.html', //HTML layout(s) template (handlebars/rivets)
         }
 
         /*Bind the data to template using rivets*/
-        rivets.bind($('#mcqsr-engine'), {
+        rivets.bind($('#cosmattmp-engine'), {
             content: __processedJsonContent.content,
             isMCQImageEngine: isMCQImageEngine,
             feedback : __processedJsonContent.feedback,

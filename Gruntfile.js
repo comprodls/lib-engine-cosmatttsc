@@ -35,13 +35,13 @@ module.exports = function(grunt) {
         },
 
         // RequireJS optimizer
-        // Create two files - mcqsr.js and mcqsr-editor.js
+        // Create two files - cosmattmp.js and cosmattmp-editor.js
         requirejs: {
             engine: {
                 options: {
                     baseUrl: engine_src,
-                    name: "mcqsr",
-                    out: dist + "mcqsr.js",
+                    name: "cosmattmp",
+                    out: dist + "cosmattmp.js",
                     paths: {
                         'text': bower_components + 'text/text',
                         'css': bower_components + 'require-css/css',
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
                     },
                     exclude: ['normalize'],
                     done: function (done, output) {
-                        console.log('Completed requirejs optimization for mcqsr renderer successfully.');
+                        console.log('Completed requirejs optimization for cosmattmp renderer successfully.');
                         done();
                     }
                 }
@@ -64,8 +64,8 @@ module.exports = function(grunt) {
             engineEditor: {
                 options: {
                     baseUrl: engine_src,
-                    name: "mcqsr-editor",
-                    out: dist + "mcqsr-editor.js",
+                    name: "cosmattmp-editor",
+                    out: dist + "cosmattmp-editor.js",
                     paths: {
                         'jquery':'empty:',
                         'text': bower_components + 'text/text',
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                     },
                     exclude: ['normalize'],
                     done: function (done, output) {
-                        console.log('Completed requirejs optimization for mcqsr editor successfully.');
+                        console.log('Completed requirejs optimization for cosmattmp editor successfully.');
                         done();
                     }
                 }
