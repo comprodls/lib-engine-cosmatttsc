@@ -8095,8 +8095,10 @@ COSMATT.MotionProfile.configuration = {
       }
       if (hideInputsArr.length > 0) {
         for (var inputEle in hideInputsArr) {
-          inputEle = hideInputsArr[inputEle];
-          $inputControls.find("#" + inputEle + "InputContainer").hide();
+          if(hideInputsArr.hasOwnProperty(inputEle)){
+            inputEle = hideInputsArr[inputEle];
+            $inputControls.find("#" + inputEle + "InputContainer").hide();
+          }
         }
       }
     };
@@ -8227,9 +8229,9 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
              * Content (loaded / initialized during init() ).
              */
             var __content = {
-                directionsJSON: "",
+                instructionText: "",
                 appData: {},
-                questionsJSON: {}, /* Contains the question obtained from content JSON. */
+                questionText: "", /* Contains the question obtained from content JSON. */
                 optionsJSON: {}, /* Contains all the options for a particular question obtained from content JSON. */
                 answersJSON: {}, /* Contains the answer for a particular question obtained from content JSON. */
                 userAnswersJSON: {}, /* Contains the user answer for a particular question. */
@@ -8278,8 +8280,11 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
 
+                debugger;
+
                 __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
 
+                console.log(__content);
                 /* ------ VALIDATION BLOCK START -------- */
                 if (jsonContent.content === undefined) {
                     if (callback) {
@@ -8291,54 +8296,56 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
 
                 /* ------ VALIDATION BLOCK END -------- */
 
+                $(elRoot).CosmattPlugin(__content.appData);
+
                 /* Parse and update content JSON. */
-                $(elRoot).CosmattPlugin({
-                    type: 'motion-profile',
-                    options: {
-                        data: {
-                            DataFields: {
-                                moveDistance: "moveDistance",
-                                moveTime: "moveTime",
-                                dwellTime: "dwellTime",
-                                velocityFormFactor: "indexType",
-                                peakVelocity: "peakVelocity",
-                                rmsVelocity: "rmsVelocity",
-                                peakAccelaration: "peakAcc",
-                                rmsAccelaration: "rmsAcc",
-                                showAll: true
-                            },
-                            Profiles: {
-                                profile1: "profile1",
-                                profile2: "profile2",
-                                profile3: "profile3",
-                                showAll: true
-                            },
-                            GraphMode: {
-                                individualAxis: 0,
-                                sameAxis: 1
-                            },
-                            Graphs: {
-                                position: "pos",
-                                velocity: "vel",
-                                acceleration: "acc",
-                                jerk: "jerk",
-                                showAll: true
-                            },
-                            GraphHandles: {
-                                position: "position",
-                                peakVelocity: "peakVelocity",
-                                moveTime: "moveTime",
-                                dwellTime: "dwellTime",
-                                showAll: true
-                            },
-                            Smoothness: {
-                                automatic: 0,
-                                standard: 1,
-                                maximum: 2
-                            }
-                        }
-                    }
-                });
+                // $(elRoot).CosmattPlugin({
+                //     type: 'motion-profile',
+                //     options: {
+                //         data: {
+                //             DataFields: {
+                //                 moveDistance: "moveDistance",
+                //                 moveTime: "moveTime",
+                //                 dwellTime: "dwellTime",
+                //                 velocityFormFactor: "indexType",
+                //                 peakVelocity: "peakVelocity",
+                //                 rmsVelocity: "rmsVelocity",
+                //                 peakAccelaration: "peakAcc",
+                //                 rmsAccelaration: "rmsAcc",
+                //                 showAll: true
+                //             },
+                //             Profiles: {
+                //                 profile1: "profile1",
+                //                 profile2: "profile2",
+                //                 profile3: "profile3",
+                //                 showAll: true
+                //             },
+                //             GraphMode: {
+                //                 individualAxis: 0,
+                //                 sameAxis: 1
+                //             },
+                //             Graphs: {
+                //                 position: "pos",
+                //                 velocity: "vel",
+                //                 acceleration: "acc",
+                //                 jerk: "jerk",
+                //                 showAll: true
+                //             },
+                //             GraphHandles: {
+                //                 position: "position",
+                //                 peakVelocity: "peakVelocity",
+                //                 moveTime: "moveTime",
+                //                 dwellTime: "dwellTime",
+                //                 showAll: true
+                //             },
+                //             Smoothness: {
+                //                 automatic: 0,
+                //                 standard: 1,
+                //                 maximum: 2
+                //             }
+                //         }
+                //     }
+                // });
 
                 // Not Required for Cosmatt
                 
@@ -8438,7 +8445,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
             * Parse and Update JSON based on cosmattmp specific requirements.
             */
             function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) {
-                debugger;
+                
                 jsonContent.content.displaySubmit = activityAdaptor.displaySubmit;
 
                 __content.activityType = params.engineType;
@@ -8446,10 +8453,10 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
 
                 /* Activity Instructions. */
                 var tagName = jsonContent.content.instructions[0].tag;
-                __content.directionsJSON = jsonContent.content.instructions[0][tagName];
+                __content.instructionText = jsonContent.content.instructions[0][tagName];
                 __content.appData = jsonContent["app-data"];
                 /* Put directions in JSON. */
-                jsonContent.content.directions = __content.directionsJSON;
+                //jsonContent.content.directions = __content.directionsJSON;
                 // $.each(jsonContent.content.stimulus, function (i) {
                 //     if (this.tag === "image") {
                 //         jsonContent.content.stimulus.mediaContent = params.questionMediaBasePath + this.image;
@@ -8502,7 +8509,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 //         __content.answersJSON[0] = optionObject[Object.keys(optionObject)];
                 //     }
                 // }
-                // __content.questionsJSON[0] = questionText + " ^^ " + __content.optionsJSON.toString() + " ^^ " + interactionId;
+                __content.questionText = questionText;
 
                 /* Returning processed JSON. */
                 return jsonContent;
