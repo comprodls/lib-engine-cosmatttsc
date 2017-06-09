@@ -163,9 +163,9 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
                 // $('input[id^=option]').change(__handleRadioButtonClick);
 
-                // $(document).bind('userAnswered', function () {
-                //     __saveResults(false);
-                // });
+                $(document).bind('userAnswered', function (e, value) {
+                    __saveResults(false);
+                });
 
                 /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
 
@@ -187,10 +187,29 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             }
 
             function userResponseHandler(callbackValue) {
-                
+                for(var property in callbackValue){
+                    if(callbackValue.hasOwnProperty(property)){
+                        __content.userAnswersJSON[getInteractionId(property)] = callbackValue;
+                    }
+                }
+                $(document).triggerHandler('userAnswered', callbackValue);
                 console.log(callbackValue);
             }
 
+            function getInteractionId(interactionField){
+                switch(interactionField){
+                    case 'moveDistance':
+                        return 'i1';
+                    case 'moveTime':
+                        return 'i2';
+                    case 'dwellTime':
+                        return 'i3';
+                    case 'velocityJerk':
+                        return 'i4';
+                    default:
+                        return '';
+                }
+            }
             /**
              * ENGINE-SHELL Interface
              *
@@ -596,7 +615,6 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              *   2. Multi-item-handler (external).
              */
             function __getAnswersJSON(skipQuestion) {
-
                 var score = 0;
                 var answer = "";
                 var interactions = {};
