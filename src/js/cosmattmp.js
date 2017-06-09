@@ -126,8 +126,6 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
 
-                debugger;
-
                 __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
 
                 console.log(__content);
@@ -141,8 +139,12 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 }
 
                 /* ------ VALIDATION BLOCK END -------- */
-
-                $(elRoot).CosmattPlugin(__content.appData);
+                var $questionContainer = $(elRoot).append('<div class="row"></div>');
+                var $questionArea = $questionContainer.append('<div class="col-sm-12"></div>');
+                var $pluginArea = $questionContainer.append('<div class="col-sm-12"></div>');
+                
+                $questionArea.html(__content.questionText);
+                $pluginArea.CosmattPlugin(__content.appData);
 
                 /* Parse and update content JSON. */
                 // $(elRoot).CosmattPlugin({
