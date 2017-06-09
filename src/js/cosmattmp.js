@@ -144,7 +144,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 $questionContainer.append($questionArea);
                 $questionContainer.append($pluginArea);
 
-                $(elRoot).append($questionContainer);
+                $(elRoot).html($questionContainer);
 
 
                 // Not Required for Cosmatt
