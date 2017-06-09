@@ -129,14 +129,6 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
 
                 console.log(__content);
-                /* ------ VALIDATION BLOCK START -------- */
-                if (jsonContent.content === undefined) {
-                    if (callback) {
-                        callback();
-                    }
-                    //TODO - In future more advanced schema validations could be done here        
-                    return; /* -- EXITING --*/
-                }
 
                 /* ------ VALIDATION BLOCK END -------- */
                 var $questionContainer = $('<div class="row"></div>');
@@ -150,54 +142,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 $questionContainer.append($pluginArea);
 
                 $(elRoot).append($questionContainer);
-                /* Parse and update content JSON. */
-                // $(elRoot).CosmattPlugin({
-                //     type: 'motion-profile',
-                //     options: {
-                //         data: {
-                //             DataFields: {
-                //                 moveDistance: "moveDistance",
-                //                 moveTime: "moveTime",
-                //                 dwellTime: "dwellTime",
-                //                 velocityFormFactor: "indexType",
-                //                 peakVelocity: "peakVelocity",
-                //                 rmsVelocity: "rmsVelocity",
-                //                 peakAccelaration: "peakAcc",
-                //                 rmsAccelaration: "rmsAcc",
-                //                 showAll: true
-                //             },
-                //             Profiles: {
-                //                 profile1: "profile1",
-                //                 profile2: "profile2",
-                //                 profile3: "profile3",
-                //                 showAll: true
-                //             },
-                //             GraphMode: {
-                //                 individualAxis: 0,
-                //                 sameAxis: 1
-                //             },
-                //             Graphs: {
-                //                 position: "pos",
-                //                 velocity: "vel",
-                //                 acceleration: "acc",
-                //                 jerk: "jerk",
-                //                 showAll: true
-                //             },
-                //             GraphHandles: {
-                //                 position: "position",
-                //                 peakVelocity: "peakVelocity",
-                //                 moveTime: "moveTime",
-                //                 dwellTime: "dwellTime",
-                //                 showAll: true
-                //             },
-                //             Smoothness: {
-                //                 automatic: 0,
-                //                 standard: 1,
-                //                 maximum: 2
-                //             }
-                //         }
-                //     }
-                // });
+
 
                 // Not Required for Cosmatt
                 

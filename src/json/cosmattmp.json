@@ -18,7 +18,14 @@
         ],
         "hideInputs": [
           "smoothness"
-        ]
+        ],
+        "readOnlyInputs":[
+          "peakVelocity",
+          "rmsVelocity",
+          "peakAcc",
+          "rmsAcc"
+        ],
+        "assessmentMode": true
       }
     }
   },
