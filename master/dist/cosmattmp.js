@@ -8293,13 +8293,17 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 }
 
                 /* ------ VALIDATION BLOCK END -------- */
-                var $questionContainer = $(elRoot).append('<div class="row"></div>');
-                var $questionArea = $questionContainer.append('<div class="col-sm-12"></div>');
-                var $pluginArea = $questionContainer.append('<div class="col-sm-12"></div>');
+                var $questionContainer = $('<div class="row"></div>');
+                var $questionArea = $('<div class="col-sm-12 text-primary"></div>');
+                var $pluginArea = $('<div class="col-sm-12"></div>');
                 
                 $questionArea.html(__content.questionText);
                 $pluginArea.CosmattPlugin(__content.appData);
 
+                $questionContainer.append($questionArea);
+                $questionContainer.append($pluginArea);
+
+                $(elRoot).append($questionContainer);
                 /* Parse and update content JSON. */
                 // $(elRoot).CosmattPlugin({
                 //     type: 'motion-profile',
