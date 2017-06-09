@@ -7907,6 +7907,9 @@ COSMATT.MotionProfile.configuration = {
         callBackFn: function () {
           uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
+          if(settings.assessmentMode && settings.userResponseNotifier){
+              settings.userResponseNotifier({"moveDistance":uiValues.movedistance});
+          }
         }
       });
 
@@ -7921,6 +7924,9 @@ COSMATT.MotionProfile.configuration = {
         callBackFn: function () {
           uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
+          if(settings.assessmentMode && settings.userResponseNotifier){
+              settings.userResponseNotifier({"moveTime":uiValues.movedistance});
+          }
         }
       });
 
@@ -7935,6 +7941,9 @@ COSMATT.MotionProfile.configuration = {
         callBackFn: function () {
           uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
+          if(settings.assessmentMode && settings.userResponseNotifier){
+              settings.userResponseNotifier({"dwellTime":uiValues.movedistance});
+          }
         }
       });
 
@@ -7951,9 +7960,11 @@ COSMATT.MotionProfile.configuration = {
         callBackFn: function () {
           uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
+          if(settings.assessmentMode && settings.userResponseNotifier){
+              settings.userResponseNotifier({"velocityJerk":uiValues.movedistance});
+          }
         }
       });
-
       // smoothness dropdown
       var $smoothnessDD = $inputControls.find("#smoothnessInputContainer").find(".smoothnessDropDown");
       $smoothnessDD.append('<select class="form-control smoothnessDDMenu"><option value=automatic>Automatic<option value=standard>Standard<option value=maximum>Maximum</select>');
@@ -8292,6 +8303,9 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 var $pluginArea = $('<div class="col-sm-12"></div>');
                 
                 $questionArea.html(__content.questionText);
+
+                //add callback function to appData
+                __content.appData.options.data.userResponseNotifier = userResponseHandler;
                 $pluginArea.CosmattPlugin(__content.appData);
 
                 $questionContainer.append($questionArea);
@@ -8337,6 +8351,11 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
              */
             function getConfig() {
                 return __config;
+            }
+
+            function userResponseHandler(callbackValue) {
+                
+                console.log(callbackValue);
             }
 
             /**

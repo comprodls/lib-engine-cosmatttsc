@@ -136,6 +136,9 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var $pluginArea = $('<div class="col-sm-12"></div>');
                 
                 $questionArea.html(__content.questionText);
+
+                //add callback function to appData
+                __content.appData.options.data.userResponseNotifier = userResponseHandler;
                 $pluginArea.CosmattPlugin(__content.appData);
 
                 $questionContainer.append($questionArea);
@@ -181,6 +184,11 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              */
             function getConfig() {
                 return __config;
+            }
+
+            function userResponseHandler(callbackValue) {
+                
+                console.log(callbackValue);
             }
 
             /**
