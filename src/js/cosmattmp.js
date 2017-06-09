@@ -134,7 +134,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var $questionContainer = $('<div class="row"></div>');
                 var $questionArea = $('<div class="col-sm-12 text-primary"></div>');
                 var $pluginArea = $('<div class="col-sm-12"></div>');
-                
+
                 $questionArea.html(__content.questionText);
 
                 //add callback function to appData
@@ -148,7 +148,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
 
                 // Not Required for Cosmatt
-                
+
                 // __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
                 //Process JSON for easy iteration in template
                 //__parseAndUpdateJSONForRivets();
@@ -187,28 +187,24 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             }
 
             function userResponseHandler(callbackValue) {
-                for(var property in callbackValue){
-                    if(callbackValue.hasOwnProperty(property)){
-                        __content.userAnswersJSON[getInteractionId(property)] = {response: callbackValue[property]};
+                for (var property in callbackValue) {
+                    if (callbackValue.hasOwnProperty(property)) {
+                        __content.userAnswersJSON[getInteractionId(property)] = { response: callbackValue[property] };
                     }
                 }
                 $(document).triggerHandler('userAnswered', callbackValue);
                 console.log(callbackValue);
             }
 
-            function getInteractionId(interactionField){
-                switch(interactionField){
-                    case 'moveDistance':
-                        return 'i1';
-                    case 'moveTime':
-                        return 'i2';
-                    case 'dwellTime':
-                        return 'i3';
-                    case 'velocityJerk':
-                        return 'i4';
-                    default:
-                        return '';
+            function getInteractionId(interactionField) {
+                var interactions = __content.optionsJSON;
+                var interactionId = '';
+                for (interactionId in interactions) {
+                    if (interactions[interactionId].type === interactionField) {
+                        break;
+                    }
                 }
+                return interactionId;
             }
             /**
              * ENGINE-SHELL Interface
@@ -269,7 +265,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             * Parse and Update JSON based on cosmattmp specific requirements.
             */
             function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) {
-                
+
                 jsonContent.content.displaySubmit = activityAdaptor.displaySubmit;
 
                 __content.activityType = params.engineType;
@@ -294,7 +290,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
                 /* Parse questiontext as HTML to get HTML tags. */
                 var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
-                 var j = 0;
+                var j = 0;
                 $.each(parsedQuestionArray, function (i, el) {
                     if (this.href === interactionReferenceString) {
                         interactionId[j] = this.childNodes[0].nodeValue.trim();
@@ -304,13 +300,13 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                     }
                 });
 
-                 $.each(interactionId, function(i) {
+                $.each(interactionId, function (i) {
                     var interactionId = this;
                     //var id = __config.ENTRY_BOX_PREFIX +  __content.answersXML.length;
                     /*
                      * Add entry box.
                      */
-                    questionText = questionText.replace(interactionTag[i],"");
+                    questionText = questionText.replace(interactionTag[i], "");
                     __content.answersJSON[interactionId] = jsonContent.responses[interactionId];
                     __content.optionsJSON[interactionId] = jsonContent.content.interactions[interactionId];
                 });
@@ -626,12 +622,12 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                     answers = __content.userAnswersJSON;
 
                     /* Calculating scores.*/
-                    for(var answerID in answers){
+                    for (var answerID in answers) {
                         var interaction = {};
                         interaction.id = answerID;
                         interaction.answer = answers[answerID];
                         interaction.maxscore = __processedJsonContent.meta.score.max
-                        if(answers[answerID].response == __content.answersJSON[answerID].correct){
+                        if (answers[answerID].response == __content.answersJSON[answerID].correct) {
                             interaction.score = 1;
                         } else {
                             interaction.score = 0;
