@@ -8356,7 +8356,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
             function userResponseHandler(callbackValue) {
                 for(var property in callbackValue){
                     if(callbackValue.hasOwnProperty(property)){
-                        __content.userAnswersJSON[getInteractionId(property)] = callbackValue;
+                        __content.userAnswersJSON[getInteractionId(property)] = {response: callbackValue[property]};
                     }
                 }
                 $(document).triggerHandler('userAnswered', callbackValue);
@@ -8782,34 +8782,38 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
              *   2. Multi-item-handler (external).
              */
             function __getAnswersJSON(skipQuestion) {
-                var score = 0;
-                var answer = "";
-                var interactions = {};
-
+                var answers = "";
                 /*Setup results array */
-                var interactionArray = new Array(1);
+                var interactionArray = [];
                 /* Split questionJSON to get interactionId. */
-                var questionData = __content.questionsJSON[0].split("^^");
-                var interactionId = questionData[2].trim();
 
                 if (skipQuestion) {
-                    answer = "Not Answered";
+                    answers = "Not Answered";
                 } else {
-                    answer = __content.userAnswersJSON[0];
+                    answers = __content.userAnswersJSON;
 
                     /* Calculating scores.*/
-                    if (__content.answersJSON[0] === __content.userAnswersJSON[0]) {
-                        score++;
+                    for(var answerID in answers){
+                        var interaction = {};
+                        interaction.id = answerID;
+                        interaction.answer = answers[answerID];
+                        interaction.maxscore = __processedJsonContent.meta.score.max
+                        if(answers[answerID].response == __content.answersJSON[answerID].correct){
+                            interaction.score = 1;
+                        } else {
+                            interaction.score = 0;
+                        }
+                        interactionArray.push(interaction);
                     }
                 }
 
-                interactions = {
-                    id: interactionId,
-                    answer: answer,
-                    score: score,
-                    maxscore: __processedJsonContent.meta.score.max
-                };
-                interactionArray[0] = interactions;
+                // interactions = {
+                //     id: interactionId,
+                //     answer: answer,
+                //     score: score,
+                //     maxscore: __processedJsonContent.meta.score.max
+                // };
+                // interactionArray[0] = interactions;
 
                 var response = {
                     "interactions": interactionArray
