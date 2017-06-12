@@ -638,11 +638,12 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                         interaction.id = answerID;
                         interaction.answer = answers[answerID].response;
                         interaction.maxscore = __processedJsonContent.meta.score.max;
-                        if (answers[answerID].response == __content.answersJSON[answerID].correct) {
-                            interaction.score = 1;
-                        } else {
-                            interaction.score = 0;
-                        }
+                        // if (answers[answerID].response == __content.answersJSON[answerID].correct) {
+                        //     interaction.score = 1;
+                        // } else {
+                        //     interaction.score = 0;
+                        // }
+                        interaction.score = 0;
                         interactionArray.push(interaction);
                     }
                 }
