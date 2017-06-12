@@ -8161,19 +8161,19 @@ COSMATT.MotionProfile.configuration = {
 
     function updateInputs(params) {
       if (params.movedistance) {
-        uiValues.movedistance = params.movedistance;
+        uiValues.movedistance = parseInt(params.movedistance);
         $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox').setTextBoxValue(uiValues.movedistance);
       }
       if (params.movedtime) {
-        uiValues.movedtime = params.movedtime;
+        uiValues.movedtime = parseInt(params.movedtime);
         $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox').setTextBoxValue(uiValues.movedtime);
       }
       if (params.dweltime) {
-        uiValues.dweltime = params.dweltime;
+        uiValues.dweltime = parseInt(params.dweltime);
         $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox').setTextBoxValue(uiValues.dweltime);
       }
       if (params.velocityJerk) {
-        uiValues.velocityJerk = params.velocityJerk;
+        uiValues.velocityJerk = parseInt(params.velocityJerk);
         $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox').setTextBoxValue(uiValues.velocityJerk);
       }
       calculateAndPaint();
