@@ -55,13 +55,13 @@
     },
     "interactions": {
       "i1": {
-        "type": "moveDistance"
+        "type": "movedistance"
       },
       "i2": {
-        "type": "moveTime"
+        "type": "movetime"
       },
       "i3": {
-        "type": "dwellTime"
+        "type": "dwelltime"
       },
       "i4": {
         "type": "velocityJerk"

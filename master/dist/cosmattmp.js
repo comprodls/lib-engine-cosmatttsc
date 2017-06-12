@@ -6611,8 +6611,8 @@ COSMATT.MotionProfile.configuration = {
   }
 };
 
-(function ($) {
-  $.fn.motionProfile = function (options) {
+(function($) {
+  $.fn.motionProfile = function(options) {
     var defaults = {
       activeProfileIndex: 1,
       moveDistance: 20,
@@ -6790,7 +6790,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var resetProfileData = function () {
+    var resetProfileData = function() {
       for (var key in dataSet) {
         if (dataSet.hasOwnProperty(key)) {
           dataSet[key].data = [];
@@ -6803,7 +6803,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var getHighestPoint = function (segmentData, axis, leastVal) {
+    var getHighestPoint = function(segmentData, axis, leastVal) {
       var keys = Object.keys(segmentData);
       var highestVal = 0;
       for (var keyIndex in keys) {
@@ -6820,7 +6820,7 @@ COSMATT.MotionProfile.configuration = {
       return highestVal;
     };
 
-    var getAioGraphPoints = function () {
+    var getAioGraphPoints = function() {
       // updating graphs to be displayed
       var aioGraphPointsArr = [];
       if (settings.showGraphs.length > 0) {
@@ -6851,7 +6851,7 @@ COSMATT.MotionProfile.configuration = {
       return aioGraphPointsArr;
     };
 
-    var updateGraph = function (segmentData) {
+    var updateGraph = function(segmentData) {
       var keys = Object.keys(segmentData);
       var highestTime = getHighestPoint(segmentData, "time_final", xmin);
 
@@ -6945,7 +6945,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var plotGraph = function (segmentData) {
+    var plotGraph = function(segmentData) {
       var posMax = getHighestPoint(segmentData, "position_final", posYMax);
       var velMax = getHighestPoint(segmentData, "velocity_final", velYMax);
       var accMax = getHighestPoint(segmentData, "acceleration_final", accYMax);
@@ -7078,7 +7078,7 @@ COSMATT.MotionProfile.configuration = {
         }
 
         var aioOptions = $.extend(true, {
-          yaxes: (function () {
+          yaxes: (function() {
             var yaxesArr = [];
             for (var i = 0; i < settings.showGraphs.length; i++) {
               yaxesArr[i] = yaxesOptions[settings.showGraphs[i]];
@@ -7107,7 +7107,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var plotEmptyGraph = function () {
+    var plotEmptyGraph = function() {
       // var posMax = getHighestPoint(segmentData, "position_final", posYMax);
       // var velMax = getHighestPoint(segmentData, "velocity_final", velYMax);
       // var accMax = getHighestPoint(segmentData, "acceleration_final", accYMax);
@@ -7240,7 +7240,7 @@ COSMATT.MotionProfile.configuration = {
         }
 
         var aioOptions = $.extend(true, {
-          yaxes: (function () {
+          yaxes: (function() {
             var yaxesArr = [];
             for (var i = 0; i < settings.showGraphs.length; i++) {
               yaxesArr[i] = yaxesOptions[settings.showGraphs[i]];
@@ -7269,7 +7269,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var updateGraphData = function (element, timeSlice) {
+    var updateGraphData = function(element, timeSlice) {
       var initialTime = element.time_initial;
       var finalTime = element.time_final;
       var Ka = element.motion_equation_third_order_coefficient;
@@ -7287,7 +7287,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var updatePointsGraphData = function (profileElements) {
+    var updatePointsGraphData = function(profileElements) {
       var velPonit, dwellTimePoint, moveTimePoint, posPoint;
       if (profileElements.cruise) {
         var timePoint = (profileElements.cruise[0].time_final + profileElements.cruise[0].time_initial) / 2;
@@ -7341,7 +7341,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var updateCalculatedFields = function (profileElements) {
+    var updateCalculatedFields = function(profileElements) {
       var peakVel, rmsVel, peakAcc, rmsAcc;
 
       // var t1 = profileElements.accel ? profileElements.accel[0].time_final : 0;
@@ -7436,7 +7436,7 @@ COSMATT.MotionProfile.configuration = {
       updateCalculatedControls();
     };
 
-    $container.find('#profileButtons').on('click', '.profileButton', function (e) {
+    $container.find('#profileButtons').on('click', '.profileButton', function(e) {
       e.preventDefault();
       if ($(this).attr('id') != undefined) {
         settings.activeProfileIndex = parseInt($(this).attr('id').slice(3));
@@ -7448,7 +7448,7 @@ COSMATT.MotionProfile.configuration = {
       }
     });
 
-    var resetCalculatedValues = function () {
+    var resetCalculatedValues = function() {
       calculatedValues.peakVel = '';
       calculatedValues.peakAcc = '';
       calculatedValues.rmsVel = '';
@@ -7456,7 +7456,7 @@ COSMATT.MotionProfile.configuration = {
       updateCalculatedControls();
     }
 
-    var readUIValues = function () {
+    var readUIValues = function() {
       uiValues.movedistance = settings.moveDistance;
       uiValues.movedtime = settings.moveTime;
       uiValues.dweltime = settings.dwellTime;
@@ -7465,7 +7465,7 @@ COSMATT.MotionProfile.configuration = {
       uiValues.smoothness = settings.smoothness;
     };
 
-    var validateUIValues = function () {
+    var validateUIValues = function() {
       var bret = true;
       // var errorInputs = [];
       $inputControls.find(".input-entries .form-group").removeClass("has-error");
@@ -7492,13 +7492,13 @@ COSMATT.MotionProfile.configuration = {
       return bret;
     };
 
-    var readinitialValues = function () {
+    var readinitialValues = function() {
       initialValues.time = 0;
       initialValues.position = 0;
       initialValues.velocity = 0;
     };
 
-    var saveVelMaxMinPoints = function (profileElements) {
+    var saveVelMaxMinPoints = function(profileElements) {
       AreaUnderCurve = 0;
       var prevWidth = dataSet.vel.data[0][0];
       for (var i = 1; i < dataSet.vel.data.length; i++) {
@@ -7524,7 +7524,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var showTooltip = function (x, y, contents) {
+    var showTooltip = function(x, y, contents) {
       $('<div id="tooltip">' + contents + '</div>').css({
 
         top: y + 5,
@@ -7537,14 +7537,14 @@ COSMATT.MotionProfile.configuration = {
       }).appendTo($widgetContainer).fadeIn(200);
     };
 
-    var addDragDropFunctionality = function (plot) {
+    var addDragDropFunctionality = function(plot) {
 
       var hoverItem = null;
       var dragItem = null;
 
       var prevItemIndex = null;
 
-      $container.find("#velGraph").unbind("plothover").bind("plothover", function (event, pos, item) {
+      $container.find("#velGraph").unbind("plothover").bind("plothover", function(event, pos, item) {
         hoverItem = item;
         if (item) {
           var targetOffset = $widgetContainer.offset();
@@ -7612,7 +7612,7 @@ COSMATT.MotionProfile.configuration = {
         }
       });
 
-      $container.find("#velGraph").unbind("mousedown").bind("mousedown", function () {
+      $container.find("#velGraph").unbind("mousedown").bind("mousedown", function() {
         $widgetContainer.find('#tooltip').remove();
         if (hoverItem) {
           switch (hoverItem.seriesIndex) {
@@ -7637,26 +7637,26 @@ COSMATT.MotionProfile.configuration = {
         }
       });
 
-      $container.find("#velGraph").unbind("mouseup").bind("mouseup", function () {
+      $container.find("#velGraph").unbind("mouseup").bind("mouseup", function() {
         if (dragItem && settings.onGraphDrag) {
           settings.onGraphDrag();
         }
         dragItem = null;
       });
 
-      $container.find("#velGraph").unbind("mouseleave").bind("mouseleave", function () {
+      $container.find("#velGraph").unbind("mouseleave").bind("mouseleave", function() {
         $container.find("#velGraph").mouseup();
       });
     };
 
-    var addDragDropFunctionalityPostion = function (plot) {
+    var addDragDropFunctionalityPostion = function(plot) {
 
       var hoverItem = null;
       var dragItem = null;
 
       var prevItemIndex = null;
 
-      $container.find("#posGraph").unbind("plothover").bind("plothover", function (event, pos, item) {
+      $container.find("#posGraph").unbind("plothover").bind("plothover", function(event, pos, item) {
         hoverItem = item;
         if (item) {
           var targetOffset = $widgetContainer.offset();
@@ -7693,7 +7693,7 @@ COSMATT.MotionProfile.configuration = {
         }
       });
 
-      $container.find("#posGraph").unbind("mousedown").bind("mousedown", function () {
+      $container.find("#posGraph").unbind("mousedown").bind("mousedown", function() {
         $widgetContainer.find('#tooltip').remove();
         if (hoverItem) {
           switch (hoverItem.seriesIndex) {
@@ -7708,24 +7708,24 @@ COSMATT.MotionProfile.configuration = {
         }
       });
 
-      $container.find("#posGraph").unbind("mouseup").bind("mouseup", function () {
+      $container.find("#posGraph").unbind("mouseup").bind("mouseup", function() {
         if (dragItem && settings.onGraphDrag) {
           settings.onGraphDrag();
         }
         dragItem = null;
       });
 
-      $container.find("#posGraph").unbind("mouseleave").bind("mouseleave", function () {
+      $container.find("#posGraph").unbind("mouseleave").bind("mouseleave", function() {
         $container.find("#posGraph").mouseup();
       });
     };
 
-    var addDragDropFunctionalityAIO = function (plot) {
+    var addDragDropFunctionalityAIO = function(plot) {
       var hoverItem = null;
       var dragItem = null;
       var prevItemIndex = null;
 
-      $container.find("#aioGraph").unbind("plothover").bind("plothover", function (event, pos, item) {
+      $container.find("#aioGraph").unbind("plothover").bind("plothover", function(event, pos, item) {
         hoverItem = item;
 
         if (item) {
@@ -7808,7 +7808,7 @@ COSMATT.MotionProfile.configuration = {
         }
       });
 
-      $container.find("#aioGraph").unbind("mousedown").bind("mousedown", function () {
+      $container.find("#aioGraph").unbind("mousedown").bind("mousedown", function() {
         $widgetContainer.find('#tooltip').remove();
         if (hoverItem) {
           switch (hoverItem.seriesIndex) {
@@ -7838,19 +7838,19 @@ COSMATT.MotionProfile.configuration = {
         }
       });
 
-      $container.find("#aioGraph").unbind("mouseup").bind("mouseup", function () {
+      $container.find("#aioGraph").unbind("mouseup").bind("mouseup", function() {
         if (dragItem && settings.onGraphDrag) {
           settings.onGraphDrag();
         }
         dragItem = null;
       });
 
-      $container.find("#aioGraph").unbind("mouseleave").bind("mouseleave", function () {
+      $container.find("#aioGraph").unbind("mouseleave").bind("mouseleave", function() {
         $container.find("#aioGraph").mouseup();
       });
     };
 
-    var calculateData = function (dataonly) {
+    var calculateData = function(dataonly) {
       outputData = COSMATT.ProfileCalculation.ProfileIndexModel.calculate(uiValues, initialValues);
       var profileElements = outputData.elementsData;
       var profileElementsLength = profileElements.length;
@@ -7872,7 +7872,7 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var updateIndexType = function () {
+    var updateIndexType = function() {
       switch (settings.activeProfileIndex) {
         case 1:
           settings.indexType = 50;
@@ -7888,11 +7888,11 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var inputControlsCallbackFn = function () {
+    var inputControlsCallbackFn = function() {
       calculateAndPaint();
     };
 
-    var generateInputControls = function () {
+    var generateInputControls = function() {
       var $inputControls = $widgetContainer.find("#inputControls");
       $inputControls.append('<form class="row form-horizontal"><div class="col-sm-6 input-entries"><div class="row form-group" id="moveDistanceInputContainer"><label for="moveDistance" class="col-sm-4 control-label">Move Distance</label><div class="col-sm-8 comboMoveDistance"></div></div><div class="row form-group" id="moveTimeInputContainer"><label for="moveTime" class="col-sm-4 control-label">Move Time</label><div class="col-sm-8 comboMoveTime"></div></div><div class="row form-group" id="dwellTimeInputContainer"><label for="dwellTime" class="col-sm-4 control-label">Dwell Time</label><div class="col-sm-8 comboDwellTime"></div></div><div class="row form-group" id="indexTypeInputContainer"><label for="indexType" class="col-sm-4 control-label">Velocity Jerk</label><div class="col-sm-8 comboIndexType"></div></div><div class="row form-group" id="smoothnessInputContainer"><label for="smoothness" class="col-sm-4 control-label">Smoothness</label><div class="col-sm-8 smoothnessDropDown"></div></div></div><div class="col-sm-6"><div class="row form-group" id="peakVelocityInputContainer"><label for="peakVelocity" class="col-sm-4 control-label">Peak Velocity</label><div class="col-sm-8 comboPeakVelocity"></div></div><div class="row form-group" id="rmsVelocityInputContainer"><label for="rmsVelocity" class="col-sm-4 control-label">RMS Velocity</label><div class="col-sm-8 comboRmsVelocity"></div></div><div class="row form-group" id="peakAccInputContainer"><label for="peakAcc" class="col-sm-4 control-label">Peak Acceleration</label><div class="col-sm-8 comboPeakAcc"></div></div><div class="row form-group" id="rmsAccInputContainer"><label for="rmsAcc" class="col-sm-4 control-label">RMS Acceleration</label><div class="col-sm-8 comboRmsAcc"></div></div></div></form>');
 
@@ -7904,11 +7904,11 @@ COSMATT.MotionProfile.configuration = {
           "textBox": "60%",
           "comboBox": "40%"
         },
-        callBackFn: function () {
+        callBackFn: function() {
           uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
-          if(settings.assessmentMode && settings.userResponseNotifier){
-              settings.userResponseNotifier({"moveDistance":uiValues.movedistance});
+          if (settings.assessmentMode && settings.userResponseNotifier) {
+            settings.userResponseNotifier({ "moveDistance": uiValues.movedistance });
           }
         }
       });
@@ -7921,11 +7921,11 @@ COSMATT.MotionProfile.configuration = {
           "textBox": "60%",
           "comboBox": "40%"
         },
-        callBackFn: function () {
+        callBackFn: function() {
           uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
-          if(settings.assessmentMode && settings.userResponseNotifier){
-              settings.userResponseNotifier({"moveTime":uiValues.movedtime});
+          if (settings.assessmentMode && settings.userResponseNotifier) {
+            settings.userResponseNotifier({ "moveTime": uiValues.movedtime });
           }
         }
       });
@@ -7938,11 +7938,11 @@ COSMATT.MotionProfile.configuration = {
           "textBox": "60%",
           "comboBox": "40%"
         },
-        callBackFn: function () {
+        callBackFn: function() {
           uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
-          if(settings.assessmentMode && settings.userResponseNotifier){
-              settings.userResponseNotifier({"dwellTime":uiValues.dweltime});
+          if (settings.assessmentMode && settings.userResponseNotifier) {
+            settings.userResponseNotifier({ "dwellTime": uiValues.dweltime });
           }
         }
       });
@@ -7957,11 +7957,11 @@ COSMATT.MotionProfile.configuration = {
           "textBox": "60%",
           "comboBox": "40%"
         },
-        callBackFn: function () {
+        callBackFn: function() {
           uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
-          if(settings.assessmentMode && settings.userResponseNotifier){
-              settings.userResponseNotifier({"velocityJerk":uiValues.velocityJerk});
+          if (settings.assessmentMode && settings.userResponseNotifier) {
+            settings.userResponseNotifier({ "velocityJerk": uiValues.velocityJerk });
           }
         }
       });
@@ -7971,7 +7971,7 @@ COSMATT.MotionProfile.configuration = {
       if (settings.smoothness) {
         $smoothnessDD.find('select option').eq(settings.smoothness).attr("selected", true);
       }
-      $smoothnessDD.find('select').on('change', function (e) {
+      $smoothnessDD.find('select').on('change', function(e) {
         uiValues.smoothness = e.target.selectedIndex;
         calculateAndPaint(true);
       });
@@ -8020,7 +8020,7 @@ COSMATT.MotionProfile.configuration = {
       });
     };
 
-    var updateCalculatedControls = function () {
+    var updateCalculatedControls = function() {
       $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox').setTextBoxValue(uiValues.movedistance);
       $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox').setTextBoxValue(uiValues.movedtime);
       $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox').setTextBoxValue(uiValues.dweltime);
@@ -8031,7 +8031,7 @@ COSMATT.MotionProfile.configuration = {
       $inputControls.find("#rmsAccInputContainer").find(".comboRmsAcc").data('unitsComboBox').setTextBoxValue(calculatedValues.rmsAcc);
     };
 
-    var uiHandler = function ($domContainer) {
+    var uiHandler = function($domContainer) {
       var $profileButtons = $widgetContainer.find('#profileButtons');
       $profileButtons.find("#btn" + settings.activeProfileIndex).addClass('btn-primary').removeClass('btn-default');
 
@@ -8049,9 +8049,9 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var handleProfilesVisibility = function (showProfiles, $profileButtons) {
+    var handleProfilesVisibility = function(showProfiles, $profileButtons) {
       $profileButtons.find("button").hide();
-      if (typeof (showProfiles) === "boolean") { //hide all profile buttons
+      if (typeof(showProfiles) === "boolean") { //hide all profile buttons
         if (showProfiles === true) {
           $profileButtons.show();
         } else {
@@ -8065,8 +8065,8 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var handleGraphDragHandles = function (showGraphDragHandles) {
-      if (typeof (showGraphDragHandles) === "boolean") {
+    var handleGraphDragHandles = function(showGraphDragHandles) {
+      if (typeof(showGraphDragHandles) === "boolean") {
         if (showGraphDragHandles === true) {
           settings.showGraphDragHandles = [COSMATT.MotionProfile.configuration.GraphHandles.position, COSMATT.MotionProfile.configuration.GraphHandles.peakVelocity, COSMATT.MotionProfile.configuration.GraphHandles.moveTime, COSMATT.MotionProfile.configuration.GraphHandles.dwellTime];
         } else {
@@ -8075,8 +8075,8 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var makeInputsReadOnly = function (readOnlyInputsArr) {
-      if (typeof (readOnlyInputsArr) === "boolean") {
+    var makeInputsReadOnly = function(readOnlyInputsArr) {
+      if (typeof(readOnlyInputsArr) === "boolean") {
         if (readOnlyInputsArr === true) {
           readOnlyInputsArr = [COSMATT.MotionProfile.configuration.DataFields.moveDistance, COSMATT.MotionProfile.configuration.DataFields.moveTime, COSMATT.MotionProfile.configuration.DataFields.dwellTime, COSMATT.MotionProfile.configuration.DataFields.velocityFormFactor, COSMATT.MotionProfile.configuration.DataFields.peakVelocity, COSMATT.MotionProfile.configuration.DataFields.rmsVelocity, COSMATT.MotionProfile.configuration.DataFields.peakAccelaration, COSMATT.MotionProfile.configuration.DataFields.rmsAccelaration];
         } else {
@@ -8085,7 +8085,7 @@ COSMATT.MotionProfile.configuration = {
       }
       if (readOnlyInputsArr.length > 0) {
         for (var inputEle in readOnlyInputsArr) {
-          if(readOnlyInputsArr.hasOwnProperty(inputEle)){
+          if (readOnlyInputsArr.hasOwnProperty(inputEle)) {
             inputEle = readOnlyInputsArr[inputEle];
             $inputControls.find("#" + inputEle + "InputContainer").find(".combo" + inputEle.charAt(0).toUpperCase() + inputEle.slice(1)).data('unitsComboBox').update({
               "enable": {
@@ -8098,8 +8098,8 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var handleInputsVisibility = function (hideInputsArr) {
-      if (typeof (hideInputsArr) === "boolean") {
+    var handleInputsVisibility = function(hideInputsArr) {
+      if (typeof(hideInputsArr) === "boolean") {
         if (hideInputsArr === true) {
           $inputControls.hide();
         } else {
@@ -8108,7 +8108,7 @@ COSMATT.MotionProfile.configuration = {
       }
       if (hideInputsArr.length > 0) {
         for (var inputEle in hideInputsArr) {
-          if(hideInputsArr.hasOwnProperty(inputEle)){
+          if (hideInputsArr.hasOwnProperty(inputEle)) {
             inputEle = hideInputsArr[inputEle];
             $inputControls.find("#" + inputEle + "InputContainer").hide();
           }
@@ -8116,13 +8116,13 @@ COSMATT.MotionProfile.configuration = {
       }
     };
 
-    var addEditConfigurations = function () {
+    var addEditConfigurations = function() {
       var $body = $('body');
       var $editConfigButton = '<div id="editConfigBtnContainer"><button class="btn btn-default editConfigBtn pull-right btn-lg" type="button" href="configWindow.html" data-target="#theModal" data-toggle="modal">Edit Configurations</div>';
       $body.append($editConfigButton);
     };
 
-    var addCheckAnsButton = function () {
+    var addCheckAnsButton = function() {
       $widgetContainer.append('<div class="text-right text-xs-right"><button type="button" class="btn btn-primary">Check Answer</button></div>');
     }
 
@@ -8139,10 +8139,10 @@ COSMATT.MotionProfile.configuration = {
     readUIValues();
     readinitialValues();
 
-    var calculateAndPaint = function (dataonly, settimeout) {
+    var calculateAndPaint = function(dataonly, settimeout) {
       if (validateUIValues()) {
         if (settimeout) {
-          setTimeout(function (dataonly) {
+          setTimeout(function(dataonly) {
             calculateData();
           }, 0);
         } else {
@@ -8151,7 +8151,7 @@ COSMATT.MotionProfile.configuration = {
       } else {
         resetProfileData();
         resetCalculatedValues();
-        setTimeout(function (dataonly) {
+        setTimeout(function(dataonly) {
           plotEmptyGraph();
         }, 0);
       }
@@ -8159,7 +8159,29 @@ COSMATT.MotionProfile.configuration = {
 
     calculateAndPaint(false, true);
 
-    return this;
+    function updateInputs(params) {
+      if (params.movedistance) {
+        uiValues.movedistance = params.movedistance;
+        $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox').setTextBoxValue(uiValues.movedistance);
+      }
+      if (params.movedtime) {
+        uiValues.movedtime = params.movedtime;
+        $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox').setTextBoxValue(uiValues.movedtime);
+      }
+      if (params.dweltime) {
+        uiValues.dweltime = params.dweltime;
+        $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox').setTextBoxValue(uiValues.dweltime);
+      }
+      if (params.velocityJerk) {
+        uiValues.velocityJerk = params.velocityJerk;
+        $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox').setTextBoxValue(uiValues.velocityJerk);
+      }
+    }
+
+    return {
+      ref: this,
+      updateInputs: updateInputs
+    };
   };
 
 }(jQuery));
@@ -8278,6 +8300,8 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 'empty': false
             };
 
+            var __pluginInstance;
+
             /********************************************************/
             /*                  ENGINE-SHELL INIT FUNCTION
                 
@@ -8313,7 +8337,9 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
 
                 //add callback function to appData
                 __content.appData.options.data.userResponseNotifier = userResponseHandler;
-                $pluginArea.CosmattPlugin(__content.appData);
+                __pluginInstance = $pluginArea.motionProfile(__content.appData.options.data);
+
+                //$container.motionProfile(params.options.data);
 
                 $questionContainer.append($questionArea);
                 $questionContainer.append($pluginArea);
@@ -8419,15 +8445,15 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
              * Function to display last result saved in LMS.
              */
             function updateLastSavedResults(lastResults) {
-                $.each(lastResults.interactions, function (num) {
-                    __content.userAnswersJSON[num] = this.answer.trim();
-                    for (var i = 0; i < $('input[id^=option]').length; i++) {
-                        if ($('input[id^=option]')[i].value.trim() === this.answer.trim()) {
-                            $('input[id^=option]')[i].checked = true;
-                            break;
-                        }
-                    }
+                
+                var updatePluginVals = {};
+                $.each(lastResults.interactions, function (num, value) {
+                    var answer = { response: value.answer };
+                    __content.userAnswersJSON[value.id] = answer;
+                    updatePluginVals[__content.optionsJSON[value.id].type] = value.answer;
                 });
+                __pluginInstance.updateInputs(updatePluginVals);
+
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 
@@ -8799,6 +8825,8 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                     answers = "Not Answered";
                 } else {
                     answers = __content.userAnswersJSON;
+                    // var interactionScore = 0;
+                    // var interactionMaxScore = __content.maxscore/__content.answersXML.length;
                     /* Calculating scores.*/
                     for (var answerID in answers) {
                         var interaction = {};
@@ -8852,4 +8880,4 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
     });
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-('/*******************************************************\n * \n * ----------------------\n * Engine Renderer Styles\n * ----------------------\n *\n * These styles do not include any product-specific branding\n * and/or layout / design. They represent minimal structural\n * CSS which is necessary for a default rendering of an\n * MCQSC activity\n *\n * The styles are linked/depending on the presence of\n * certain elements (classes / ids / tags) in the DOM (as would\n * be injected via a valid MCQSC layout HTML and/or dynamically\n * created by the MCQSC engine JS)\n *\n *\n *******************************************************/\n\n.cosmattmp-body .form *{\n    margin: 0;\n    padding: 0;\n}\n\n.cosmattmp-body .form .cosmattmp-img{\n    padding-top: 10px;\n}\n\n.cosmattmp-body .form ul li{\n    padding: .7em .4em .7em 1.8em;\n    position: relative;\n}\n\n.cosmattmp-body .form ul li.highlight{\n    background-color: #F2F2F2;\n    border-radius: 6px;\n}\n\n.cosmattmp-body .form ul li i{\n    height: 1.8em;\n    width: 1.8em;\n    border-radius: 50%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: block;\n    outline: 0;\n    border: 1px solid #BDBDBD;\n    background: #FFF;\n}\n\n.cosmattmp-body .form ul li i:after {\n    background-color: #3276B1;\n    content: \'\';\n    border-radius: 50%;\n    height: 1.1em;\n    width: 1.1em;\n    top: .3em;\n    left: .3em;\n    position: absolute;\n    opacity: 0;\n}\n\n.cosmattmp-body .form ul li.highlight i{\n    border-color: #3276B1;\n}\n\n.cosmattmp-body .form ul li.highlight i:after{\n    opacity: 1;\n}\n\n.cosmattmp-body .form ul li .radio{\n    line-height: 1.8em;\n    font-weight: normal;\n    cursor: pointer;\n    padding-left: 25px;\n}\n\n\n.cosmattmp-body .form ul li .radio input {\n    position: absolute;\n    left: -9999px;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i{\n    background: #fff0f0;\n    border-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i:after {\n    background-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i{\n    background: #f0fff0;\n    border-color: #7DC27D;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i:after {\n    background-color: #7DC27D;\n}\n\n.cosmattmp-body span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.5em auto -3.2em;\n}\n\n.cosmattmp-body span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.6em auto -3.2em;\n}\n\n.cosmattmp-body .answer{\n    margin-left: 20px;\n}\n\n.cosmattmp-body span.correct, .cosmattmp-body span.wrong{\n    margin-left: 0;\n}\n\n.cosmattmp-body .col-md-6.last-child {\n    min-height: 200px;\n    border-left: 1px solid #C2C2C2;\n    padding-left: 20px;\n}\n\n.cosmattmp-body .stimulus {\n    margin: 25px 0 25px 0;\n}\n#feedback-area {\n    margin-top: 18px;   \n    border: 1px solid #ddd;\n    border-radius: 4px;\n    padding: 20px;\n    margin: 10px 0px 10px 0px;\n    background-color: #eee;\n    color: #3D3D3D;\n}\n#feedback-area > h4 {\n    padding-bottom: 10px;\n    font-weight: 700;\n}\n/* CORRECT ANSWER icon/mark */\n.cosmattmp-body #feedback-area span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: #009900;\n    float: left;\n    font-size: 18px;\n    border: 2px solid #009900;\n    padding: 3px 5px 3px 5px;\n    border-radius: 16px;\n    margin: 10px;\n}\n.cosmattmp-body #feedback-area span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: red;\n    float: left;\n    font-size: 18px;\n    border: 2px solid red;\n    padding: 2px 6px 2px 6px;\n    border-radius: 16px;\n    margin: 10px;\n}.cosmatt-unitComboBox {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.cosmatt-unitComboBox .form-control {\r\n  display: block;\r\n  height: 34px;\r\n  padding: 6px 12px;\r\n  font-size: 14px;\r\n  line-height: 1.42857143;\r\n  color: #555;\r\n  background-color: #fff;\r\n  background-image: none;\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\r\n  -webkit-border-radius: 4px;\r\n}\r\n.cosmatt-unitComboBox .unitTextBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n}\r\n.cosmatt-unitComboBox .unitComboBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n  padding: 0 6px;\r\n  margin-left: 10px;\r\n}\r\n.cosmatt-unitComboBox .form-control[disabled],\r\n.cosmatt-unitComboBox .form-control[readonly] {\r\n  background-color: #eee;\r\n  opacity: 1;\r\n}\r\n.cosmatt-motionProfile {\r\n  position: relative;\r\n}\r\n.cosmatt-motionProfile.unselectable {\r\n  -moz-user-select: -moz-none;\r\n  -khtml-user-select: none;\r\n  -webkit-user-select: none;\r\n  -o-user-select: none;\r\n  user-select: none;\r\n}\r\n.cosmatt-motionProfile.assessment-mode {\r\n  box-shadow: 0 0 0 #ddd !important;\r\n  border: none !important;\r\n}\r\n.cosmatt-motionProfile #inputControls {\r\n  margin-top: 10px;\r\n}\r\n.cosmatt-motionProfile #profileButtons {\r\n  margin: 10px 0;\r\n}\r\n.cosmatt-motionProfile .profileButton {\r\n  margin-right: 10px;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea {\r\n  height: 400px;\r\n  min-width: 10px;\r\n  display: inline-block;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\r\n  pointer-events: none;\r\n  margin: 0px !important;\r\n  width: initial;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\r\n  background-color: transparent !important;\r\n  border-width: 0px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\r\n  border-width: 0px !important;\r\n  padding: 0px !important;\r\n  vertical-align: middle;\r\n}\r\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\r\n  max-width: 211px;\r\n}\r\n.cosmatt-motionProfile #tooltip {\r\n  padding: 4px 10px !important;\r\n  background-color: rgba(0, 0, 0, 0.8) !important;\r\n  border: solid 1px #000 !important;\r\n  z-index: 100 !important;\r\n  font-size: 12px !important;\r\n  color: #fff !important;\r\n  -webkit-border-radius: 3px !important;\r\n  -moz-border-radius: 3px !important;\r\n  border-radius: 3px !important;\r\n  position: absolute;\r\n  display: none;\r\n}\r\n');
+('/*******************************************************\n * \n * ----------------------\n * Engine Renderer Styles\n * ----------------------\n *\n * These styles do not include any product-specific branding\n * and/or layout / design. They represent minimal structural\n * CSS which is necessary for a default rendering of an\n * MCQSC activity\n *\n * The styles are linked/depending on the presence of\n * certain elements (classes / ids / tags) in the DOM (as would\n * be injected via a valid MCQSC layout HTML and/or dynamically\n * created by the MCQSC engine JS)\n *\n *\n *******************************************************/\n\n.cosmattmp-body .form *{\n    margin: 0;\n    padding: 0;\n}\n\n.cosmattmp-body .form .cosmattmp-img{\n    padding-top: 10px;\n}\n\n.cosmattmp-body .form ul li{\n    padding: .7em .4em .7em 1.8em;\n    position: relative;\n}\n\n.cosmattmp-body .form ul li.highlight{\n    background-color: #F2F2F2;\n    border-radius: 6px;\n}\n\n.cosmattmp-body .form ul li i{\n    height: 1.8em;\n    width: 1.8em;\n    border-radius: 50%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: block;\n    outline: 0;\n    border: 1px solid #BDBDBD;\n    background: #FFF;\n}\n\n.cosmattmp-body .form ul li i:after {\n    background-color: #3276B1;\n    content: \'\';\n    border-radius: 50%;\n    height: 1.1em;\n    width: 1.1em;\n    top: .3em;\n    left: .3em;\n    position: absolute;\n    opacity: 0;\n}\n\n.cosmattmp-body .form ul li.highlight i{\n    border-color: #3276B1;\n}\n\n.cosmattmp-body .form ul li.highlight i:after{\n    opacity: 1;\n}\n\n.cosmattmp-body .form ul li .radio{\n    line-height: 1.8em;\n    font-weight: normal;\n    cursor: pointer;\n    padding-left: 25px;\n}\n\n\n.cosmattmp-body .form ul li .radio input {\n    position: absolute;\n    left: -9999px;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i{\n    background: #fff0f0;\n    border-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i:after {\n    background-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i{\n    background: #f0fff0;\n    border-color: #7DC27D;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i:after {\n    background-color: #7DC27D;\n}\n\n.cosmattmp-body span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.5em auto -3.2em;\n}\n\n.cosmattmp-body span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.6em auto -3.2em;\n}\n\n.cosmattmp-body .answer{\n    margin-left: 20px;\n}\n\n.cosmattmp-body span.correct, .cosmattmp-body span.wrong{\n    margin-left: 0;\n}\n\n.cosmattmp-body .col-md-6.last-child {\n    min-height: 200px;\n    border-left: 1px solid #C2C2C2;\n    padding-left: 20px;\n}\n\n.cosmattmp-body .stimulus {\n    margin: 25px 0 25px 0;\n}\n#feedback-area {\n    margin-top: 18px;   \n    border: 1px solid #ddd;\n    border-radius: 4px;\n    padding: 20px;\n    margin: 10px 0px 10px 0px;\n    background-color: #eee;\n    color: #3D3D3D;\n}\n#feedback-area > h4 {\n    padding-bottom: 10px;\n    font-weight: 700;\n}\n/* CORRECT ANSWER icon/mark */\n.cosmattmp-body #feedback-area span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: #009900;\n    float: left;\n    font-size: 18px;\n    border: 2px solid #009900;\n    padding: 3px 5px 3px 5px;\n    border-radius: 16px;\n    margin: 10px;\n}\n.cosmattmp-body #feedback-area span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: red;\n    float: left;\n    font-size: 18px;\n    border: 2px solid red;\n    padding: 2px 6px 2px 6px;\n    border-radius: 16px;\n    margin: 10px;\n}.cosmatt-unitComboBox {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.cosmatt-unitComboBox .form-control {\r\n  display: block;\r\n  height: 34px;\r\n  padding: 6px 12px;\r\n  font-size: 14px;\r\n  line-height: 1.42857143;\r\n  color: #555;\r\n  background-color: #fff;\r\n  background-image: none;\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\r\n  -webkit-border-radius: 4px;\r\n}\r\n.cosmatt-unitComboBox .unitTextBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n}\r\n.cosmatt-unitComboBox .unitComboBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n  padding: 0 6px;\r\n  margin-left: 10px;\r\n}\r\n.cosmatt-unitComboBox .form-control[disabled],\r\n.cosmatt-unitComboBox .form-control[readonly] {\r\n  background-color: #eee;\r\n  opacity: 1;\r\n}\r\n.cosmatt-motionProfile {\n  position: relative;\n}\n.cosmatt-motionProfile.unselectable {\n  -moz-user-select: -moz-none;\n  -khtml-user-select: none;\n  -webkit-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n}\n.cosmatt-motionProfile.assessment-mode {\n  box-shadow: 0 0 0 #ddd !important;\n  border: none !important;\n}\n.cosmatt-motionProfile #inputControls {\n  margin-top: 10px;\n}\n.cosmatt-motionProfile #profileButtons {\n  margin: 10px 0;\n}\n.cosmatt-motionProfile .profileButton {\n  margin-right: 10px;\n}\n.cosmatt-motionProfile #graphContainer .graphArea {\n  height: 400px;\n  min-width: 10px;\n  display: inline-block;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\n  pointer-events: none;\n  margin: 0px !important;\n  width: initial;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\n  background-color: transparent !important;\n  border-width: 0px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\n  border-width: 0px !important;\n  padding: 0px !important;\n  vertical-align: middle;\n}\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\n  max-width: 211px;\n}\n.cosmatt-motionProfile #tooltip {\n  padding: 4px 10px !important;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  border: solid 1px #000 !important;\n  z-index: 100 !important;\n  font-size: 12px !important;\n  color: #fff !important;\n  -webkit-border-radius: 3px !important;\n  -moz-border-radius: 3px !important;\n  border-radius: 3px !important;\n  position: absolute;\n  display: none;\n}\n');

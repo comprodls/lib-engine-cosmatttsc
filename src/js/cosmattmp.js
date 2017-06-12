@@ -111,6 +111,8 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 'empty': false
             };
 
+            var __pluginInstance;
+
             /********************************************************/
             /*                  ENGINE-SHELL INIT FUNCTION
                 
@@ -146,7 +148,9 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
                 //add callback function to appData
                 __content.appData.options.data.userResponseNotifier = userResponseHandler;
-                $pluginArea.CosmattPlugin(__content.appData);
+                __pluginInstance = $pluginArea.motionProfile(__content.appData.options.data);
+
+                //$container.motionProfile(params.options.data);
 
                 $questionContainer.append($questionArea);
                 $questionContainer.append($pluginArea);
@@ -252,15 +256,15 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              * Function to display last result saved in LMS.
              */
             function updateLastSavedResults(lastResults) {
-                $.each(lastResults.interactions, function (num) {
-                    __content.userAnswersJSON[num] = this.answer.trim();
-                    for (var i = 0; i < $('input[id^=option]').length; i++) {
-                        if ($('input[id^=option]')[i].value.trim() === this.answer.trim()) {
-                            $('input[id^=option]')[i].checked = true;
-                            break;
-                        }
-                    }
+                
+                var updatePluginVals = {};
+                $.each(lastResults.interactions, function (num, value) {
+                    var answer = { response: value.answer };
+                    __content.userAnswersJSON[value.id] = answer;
+                    updatePluginVals[__content.optionsJSON[value.id].type] = value.answer;
                 });
+                __pluginInstance.updateInputs(updatePluginVals);
+
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 
@@ -632,6 +636,8 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                     answers = "Not Answered";
                 } else {
                     answers = __content.userAnswersJSON;
+                    // var interactionScore = 0;
+                    // var interactionMaxScore = __content.maxscore/__content.answersXML.length;
                     /* Calculating scores.*/
                     for (var answerID in answers) {
                         var interaction = {};
