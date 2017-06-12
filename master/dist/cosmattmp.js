@@ -8728,7 +8728,6 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                     });
                 } else { /*Soft Submit*/
                     /*Send Results to platform*/
-                    answerJSON.statusProgress = "in_progress";
                     activityAdaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
                         if (status === __constants.STATUS_NOERROR) {
                             __state.activityPariallySubmitted = true;
