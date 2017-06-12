@@ -7908,7 +7908,7 @@ COSMATT.MotionProfile.configuration = {
           uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
           if (settings.assessmentMode && settings.userResponseNotifier) {
-            settings.userResponseNotifier({ "moveDistance": uiValues.movedistance });
+            settings.userResponseNotifier({ "movedistance": uiValues.movedistance });
           }
         }
       });
@@ -7925,7 +7925,7 @@ COSMATT.MotionProfile.configuration = {
           uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
           if (settings.assessmentMode && settings.userResponseNotifier) {
-            settings.userResponseNotifier({ "moveTime": uiValues.movedtime });
+            settings.userResponseNotifier({ "movetime": uiValues.movedtime });
           }
         }
       });
@@ -7942,7 +7942,7 @@ COSMATT.MotionProfile.configuration = {
           uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
           if (settings.assessmentMode && settings.userResponseNotifier) {
-            settings.userResponseNotifier({ "dwellTime": uiValues.dweltime });
+            settings.userResponseNotifier({ "dwelltime": uiValues.dweltime });
           }
         }
       });
