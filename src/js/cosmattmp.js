@@ -585,7 +585,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 $.each(userAnswers, function (num, value) {
                     markAnswerObj[__content.optionsJSON[num].type] = {status: true};
                 });
-               
+                __pluginInstance.markAnswers(markAnswerObj);
 
 
 
@@ -595,7 +595,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 //     radioNo = "" + i;
                 //     __markRadio(radioNo, __content.answersJSON[0], __content.optionsJSON[i]);
                 // }
-                __generateFeedback();
+               // __generateFeedback();
             }
             /* Add correct or wrong answer classes*/
             function __markRadio(optionNo, correctAnswer, userAnswer) {
