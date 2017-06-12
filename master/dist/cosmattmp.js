@@ -8803,7 +8803,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                     for (var answerID in answers) {
                         var interaction = {};
                         interaction.id = answerID;
-                        interaction.answer = answers[answerID].response;
+                        interaction.answer = answers[answerID].response.toString();
                         interaction.maxscore = __processedJsonContent.meta.score.max;
                         // if (answers[answerID].response == __content.answersJSON[answerID].correct) {
                         //     interaction.score = 1;
