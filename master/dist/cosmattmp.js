@@ -8257,6 +8257,13 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
             var __constants = {
                 /* CONSTANT for PLATFORM Save Status NO ERROR */
                 STATUS_NOERROR: "NO_ERROR",
+                /* CONSTANTS for activity status */
+                ACTIVITY_NOT_ATTEMPTED: "not_attempted", /* Activity not yet Attempted. */
+                ACTIVITY_IN_PROGRESS: "in_progress", /* In Progress Activity. */
+                ACTIVITY_PARTIALLY_CORRECT: "partially_correct", /* Partially Correct Activity. */
+                ACTIVITY_CORRECT: "correct", /* Correct Activity. */ 
+                ACTIVITY_INCORRECT: "incorrect", /* Incorrect Activity. */  
+
                 TEMPLATES: {
                     /* Regular cosmattmp Layout */
                     cosmattmp: cosmattmpTemplateRef
@@ -8301,7 +8308,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 var $questionContainer = $('<div class="row"></div>');
                 var $questionArea = $('<div class="col-sm-12 text-primary"></div>');
                 var $pluginArea = $('<div class="col-sm-12"></div>');
-                
+
                 $questionArea.html(__content.questionText);
 
                 //add callback function to appData
@@ -8311,11 +8318,11 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 $questionContainer.append($questionArea);
                 $questionContainer.append($pluginArea);
 
-                $(elRoot).append($questionContainer);
+                $(elRoot).html($questionContainer);
 
 
                 // Not Required for Cosmatt
-                
+
                 // __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
                 //Process JSON for easy iteration in template
                 //__parseAndUpdateJSONForRivets();
@@ -8354,28 +8361,24 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
             }
 
             function userResponseHandler(callbackValue) {
-                for(var property in callbackValue){
-                    if(callbackValue.hasOwnProperty(property)){
-                        __content.userAnswersJSON[getInteractionId(property)] = {response: callbackValue[property]};
+                for (var property in callbackValue) {
+                    if (callbackValue.hasOwnProperty(property)) {
+                        __content.userAnswersJSON[getInteractionId(property)] = { response: callbackValue[property] };
                     }
                 }
                 $(document).triggerHandler('userAnswered', callbackValue);
                 console.log(callbackValue);
             }
 
-            function getInteractionId(interactionField){
-                switch(interactionField){
-                    case 'moveDistance':
-                        return 'i1';
-                    case 'moveTime':
-                        return 'i2';
-                    case 'dwellTime':
-                        return 'i3';
-                    case 'velocityJerk':
-                        return 'i4';
-                    default:
-                        return '';
+            function getInteractionId(interactionField) {
+                var interactions = __content.optionsJSON;
+                var interactionId = '';
+                for (interactionId in interactions) {
+                    if (interactions[interactionId].type === interactionField) {
+                        break;
+                    }
                 }
+                return interactionId;
             }
             /**
              * ENGINE-SHELL Interface
@@ -8436,7 +8439,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
             * Parse and Update JSON based on cosmattmp specific requirements.
             */
             function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) {
-                
+
                 jsonContent.content.displaySubmit = activityAdaptor.displaySubmit;
 
                 __content.activityType = params.engineType;
@@ -8461,7 +8464,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
                 /* Parse questiontext as HTML to get HTML tags. */
                 var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
-                 var j = 0;
+                var j = 0;
                 $.each(parsedQuestionArray, function (i, el) {
                     if (this.href === interactionReferenceString) {
                         interactionId[j] = this.childNodes[0].nodeValue.trim();
@@ -8471,13 +8474,13 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                     }
                 });
 
-                 $.each(interactionId, function(i) {
+                $.each(interactionId, function (i) {
                     var interactionId = this;
                     //var id = __config.ENTRY_BOX_PREFIX +  __content.answersXML.length;
                     /*
                      * Add entry box.
                      */
-                    questionText = questionText.replace(interactionTag[i],"");
+                    questionText = questionText.replace(interactionTag[i], "");
                     __content.answersJSON[interactionId] = jsonContent.responses[interactionId];
                     __content.optionsJSON[interactionId] = jsonContent.content.interactions[interactionId];
                 });
@@ -8701,6 +8704,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 var uniqueId = activityAdaptor.getId();
 
                 /*Getting answer in JSON format*/
+                debugger;
                 var answerJSON = __getAnswersJSON(false);
 
                 if (bSubmit === true) {/*Hard Submit*/
@@ -8724,6 +8728,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                     });
                 } else { /*Soft Submit*/
                     /*Send Results to platform*/
+                    answerJSON.statusProgress = "in_progress";
                     activityAdaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
                         if (status === __constants.STATUS_NOERROR) {
                             __state.activityPariallySubmitted = true;
@@ -8787,18 +8792,23 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 var interactionArray = [];
                 /* Split questionJSON to get interactionId. */
 
+                var statusProgress = __constants.ACTIVITY_NOT_ATTEMPTED;
+                var statusEvaluation = __constants.ACTIVITY_INCORRECT;
+                var partiallyCorrect = false;
+                var correct = true;        
+
                 if (skipQuestion) {
                     answers = "Not Answered";
                 } else {
                     answers = __content.userAnswersJSON;
 
                     /* Calculating scores.*/
-                    for(var answerID in answers){
+                    for (var answerID in answers) {
                         var interaction = {};
                         interaction.id = answerID;
                         interaction.answer = answers[answerID];
-                        interaction.maxscore = __processedJsonContent.meta.score.max
-                        if(answers[answerID].response == __content.answersJSON[answerID].correct){
+                        interaction.maxscore = __processedJsonContent.meta.score.max;
+                        if (answers[answerID].response == __content.answersJSON[answerID].correct) {
                             interaction.score = 1;
                         } else {
                             interaction.score = 0;
@@ -8818,6 +8828,13 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 var response = {
                     "interactions": interactionArray
                 };
+
+                if(!skipQuestion) {
+                    statusProgress = __constants.ACTIVITY_IN_PROGRESS;
+                }
+
+                response.statusProgress = statusProgress;
+                response.statusEvaluation = statusEvaluation;  
 
                 return {
                     response: response
