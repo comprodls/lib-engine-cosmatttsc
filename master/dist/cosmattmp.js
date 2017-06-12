@@ -8176,6 +8176,7 @@ COSMATT.MotionProfile.configuration = {
         uiValues.velocityJerk = params.velocityJerk;
         $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox').setTextBoxValue(uiValues.velocityJerk);
       }
+      calculateAndPaint();
     }
 
     return {
