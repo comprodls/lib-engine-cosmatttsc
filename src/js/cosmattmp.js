@@ -90,6 +90,13 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             var __constants = {
                 /* CONSTANT for PLATFORM Save Status NO ERROR */
                 STATUS_NOERROR: "NO_ERROR",
+                /* CONSTANTS for activity status */
+                ACTIVITY_NOT_ATTEMPTED: "not_attempted", /* Activity not yet Attempted. */
+                ACTIVITY_IN_PROGRESS: "in_progress", /* In Progress Activity. */
+                ACTIVITY_PARTIALLY_CORRECT: "partially_correct", /* Partially Correct Activity. */
+                ACTIVITY_CORRECT: "correct", /* Correct Activity. */ 
+                ACTIVITY_INCORRECT: "incorrect", /* Incorrect Activity. */  
+
                 TEMPLATES: {
                     /* Regular cosmattmp Layout */
                     cosmattmp: cosmattmpTemplateRef
@@ -530,6 +537,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var uniqueId = activityAdaptor.getId();
 
                 /*Getting answer in JSON format*/
+                debugger;
                 var answerJSON = __getAnswersJSON(false);
 
                 if (bSubmit === true) {/*Hard Submit*/
@@ -553,6 +561,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                     });
                 } else { /*Soft Submit*/
                     /*Send Results to platform*/
+                    answerJSON.statusProgress = "in_progress";
                     activityAdaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
                         if (status === __constants.STATUS_NOERROR) {
                             __state.activityPariallySubmitted = true;
@@ -616,6 +625,11 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var interactionArray = [];
                 /* Split questionJSON to get interactionId. */
 
+                var statusProgress = __constants.ACTIVITY_NOT_ATTEMPTED;
+                var statusEvaluation = __constants.ACTIVITY_INCORRECT;
+                var partiallyCorrect = false;
+                var correct = true;        
+
                 if (skipQuestion) {
                     answers = "Not Answered";
                 } else {
@@ -626,7 +640,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                         var interaction = {};
                         interaction.id = answerID;
                         interaction.answer = answers[answerID];
-                        interaction.maxscore = __processedJsonContent.meta.score.max
+                        interaction.maxscore = __processedJsonContent.meta.score.max;
                         if (answers[answerID].response == __content.answersJSON[answerID].correct) {
                             interaction.score = 1;
                         } else {
@@ -647,6 +661,13 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var response = {
                     "interactions": interactionArray
                 };
+
+                if(!skipQuestion) {
+                    statusProgress = __constants.ACTIVITY_IN_PROGRESS;
+                }
+
+                response.statusProgress = statusProgress;
+                response.statusEvaluation = statusEvaluation;  
 
                 return {
                     response: response
