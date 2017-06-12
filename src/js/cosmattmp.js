@@ -581,7 +581,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             function __markAnswers() {
                 debugger;
                 var markAnswerObj = {};
-                var userAnswers = __getAnswersJSON(false);
+                var userAnswers = __content.userAnswersJSON;
                 $.each(userAnswers, function (num, value) {
                     markAnswerObj[__content.optionsJSON[num].type] = {status: true};
                 });
