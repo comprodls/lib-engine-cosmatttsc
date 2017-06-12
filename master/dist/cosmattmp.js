@@ -7925,7 +7925,7 @@ COSMATT.MotionProfile.configuration = {
           uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
           if (settings.assessmentMode && settings.userResponseNotifier) {
-            settings.userResponseNotifier({ "movetime": uiValues.movedtime });
+            settings.userResponseNotifier({ "movedtime": uiValues.movedtime });
           }
         }
       });
@@ -7942,7 +7942,7 @@ COSMATT.MotionProfile.configuration = {
           uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
           inputControlsCallbackFn();
           if (settings.assessmentMode && settings.userResponseNotifier) {
-            settings.userResponseNotifier({ "dwelltime": uiValues.dweltime });
+            settings.userResponseNotifier({ "dweltime": uiValues.dweltime });
           }
         }
       });
