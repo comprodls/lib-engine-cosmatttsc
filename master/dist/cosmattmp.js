@@ -8448,8 +8448,7 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
                 
                 var updatePluginVals = {};
                 $.each(lastResults.interactions, function (num, value) {
-                    var answer = { response: value.answer };
-                    __content.userAnswersJSON[value.id] = answer;
+                    __content.userAnswersJSON[value.id] = { response: value.answer };;
                     updatePluginVals[__content.optionsJSON[value.id].type] = value.answer;
                 });
                 __pluginInstance.updateInputs(updatePluginVals);
