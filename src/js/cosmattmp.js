@@ -537,7 +537,6 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var uniqueId = activityAdaptor.getId();
 
                 /*Getting answer in JSON format*/
-                debugger;
                 var answerJSON = __getAnswersJSON(false);
 
                 if (bSubmit === true) {/*Hard Submit*/
@@ -633,12 +632,11 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                     answers = "Not Answered";
                 } else {
                     answers = __content.userAnswersJSON;
-
                     /* Calculating scores.*/
                     for (var answerID in answers) {
                         var interaction = {};
                         interaction.id = answerID;
-                        interaction.answer = answers[answerID];
+                        interaction.answer = answers[answerID].response;
                         interaction.maxscore = __processedJsonContent.meta.score.max;
                         if (answers[answerID].response == __content.answersJSON[answerID].correct) {
                             interaction.score = 1;
