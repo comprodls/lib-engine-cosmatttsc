@@ -579,12 +579,22 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              * Function to show correct Answers to User, called on click of Show Answers Button.
              */
             function __markAnswers() {
-                var radioNo = "";
-                /* Looping through answers to show correct answer. */
-                for (var i = 0; i < __content.optionsJSON.length; i++) {
-                    radioNo = "" + i;
-                    __markRadio(radioNo, __content.answersJSON[0], __content.optionsJSON[i]);
-                }
+                debugger;
+                var markAnswerObj = {};
+                var userAnswers = __getAnswersJSON(false);
+                $.each(userAnswers, function (num, value) {
+                    markAnswerObj[__content.optionsJSON[num].type] = {status: true};
+                });
+               
+
+
+
+                // var radioNo = "";
+                // /* Looping through answers to show correct answer. */
+                // for (var i = 0; i < __content.optionsJSON.length; i++) {
+                //     radioNo = "" + i;
+                //     __markRadio(radioNo, __content.answersJSON[0], __content.optionsJSON[i]);
+                // }
                 __generateFeedback();
             }
             /* Add correct or wrong answer classes*/

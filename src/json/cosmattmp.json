@@ -58,10 +58,10 @@
         "type": "movedistance"
       },
       "i2": {
-        "type": "movetime"
+        "type": "movedtime"
       },
       "i3": {
-        "type": "dwelltime"
+        "type": "dweltime"
       },
       "i4": {
         "type": "velocityJerk"

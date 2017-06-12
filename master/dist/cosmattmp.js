@@ -8179,9 +8179,58 @@ COSMATT.MotionProfile.configuration = {
       calculateAndPaint();
     }
 
+    function markAnswers(params) {
+      var cssClass;
+      if (params.movedistance) {
+        cssClass = params.movedistance.status ? 'correct' : 'incorrect';
+        var $moveDistanceInput = $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance");
+        $moveDistanceInput.addClass(cssClass);
+        $moveDistanceInput.data('unitsComboBox').update({
+          "enable": {
+            "textbox": "false",
+            "comboBox": "false"
+          }
+        });
+      }
+      if (params.movedtime) {
+        cssClass = params.movedtime.status ? 'correct' : 'incorrect';
+        var $moveTimeInput = $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime");
+        $moveTimeInput.addClass(cssClass);
+        $moveTimeInput.data('unitsComboBox').update({
+          "enable": {
+            "textbox": "false",
+            "comboBox": "false"
+          }
+        });
+      }
+      if (params.dweltime) {
+        cssClass = params.dweltime.status ? 'correct' : 'incorrect';
+        var $dwellTimeInput = $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime");
+        $dwellTimeInput.addClass(cssClass);
+        $dwellTimeInput.data('unitsComboBox').update({
+          "enable": {
+            "textbox": "false",
+            "comboBox": "false"
+          }
+        });
+      }
+      if (params.velocityJerk) {
+        cssClass = params.velocityJerk.status ? 'correct' : 'incorrect';
+        var $velocityJerkInput = $inputControls.find("#indexTypeInputContainer").find(".comboIndexType");
+        $velocityJerkInput.addClass(cssClass);
+        $velocityJerkInput.data('unitsComboBox').update({
+          "enable": {
+            "textbox": "false",
+            "comboBox": "false"
+          }
+        });
+      }
+    }
+
     return {
       ref: this,
-      updateInputs: updateInputs
+      updateInputs: updateInputs,
+      markAnswers: markAnswers
     };
   };
 
@@ -8769,12 +8818,22 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
              * Function to show correct Answers to User, called on click of Show Answers Button.
              */
             function __markAnswers() {
-                var radioNo = "";
-                /* Looping through answers to show correct answer. */
-                for (var i = 0; i < __content.optionsJSON.length; i++) {
-                    radioNo = "" + i;
-                    __markRadio(radioNo, __content.answersJSON[0], __content.optionsJSON[i]);
-                }
+                debugger;
+                var markAnswerObj = {};
+                var userAnswers = __getAnswersJSON(false);
+                $.each(userAnswers, function (num, value) {
+                    markAnswerObj[__content.optionsJSON[num].type] = {status: true};
+                });
+               
+
+
+
+                // var radioNo = "";
+                // /* Looping through answers to show correct answer. */
+                // for (var i = 0; i < __content.optionsJSON.length; i++) {
+                //     radioNo = "" + i;
+                //     __markRadio(radioNo, __content.answersJSON[0], __content.optionsJSON[i]);
+                // }
                 __generateFeedback();
             }
             /* Add correct or wrong answer classes*/
@@ -8880,4 +8939,4 @@ define('cosmattmp',['text!../html/cosmattmp.html', //HTML layout(s) template (ha
     });
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-('/*******************************************************\n * \n * ----------------------\n * Engine Renderer Styles\n * ----------------------\n *\n * These styles do not include any product-specific branding\n * and/or layout / design. They represent minimal structural\n * CSS which is necessary for a default rendering of an\n * MCQSC activity\n *\n * The styles are linked/depending on the presence of\n * certain elements (classes / ids / tags) in the DOM (as would\n * be injected via a valid MCQSC layout HTML and/or dynamically\n * created by the MCQSC engine JS)\n *\n *\n *******************************************************/\n\n.cosmattmp-body .form *{\n    margin: 0;\n    padding: 0;\n}\n\n.cosmattmp-body .form .cosmattmp-img{\n    padding-top: 10px;\n}\n\n.cosmattmp-body .form ul li{\n    padding: .7em .4em .7em 1.8em;\n    position: relative;\n}\n\n.cosmattmp-body .form ul li.highlight{\n    background-color: #F2F2F2;\n    border-radius: 6px;\n}\n\n.cosmattmp-body .form ul li i{\n    height: 1.8em;\n    width: 1.8em;\n    border-radius: 50%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: block;\n    outline: 0;\n    border: 1px solid #BDBDBD;\n    background: #FFF;\n}\n\n.cosmattmp-body .form ul li i:after {\n    background-color: #3276B1;\n    content: \'\';\n    border-radius: 50%;\n    height: 1.1em;\n    width: 1.1em;\n    top: .3em;\n    left: .3em;\n    position: absolute;\n    opacity: 0;\n}\n\n.cosmattmp-body .form ul li.highlight i{\n    border-color: #3276B1;\n}\n\n.cosmattmp-body .form ul li.highlight i:after{\n    opacity: 1;\n}\n\n.cosmattmp-body .form ul li .radio{\n    line-height: 1.8em;\n    font-weight: normal;\n    cursor: pointer;\n    padding-left: 25px;\n}\n\n\n.cosmattmp-body .form ul li .radio input {\n    position: absolute;\n    left: -9999px;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i{\n    background: #fff0f0;\n    border-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i:after {\n    background-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i{\n    background: #f0fff0;\n    border-color: #7DC27D;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i:after {\n    background-color: #7DC27D;\n}\n\n.cosmattmp-body span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.5em auto -3.2em;\n}\n\n.cosmattmp-body span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.6em auto -3.2em;\n}\n\n.cosmattmp-body .answer{\n    margin-left: 20px;\n}\n\n.cosmattmp-body span.correct, .cosmattmp-body span.wrong{\n    margin-left: 0;\n}\n\n.cosmattmp-body .col-md-6.last-child {\n    min-height: 200px;\n    border-left: 1px solid #C2C2C2;\n    padding-left: 20px;\n}\n\n.cosmattmp-body .stimulus {\n    margin: 25px 0 25px 0;\n}\n#feedback-area {\n    margin-top: 18px;   \n    border: 1px solid #ddd;\n    border-radius: 4px;\n    padding: 20px;\n    margin: 10px 0px 10px 0px;\n    background-color: #eee;\n    color: #3D3D3D;\n}\n#feedback-area > h4 {\n    padding-bottom: 10px;\n    font-weight: 700;\n}\n/* CORRECT ANSWER icon/mark */\n.cosmattmp-body #feedback-area span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: #009900;\n    float: left;\n    font-size: 18px;\n    border: 2px solid #009900;\n    padding: 3px 5px 3px 5px;\n    border-radius: 16px;\n    margin: 10px;\n}\n.cosmattmp-body #feedback-area span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: red;\n    float: left;\n    font-size: 18px;\n    border: 2px solid red;\n    padding: 2px 6px 2px 6px;\n    border-radius: 16px;\n    margin: 10px;\n}.cosmatt-unitComboBox {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.cosmatt-unitComboBox .form-control {\r\n  display: block;\r\n  height: 34px;\r\n  padding: 6px 12px;\r\n  font-size: 14px;\r\n  line-height: 1.42857143;\r\n  color: #555;\r\n  background-color: #fff;\r\n  background-image: none;\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\r\n  -webkit-border-radius: 4px;\r\n}\r\n.cosmatt-unitComboBox .unitTextBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n}\r\n.cosmatt-unitComboBox .unitComboBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n  padding: 0 6px;\r\n  margin-left: 10px;\r\n}\r\n.cosmatt-unitComboBox .form-control[disabled],\r\n.cosmatt-unitComboBox .form-control[readonly] {\r\n  background-color: #eee;\r\n  opacity: 1;\r\n}\r\n.cosmatt-motionProfile {\n  position: relative;\n}\n.cosmatt-motionProfile.unselectable {\n  -moz-user-select: -moz-none;\n  -khtml-user-select: none;\n  -webkit-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n}\n.cosmatt-motionProfile.assessment-mode {\n  box-shadow: 0 0 0 #ddd !important;\n  border: none !important;\n}\n.cosmatt-motionProfile #inputControls {\n  margin-top: 10px;\n}\n.cosmatt-motionProfile #profileButtons {\n  margin: 10px 0;\n}\n.cosmatt-motionProfile .profileButton {\n  margin-right: 10px;\n}\n.cosmatt-motionProfile #graphContainer .graphArea {\n  height: 400px;\n  min-width: 10px;\n  display: inline-block;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\n  pointer-events: none;\n  margin: 0px !important;\n  width: initial;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\n  background-color: transparent !important;\n  border-width: 0px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\n  border-width: 0px !important;\n  padding: 0px !important;\n  vertical-align: middle;\n}\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\n  max-width: 211px;\n}\n.cosmatt-motionProfile #tooltip {\n  padding: 4px 10px !important;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  border: solid 1px #000 !important;\n  z-index: 100 !important;\n  font-size: 12px !important;\n  color: #fff !important;\n  -webkit-border-radius: 3px !important;\n  -moz-border-radius: 3px !important;\n  border-radius: 3px !important;\n  position: absolute;\n  display: none;\n}\n');
+('/*******************************************************\n * \n * ----------------------\n * Engine Renderer Styles\n * ----------------------\n *\n * These styles do not include any product-specific branding\n * and/or layout / design. They represent minimal structural\n * CSS which is necessary for a default rendering of an\n * MCQSC activity\n *\n * The styles are linked/depending on the presence of\n * certain elements (classes / ids / tags) in the DOM (as would\n * be injected via a valid MCQSC layout HTML and/or dynamically\n * created by the MCQSC engine JS)\n *\n *\n *******************************************************/\n\n.cosmattmp-body .form *{\n    margin: 0;\n    padding: 0;\n}\n\n.cosmattmp-body .form .cosmattmp-img{\n    padding-top: 10px;\n}\n\n.cosmattmp-body .form ul li{\n    padding: .7em .4em .7em 1.8em;\n    position: relative;\n}\n\n.cosmattmp-body .form ul li.highlight{\n    background-color: #F2F2F2;\n    border-radius: 6px;\n}\n\n.cosmattmp-body .form ul li i{\n    height: 1.8em;\n    width: 1.8em;\n    border-radius: 50%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: block;\n    outline: 0;\n    border: 1px solid #BDBDBD;\n    background: #FFF;\n}\n\n.cosmattmp-body .form ul li i:after {\n    background-color: #3276B1;\n    content: \'\';\n    border-radius: 50%;\n    height: 1.1em;\n    width: 1.1em;\n    top: .3em;\n    left: .3em;\n    position: absolute;\n    opacity: 0;\n}\n\n.cosmattmp-body .form ul li.highlight i{\n    border-color: #3276B1;\n}\n\n.cosmattmp-body .form ul li.highlight i:after{\n    opacity: 1;\n}\n\n.cosmattmp-body .form ul li .radio{\n    line-height: 1.8em;\n    font-weight: normal;\n    cursor: pointer;\n    padding-left: 25px;\n}\n\n\n.cosmattmp-body .form ul li .radio input {\n    position: absolute;\n    left: -9999px;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i{\n    background: #fff0f0;\n    border-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-error i:after {\n    background-color: #a90329;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i{\n    background: #f0fff0;\n    border-color: #7DC27D;\n}\n\n.cosmattmp-body .form ul li .radio.state-success i:after {\n    background-color: #7DC27D;\n}\n\n.cosmattmp-body span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.5em auto -3.2em;\n}\n\n.cosmattmp-body span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin: 0 3.6em auto -3.2em;\n}\n\n.cosmattmp-body .answer{\n    margin-left: 20px;\n}\n\n.cosmattmp-body span.correct, .cosmattmp-body span.wrong{\n    margin-left: 0;\n}\n\n.cosmattmp-body .col-md-6.last-child {\n    min-height: 200px;\n    border-left: 1px solid #C2C2C2;\n    padding-left: 20px;\n}\n\n.cosmattmp-body .stimulus {\n    margin: 25px 0 25px 0;\n}\n#feedback-area {\n    margin-top: 18px;   \n    border: 1px solid #ddd;\n    border-radius: 4px;\n    padding: 20px;\n    margin: 10px 0px 10px 0px;\n    background-color: #eee;\n    color: #3D3D3D;\n}\n#feedback-area > h4 {\n    padding-bottom: 10px;\n    font-weight: 700;\n}\n/* CORRECT ANSWER icon/mark */\n.cosmattmp-body #feedback-area span.correct:before {\n    content: \"\\f00c\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: #009900;\n    float: left;\n    font-size: 18px;\n    border: 2px solid #009900;\n    padding: 3px 5px 3px 5px;\n    border-radius: 16px;\n    margin: 10px;\n}\n.cosmattmp-body #feedback-area span.wrong:before {\n    content: \"\\f00d\";\n    font-family: fontawesome;\n    display: inline-block;\n    margin-right: 10px;\n    color: red;\n    float: left;\n    font-size: 18px;\n    border: 2px solid red;\n    padding: 2px 6px 2px 6px;\n    border-radius: 16px;\n    margin: 10px;\n}.cosmatt-unitComboBox {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.cosmatt-unitComboBox .form-control {\r\n  display: block;\r\n  height: 34px;\r\n  padding: 6px 12px;\r\n  font-size: 14px;\r\n  line-height: 1.42857143;\r\n  color: #555;\r\n  background-color: #fff;\r\n  background-image: none;\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\r\n  -webkit-border-radius: 4px;\r\n}\r\n.cosmatt-unitComboBox .unitTextBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n}\r\n.cosmatt-unitComboBox .unitComboBox {\r\n  display: inline;\r\n  max-width: 100px;\r\n  padding: 0 6px;\r\n  margin-left: 10px;\r\n}\r\n.cosmatt-unitComboBox .form-control[disabled],\r\n.cosmatt-unitComboBox .form-control[readonly] {\r\n  background-color: #eee;\r\n  opacity: 1;\r\n}\r\n.cosmatt-motionProfile {\r\n  position: relative;\r\n}\r\n.cosmatt-motionProfile.unselectable {\r\n  -moz-user-select: -moz-none;\r\n  -khtml-user-select: none;\r\n  -webkit-user-select: none;\r\n  -o-user-select: none;\r\n  user-select: none;\r\n}\r\n.cosmatt-motionProfile.assessment-mode {\r\n  box-shadow: 0 0 0 #ddd !important;\r\n  border: none !important;\r\n}\r\n.cosmatt-motionProfile #inputControls {\r\n  margin-top: 10px;\r\n}\r\n.cosmatt-motionProfile #inputControls .correct .cosmatt-unitComboBox .unitTextBox {\r\n  background-color: #f0fff0;\r\n  border-color: #7DC27D;\r\n}\r\n.cosmatt-motionProfile #inputControls .incorrect .cosmatt-unitComboBox .unitTextBox {\r\n  background-color: #fff0f0;\r\n  border-color: #A90329;\r\n}\r\n.cosmatt-motionProfile #profileButtons {\r\n  margin: 10px 0;\r\n}\r\n.cosmatt-motionProfile .profileButton {\r\n  margin-right: 10px;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea {\r\n  height: 400px;\r\n  min-width: 10px;\r\n  display: inline-block;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\r\n  pointer-events: none;\r\n  margin: 0px !important;\r\n  width: initial;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\r\n  background-color: transparent !important;\r\n  border-width: 0px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\r\n  border-width: 0px !important;\r\n  padding: 0px !important;\r\n  vertical-align: middle;\r\n}\r\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\r\n  max-width: 211px;\r\n}\r\n.cosmatt-motionProfile #tooltip {\r\n  padding: 4px 10px !important;\r\n  background-color: rgba(0, 0, 0, 0.8) !important;\r\n  border: solid 1px #000 !important;\r\n  z-index: 100 !important;\r\n  font-size: 12px !important;\r\n  color: #fff !important;\r\n  -webkit-border-radius: 3px !important;\r\n  -moz-border-radius: 3px !important;\r\n  border-radius: 3px !important;\r\n  position: absolute;\r\n  display: none;\r\n}\r\n');
