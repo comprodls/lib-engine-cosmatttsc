@@ -76,6 +76,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              */
             var __content = {
                 instructionText: "",
+                score: {},
                 appData: {},
                 questionText: "", /* Contains the question obtained from content JSON. */
                 optionsJSON: {}, /* Contains all the options for a particular question obtained from content JSON. */
@@ -141,7 +142,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
                 /* ------ VALIDATION BLOCK END -------- */
                 var $questionContainer = $('<div class="row"></div>');
-                var $questionArea = $('<div class="col-sm-12 text-primary"></div>');
+                var $questionArea = $('<p class="col-sm-12 text-primary"></p>');
                 var $pluginArea = $('<div class="col-sm-12"></div>');
 
                 $questionArea.html(__content.questionText);
@@ -157,19 +158,6 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
                 $(elRoot).html($questionContainer);
 
-
-                // Not Required for Cosmatt
-
-                // __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
-                //Process JSON for easy iteration in template
-                //__parseAndUpdateJSONForRivets();
-                // __parseAndUpdateJSONForRivets(__processedJsonContent);
-
-                // /* Apply the layout HTML to the dom */
-                // $(elRoot).html(__constants.TEMPLATES[htmlLayout]);
-
-                // /* Initialize RIVET. */
-                // __initRivets();
                 /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
 
                 // $('input[id^=option]').change(__handleRadioButtonClick);
@@ -200,7 +188,24 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             function userResponseHandler(callbackValue) {
                 for (var property in callbackValue) {
                     if (callbackValue.hasOwnProperty(property)) {
-                        __content.userAnswersJSON[getInteractionId(property)] = { response: callbackValue[property] };
+
+                        var interactionMinScore = __content.score.min;
+                        var optionsCount = Object.keys(__content.optionsJSON).length;
+                        var interactionMaxScore = __content.score.max/optionsCount;
+
+                        var interactionId = getInteractionId(property);
+                        __content.userAnswersJSON[interactionId] = {};
+                        __content.userAnswersJSON[interactionId].answer = callbackValue[property].toString();
+                        __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
+                        __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
+                        
+                        if (callbackValue[property] == __content.answersJSON[interactionId].correct) {
+                            __content.userAnswersJSON[interactionId].score = interactionMaxScore;
+                            __content.userAnswersJSON[interactionId].status = 'correct';
+                        } else {
+                            __content.userAnswersJSON[interactionId].score = interactionMinScore;
+                            __content.userAnswersJSON[interactionId].status = 'incorrect';
+                        }
                     }
                 }
                 $(document).triggerHandler('userAnswered', callbackValue);
@@ -238,7 +243,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                     __markAnswers();
                 }
 
-                $('input[id^=option]').attr("disabled", true);
+                //$('input[id^=option]').attr("disabled", true);
             }
 
             /**
@@ -249,17 +254,33 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 updateLastSavedResults(savedAnswer);
                 /* Mark answers. */
                 __markAnswers();
-                $('input[id^=option]').attr("disabled", true);
+                //$('input[id^=option]').attr("disabled", true);
             }
 
             /**
              * Function to display last result saved in LMS.
              */
             function updateLastSavedResults(lastResults) {
-                
                 var updatePluginVals = {};
                 $.each(lastResults.interactions, function (num, value) {
-                    __content.userAnswersJSON[value.id] = { response: value.answer };;
+                    var interactionMinScore = __content.score.min;
+                    var optionsCount = Object.keys(__content.optionsJSON).length;
+                    var interactionMaxScore = __content.score.max/optionsCount;
+
+                    var interactionId = value.id;
+
+                    __content.userAnswersJSON[interactionId] = {};
+                    __content.userAnswersJSON[interactionId].answer = value.answer.toString();
+                    __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
+                    __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
+                    
+                    if (value.answer == __content.answersJSON[interactionId].correct) {
+                        __content.userAnswersJSON[interactionId].score = interactionMaxScore;
+                        __content.userAnswersJSON[interactionId].status = 'correct';
+                    } else {
+                        __content.userAnswersJSON[interactionId].score = interactionMinScore;
+                        __content.userAnswersJSON[interactionId].status = 'incorrect';
+                    }
                     updatePluginVals[__content.optionsJSON[value.id].type] = value.answer;
                 });
                 __pluginInstance.updateInputs(updatePluginVals);
@@ -285,6 +306,7 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var tagName = jsonContent.content.instructions[0].tag;
                 __content.instructionText = jsonContent.content.instructions[0][tagName];
                 __content.appData = jsonContent["app-data"];
+                __content.score = jsonContent.meta.score;
                 /* Put directions in JSON. */
                 //jsonContent.content.directions = __content.directionsJSON;
                 // $.each(jsonContent.content.stimulus, function (i) {
@@ -349,56 +371,56 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             /**
              * Parse and Update Question Set type JSON based on  cosmattmp specific requirements.
              */
-            function __parseAndUpdateQuestionSetTypeJSON(jsonContent) {
+            // function __parseAndUpdateQuestionSetTypeJSON(jsonContent) {
 
-                /* Extract interaction id's and tags from question text. */
-                var interactionId = "";
-                var interactionTag = "";
-                /* String present in href of interaction tag. */
-                var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
-                /* Parse questiontext as HTML to get HTML tags. */
-                var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
-                $.each(parsedQuestionArray, function (i, el) {
-                    if (this.href === interactionReferenceString) {
-                        interactionId = this.childNodes[0].nodeValue.trim();
-                        __interactionIds.push(interactionId);
-                        interactionTag = this.outerHTML;
-                        interactionTag = interactionTag.replace(/"/g, "'");
-                    }
-                });
-                /* Replace interaction tag with blank string. */
-                jsonContent.content.canvas.data.questiondata[0].text = jsonContent.content.canvas.data.questiondata[0].text.replace(interactionTag, "");
-                var questionText = "1.  " + jsonContent.content.canvas.data.questiondata[0].text;
-                var correctAnswerNumber = jsonContent.responses[interactionId].correct;
-                var interactionType = jsonContent.content.interactions[interactionId].type;
-                var optionCount = jsonContent.content.interactions[interactionId][interactionType].length;
+            //     /* Extract interaction id's and tags from question text. */
+            //     var interactionId = "";
+            //     var interactionTag = "";
+            //     /* String present in href of interaction tag. */
+            //     var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
+            //     /* Parse questiontext as HTML to get HTML tags. */
+            //     var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
+            //     $.each(parsedQuestionArray, function (i, el) {
+            //         if (this.href === interactionReferenceString) {
+            //             interactionId = this.childNodes[0].nodeValue.trim();
+            //             __interactionIds.push(interactionId);
+            //             interactionTag = this.outerHTML;
+            //             interactionTag = interactionTag.replace(/"/g, "'");
+            //         }
+            //     });
+            //     /* Replace interaction tag with blank string. */
+            //     jsonContent.content.canvas.data.questiondata[0].text = jsonContent.content.canvas.data.questiondata[0].text.replace(interactionTag, "");
+            //     var questionText = "1.  " + jsonContent.content.canvas.data.questiondata[0].text;
+            //     var correctAnswerNumber = jsonContent.responses[interactionId].correct;
+            //     var interactionType = jsonContent.content.interactions[interactionId].type;
+            //     var optionCount = jsonContent.content.interactions[interactionId][interactionType].length;
 
-                /* Make optionsJSON and answerJSON from JSON. */
-                for (var i = 0; i < optionCount; i++) {
-                    var optionObject = jsonContent.content.interactions[interactionId][interactionType][i];
-                    var option = optionObject[Object.keys(optionObject)].replace(/^\s+|\s+$/g, '');
-                    __content.optionsJSON.push(__getHTMLEscapeValue(option));
-                    optionObject[Object.keys(optionObject)] = option;
-                    /* Update JSON after updating option. */
-                    jsonContent.content.interactions[interactionId][interactionType][i] = optionObject;
-                    if (Object.keys(optionObject) == correctAnswerNumber) {
-                        __content.answersJSON[0] = optionObject[Object.keys(optionObject)];
-                    }
-                }
-                __content.questionsJSON[0] = questionText + " ^^ " + __content.optionsJSON.toString() + " ^^ " + interactionId;
-            }
+            //     /* Make optionsJSON and answerJSON from JSON. */
+            //     for (var i = 0; i < optionCount; i++) {
+            //         var optionObject = jsonContent.content.interactions[interactionId][interactionType][i];
+            //         var option = optionObject[Object.keys(optionObject)].replace(/^\s+|\s+$/g, '');
+            //         __content.optionsJSON.push(__getHTMLEscapeValue(option));
+            //         optionObject[Object.keys(optionObject)] = option;
+            //         /* Update JSON after updating option. */
+            //         jsonContent.content.interactions[interactionId][interactionType][i] = optionObject;
+            //         if (Object.keys(optionObject) == correctAnswerNumber) {
+            //             __content.answersJSON[0] = optionObject[Object.keys(optionObject)];
+            //         }
+            //     }
+            //     __content.questionsJSON[0] = questionText + " ^^ " + __content.optionsJSON.toString() + " ^^ " + interactionId;
+            // }
 
             /**
              * Escaping HTML codes from String.
              */
-            function __getHTMLEscapeValue(content) {
-                var tempDiv = $("<div></div>");
-                $(tempDiv).html(content);
-                $("body").append(tempDiv);
-                content = $(tempDiv).html();
-                $(tempDiv).remove();
-                return content;
-            }
+            // function __getHTMLEscapeValue(content) {
+            //     var tempDiv = $("<div></div>");
+            //     $(tempDiv).html(content);
+            //     $("body").append(tempDiv);
+            //     content = $(tempDiv).html();
+            //     $(tempDiv).remove();
+            //     return content;
+            // }
 
             /***
              * Function to modify question JSON for easy iteration in template
@@ -439,69 +461,69 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                   }  
                 ]
              */
-            function __parseAndUpdateJSONForRivets(jsonContent) {
-                var processedArray = [];
-                for (var i = 0; i < __interactionIds.length; i++) {
-                    jsonContent.content.interactions[__interactionIds[i]].cosmattmp.forEach(function (obj, index) {
-                        var processedObj = {};
-                        processedObj.customAttribs = {};
-                        Object.keys(obj).forEach(function (key) {
-                            processedObj.customAttribs.key = key;
-                            processedObj.customAttribs.value = obj[key];
-                        });
-                        processedArray.push(processedObj);
-                    });
-                    jsonContent.content.interactions[__interactionIds[i]].cosmattmp = processedArray;
-                }
-            }
+            // function __parseAndUpdateJSONForRivets(jsonContent) {
+            //     var processedArray = [];
+            //     for (var i = 0; i < __interactionIds.length; i++) {
+            //         jsonContent.content.interactions[__interactionIds[i]].cosmattmp.forEach(function (obj, index) {
+            //             var processedObj = {};
+            //             processedObj.customAttribs = {};
+            //             Object.keys(obj).forEach(function (key) {
+            //                 processedObj.customAttribs.key = key;
+            //                 processedObj.customAttribs.value = obj[key];
+            //             });
+            //             processedArray.push(processedObj);
+            //         });
+            //         jsonContent.content.interactions[__interactionIds[i]].cosmattmp = processedArray;
+            //     }
+            // }
 
             /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
-            function __initRivets() {
-                /* Formatter to transform object into object having 'key' property with value key
-                 * and 'value' with the value of the object
-                 * Example:
-                 * var obj = {'choiceA' : 'She has flu.'} to
-                 * obj= { 'key' : 'choiceA', 'value' : 'She has flu.'}
-                 * This is done to access the key and value of object in the template using rivets.
-                 */
-                rivets.formatters.propertyList = function (obj) {
-                    return (function () {
-                        var properties = [];
-                        for (var key in obj) {
-                            properties.push({ key: key, value: obj[key] })
-                        }
-                        return properties
-                    })();
-                }
+            // function __initRivets() {
+            //     /* Formatter to transform object into object having 'key' property with value key
+            //      * and 'value' with the value of the object
+            //      * Example:
+            //      * var obj = {'choiceA' : 'She has flu.'} to
+            //      * obj= { 'key' : 'choiceA', 'value' : 'She has flu.'}
+            //      * This is done to access the key and value of object in the template using rivets.
+            //      */
+            //     rivets.formatters.propertyList = function (obj) {
+            //         return (function () {
+            //             var properties = [];
+            //             for (var key in obj) {
+            //                 properties.push({ key: key, value: obj[key] })
+            //             }
+            //             return properties
+            //         })();
+            //     }
 
-                /* This formatter is used to append interaction property to the object
-                 * and return text of the question for particular interaction
-                 */
-                rivets.formatters.appendInteraction = function (obj, interaction, cosmattmp) {
-                    return obj[interaction].text;
-                }
+            //     /* This formatter is used to append interaction property to the object
+            //      * and return text of the question for particular interaction
+            //      */
+            //     rivets.formatters.appendInteraction = function (obj, interaction, cosmattmp) {
+            //         return obj[interaction].text;
+            //     }
 
-                /* This formatter is used to return the array of options for a particular
-                 * interaction so that rivets can iterate over it.
-                 */
-                rivets.formatters.getArray = function (obj, interaction) {
-                    return obj[interaction].cosmattmp;
-                }
+            //     /* This formatter is used to return the array of options for a particular
+            //      * interaction so that rivets can iterate over it.
+            //      */
+            //     rivets.formatters.getArray = function (obj, interaction) {
+            //         return obj[interaction].cosmattmp;
+            //     }
 
-                var isMCQImageEngine = false;
-                /* Find if layout is of type MCQ_IMG*/
-                if (__content.layoutType == 'MCQ_IMG') {
-                    isMCQImageEngine = true;
-                }
+            //     var isMCQImageEngine = false;
+            //     /* Find if layout is of type MCQ_IMG*/
+            //     if (__content.layoutType == 'MCQ_IMG') {
+            //         isMCQImageEngine = true;
+            //     }
 
-                /*Bind the data to template using rivets*/
-                rivets.bind($('#cosmattmp-engine'), {
-                    content: __processedJsonContent.content,
-                    isMCQImageEngine: isMCQImageEngine,
-                    feedback: __processedJsonContent.feedback,
-                    showFeedback: __feedback
-                });
-            }
+            //     /*Bind the data to template using rivets*/
+            //     rivets.bind($('#cosmattmp-engine'), {
+            //         content: __processedJsonContent.content,
+            //         isMCQImageEngine: isMCQImageEngine,
+            //         feedback: __processedJsonContent.feedback,
+            //         showFeedback: __feedback
+            //     });
+            // }
 
             /*------------------------RIVETS END-------------------------------*/
 
@@ -509,26 +531,26 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
             /**
             * Function to handle radio button click.
             */
-            function __handleRadioButtonClick(event) {
-                /*
-                 * Soft save here
-                 */
-                var currentTarget = event.currentTarget;
+            // function __handleRadioButtonClick(event) {
+            //     /*
+            //      * Soft save here
+            //      */
+            //     var currentTarget = event.currentTarget;
 
-                $("label.radio").parent().removeClass("highlight");
-                $(currentTarget).parent().parent("li").addClass("highlight");
+            //     $("label.radio").parent().removeClass("highlight");
+            //     $(currentTarget).parent().parent("li").addClass("highlight");
 
-                var newAnswer = currentTarget.value.replace(/^\s+|\s+$/g, '');
+            //     var newAnswer = currentTarget.value.replace(/^\s+|\s+$/g, '');
 
-                /* Save new Answer in memory. */
-                __content.userAnswersJSON[0] = newAnswer.replace(/^\s+|\s+$/g, '');
+            //     /* Save new Answer in memory. */
+            //     __content.userAnswersJSON[0] = newAnswer.replace(/^\s+|\s+$/g, '');
 
-                __state.radioButtonClicked = true;
+            //     __state.radioButtonClicked = true;
 
-                var interactionId = __content.questionsJSON[0].split("^^")[2].trim();
+            //     var interactionId = __content.questionsJSON[0].split("^^")[2].trim();
 
-                $(document).triggerHandler('userAnswered');
-            }
+            //     $(document).triggerHandler('userAnswered');
+            // }
 
             /**
              * Function called to send result JSON to adaptor (partial save OR submit).
@@ -579,11 +601,23 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
              * Function to show correct Answers to User, called on click of Show Answers Button.
              */
             function __markAnswers() {
-                debugger;
                 var markAnswerObj = {};
                 var userAnswers = __content.userAnswersJSON;
-                $.each(userAnswers, function (num, value) {
-                    markAnswerObj[__content.optionsJSON[num].type] = {status: true};
+                var options = __content.optionsJSON;
+                var interactions  = Object.keys(__content.optionsJSON);
+                interactions.forEach(function (element, index) {
+                    if(userAnswers[element] && userAnswers[element].status){
+                        if(userAnswers[element].status == "correct"){
+                            markAnswerObj[options[element].type] = {status: true};
+                        }
+                        else{
+                            markAnswerObj[options[element].type] = {status: false};
+                        }
+                    }
+                    else{
+                        markAnswerObj[options[element].type] = {status: false};
+                    }
+                    
                 });
                 __pluginInstance.markAnswers(markAnswerObj);
 
@@ -598,18 +632,18 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                // __generateFeedback();
             }
             /* Add correct or wrong answer classes*/
-            function __markRadio(optionNo, correctAnswer, userAnswer) {
-                if (userAnswer.trim() === correctAnswer.trim()) {
-                    $($(".answer")[optionNo]).removeClass("wrong");
-                    $($(".answer")[optionNo]).addClass("correct");
-                    $($(".answer")[optionNo]).parent().addClass("state-success");
-                } else {
-                    $($(".answer")[optionNo]).removeClass("correct");
-                    $($(".answer")[optionNo]).addClass("wrong");
-                    $($(".answer")[optionNo]).parent().addClass("state-error");
-                }
-                $(".answer" + optionNo).removeClass("invisible");
-            }
+            // function __markRadio(optionNo, correctAnswer, userAnswer) {
+            //     if (userAnswer.trim() === correctAnswer.trim()) {
+            //         $($(".answer")[optionNo]).removeClass("wrong");
+            //         $($(".answer")[optionNo]).addClass("correct");
+            //         $($(".answer")[optionNo]).parent().addClass("state-success");
+            //     } else {
+            //         $($(".answer")[optionNo]).removeClass("correct");
+            //         $($(".answer")[optionNo]).addClass("wrong");
+            //         $($(".answer")[optionNo]).parent().addClass("state-error");
+            //     }
+            //     $(".answer" + optionNo).removeClass("invisible");
+            // }
 
             function __generateFeedback() {
                 for (var prop in __feedback) {
@@ -639,37 +673,43 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
                 var statusProgress = __constants.ACTIVITY_NOT_ATTEMPTED;
                 var statusEvaluation = __constants.ACTIVITY_INCORRECT;
                 var partiallyCorrect = false;
-                var correct = true;        
+                var correct = false;        
 
                 if (skipQuestion) {
                     answers = "Not Answered";
                 } else {
                     answers = __content.userAnswersJSON;
-                    // var interactionScore = 0;
-                    // var interactionMaxScore = __content.maxscore/__content.answersXML.length;
                     /* Calculating scores.*/
                     for (var answerID in answers) {
                         var interaction = {};
                         interaction.id = answerID;
-                        interaction.answer = answers[answerID].response.toString();
-                        interaction.maxscore = __processedJsonContent.meta.score.max;
-                        // if (answers[answerID].response == __content.answersJSON[answerID].correct) {
-                        //     interaction.score = 1;
-                        // } else {
-                        //     interaction.score = 0;
-                        // }
-                        interaction.score = 0;
+                        interaction.answer = answers[answerID].answer;
+                        interaction.maxscore = answers[answerID].maxscore;
+                        interaction.score = answers[answerID].score;
                         interactionArray.push(interaction);
                     }
                 }
 
-                // interactions = {
-                //     id: interactionId,
-                //     answer: answer,
-                //     score: score,
-                //     maxscore: __processedJsonContent.meta.score.max
-                // };
-                // interactionArray[0] = interactions;
+                var interactions  = Object.keys(__content.optionsJSON);
+                partiallyCorrect = interactions.some(function(element, index) {
+                    if(answers[element] && answers[element].status == "correct"){
+                        return true;
+                    }
+                });
+
+                correct = interactions.every(function(element, index) {
+                    if(answers[element] && answers[element].status == "correct"){
+                        return true;
+                    }
+                });
+
+                if(partiallyCorrect){
+                    statusEvaluation = __constants.ACTIVITY_PARTIALLY_CORRECT;
+                }
+
+                if(correct){
+                    statusEvaluation = __constants.ACTIVITY_CORRECT;
+                }
 
                 var response = {
                     "interactions": interactionArray
