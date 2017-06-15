@@ -50,7 +50,7 @@ module.exports = function(grunt) {
                         'rivets': bower_components+ 'rivets/dist/rivets',
                         'sightglass': bower_components + 'sightglass/index'
                     },
-                    optimize: 'none',
+                    optimize: 'uglify2',
                     uglify2: {
                         mangle: false
                     },
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
                         'sightglass': bower_components + 'sightglass/index',
                         'jquery-ui' :  bower_components + 'jquery-ui/jquery-ui'
                     },
-                    optimize: 'none',
+                    optimize: 'uglify2',
                     uglify2: {
                         mangle: false
                     },

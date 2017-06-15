@@ -28,10 +28,8 @@
  * 2. Boostrap (TODO: version) 
  */
 
-define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/rivets) representing the rendering UX
+define([
     'css!../css/cosmattmp.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
-    'rivets', // Rivets for data binding
-    'sightglass',
     '../../bower_components/flot/jquery.flot.js',
     '../../bower_components/flot/jquery.flot.resize.js',
     '../../bower_components/flot-axislabels/jquery.flot.axislabels.js',
@@ -153,11 +151,10 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
 
         __processedJsonContent = __parseAndUpdateJSONContent(jsonContent, params, htmlLayout);
 
-        console.log(__content);
 
         /* ------ VALIDATION BLOCK END -------- */
-        var $questionContainer = $('<div class="row"></div>');
-        var $questionArea = $('<p class="col-sm-12 text-primary"></p>');
+        var $questionContainer = $('<div class="row cosmattmp-engine"></div>');
+        var $questionArea = $('<p class="col-sm-12 text-primary question-text"></p>');
         var $pluginArea = $('<div class="col-sm-12"></div>');
 
         $questionArea.html(__content.questionText);
@@ -224,7 +221,6 @@ define(['text!../html/cosmattmp.html', //HTML layout(s) template (handlebars/riv
           }
         }
         $(document).triggerHandler('userAnswered', callbackValue);
-        console.log(callbackValue);
       }
 
       function getInteractionId(interactionField) {
