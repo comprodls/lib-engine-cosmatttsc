@@ -34,7 +34,7 @@ define([
     '../../bower_components/flot/jquery.flot.resize.js',
     '../../bower_components/flot-axislabels/jquery.flot.axislabels.js',
     'css!../../node_modules/libs-frontend-cosmatt/libs-frontend-unitcombobox/dist/css/unitComboBox.css',
-    '../../node_modules/libs-frontend-cosmatt/libs-frontend-unitcombobox/dist/js/unitComboBox.min.js',
+    '../../node_modules/libs-frontend-cosmatt/libs-frontend-unitcombobox/dist/js/unitComboBox.js',
     'css!../../node_modules/libs-frontend-cosmatt/libs-frontend-motionprofile/dist/css/motionProfile.css',
     '../../node_modules/libs-frontend-cosmatt/libs-frontend-cosmattPlugin/src/js/libs-frontend-CosmattPlugin.js', //Required by Rivets
     '../../node_modules/libs-frontend-cosmatt/libs-frontend-motionprofile/dist/js/motionProfile.js'
