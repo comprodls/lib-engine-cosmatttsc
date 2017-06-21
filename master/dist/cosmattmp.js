@@ -5461,12 +5461,12 @@ COSMATT.MotionProfile.configuration = {
     }
 
     var readUIValues = function() {
-      SIValues.movedistance = uiValues.movedistance = praseFloat(settings.moveDistance);
-      SIValues.movedtime = uiValues.movedtime = praseFloat(settings.moveTime);
-      SIValues.dweltime = uiValues.dweltime = praseFloat(settings.dwellTime);
+      SIValues.movedistance = uiValues.movedistance = isNaN(parseFloat(settings.moveDistance)) ? settings.moveDistance : parseFloat(settings.moveDistance);
+      SIValues.movedtime = uiValues.movedtime = isNaN(parseFloat(settings.moveTime)) ? settings.moveTime : parseFloat(settings.moveTime);
+      SIValues.dweltime = uiValues.dweltime = isNaN(parseFloat(settings.dwellTime)) ? settings.dwellTime : parseFloat(settings.dwellTime);
       updateIndexType();
-      SIValues.velocityJerk = uiValues.velocityJerk = praseFloat(settings.indexType);
-      SIValues.smoothness = uiValues.smoothness = praseFloat(settings.smoothness);
+      SIValues.velocityJerk = uiValues.velocityJerk = isNaN(parseFloat(settings.indexType)) ? settings.indexType : parseFloat(settings.indexType);
+      SIValues.smoothness = uiValues.smoothness = isNaN(parseFloat(settings.smoothness)) ? settings.smoothness : parseFloat(settings.smoothness);
     };
 
     var validateUIValues = function() {
