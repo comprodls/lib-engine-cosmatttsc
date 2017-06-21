@@ -41,6 +41,7 @@ define([
   ], //Required by Rivets
   function(cosmattmpTemplateRef) {
 
+
     cosmattmp = function() {
 
       "use strict";
