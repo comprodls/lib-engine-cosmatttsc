@@ -8335,19 +8335,23 @@ COSMATT.MotionProfile.configuration = {
     function updateInputs(params) {
       if (params.movedistance) {
         // TODO parseInt to Parse float then to 2 decimal places
-        uiValues.movedistance = parseInt(params.movedistance);
+        uiValues.movedistance = parseFloat(params.movedistance);
+        SIValues.movedistance = parseFloat(params.movedistance);
         $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox').setTextBoxValue(uiValues.movedistance);
       }
       if (params.movedtime) {
-        uiValues.movedtime = parseInt(params.movedtime);
+        uiValues.movedtime = parseFloat(params.movedtime);
+        SIValues.movedtime = parseFloat(params.movedtime);
         $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox').setTextBoxValue(uiValues.movedtime);
       }
       if (params.dweltime) {
-        uiValues.dweltime = parseInt(params.dweltime);
+        uiValues.dweltime = parseFloat(params.dweltime);
+        SIValues.dweltime = parseFloat(params.dweltime);
         $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox').setTextBoxValue(uiValues.dweltime);
       }
       if (params.velocityJerk) {
-        uiValues.velocityJerk = parseInt(params.velocityJerk);
+        uiValues.velocityJerk = parseFloat(params.velocityJerk);
+        SIValues.velocityJerk = parseFloat(params.velocityJerk);
         $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox').setTextBoxValue(uiValues.velocityJerk);
       }
       calculateAndPaint();
