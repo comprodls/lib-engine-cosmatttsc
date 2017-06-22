@@ -28,6 +28,8 @@
  * 2. Boostrap (TODO: version) 
  */
 
+
+// 8:23 22/06/2017
 define([
     'css!../css/cosmattmp.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
     '../../bower_components/flot/jquery.flot.js',
