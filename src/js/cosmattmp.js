@@ -35,10 +35,10 @@ define([
     '../../bower_components/flot/jquery.flot.js',
     '../../bower_components/flot/jquery.flot.resize.js',
     '../../bower_components/flot-axislabels/jquery.flot.axislabels.js',
-    'css!libs/libs-frontend-unitcombobox/dist/css/unitComboBox.css',
-    'libs/libs-frontend-unitcombobox/dist/js/unitComboBox.js',
-    'css!libs/libs-frontend-motionprofile/dist/css/motionProfile.css',
-    'libs/libs-frontend-motionprofile/dist/js/motionProfile.js'
+    'css!../libs/libs-frontend-unitcombobox/dist/css/unitComboBox.css',
+    '../libs/libs-frontend-unitcombobox/dist/js/unitComboBox.js',
+    'css!../libs/libs-frontend-motionprofile/dist/css/motionProfile.css',
+    '../libs/libs-frontend-motionprofile/dist/js/motionProfile.js'
   ], //Required by Rivets
   function(cosmattmpTemplateRef) {
 
