@@ -60,33 +60,33 @@ module.exports = function(grunt) {
             done();
           }
         }
-      },
-      engineEditor: {
-        options: {
-          baseUrl: engine_src,
-          name: "cosmattmp-editor",
-          out: dist + "cosmattmp-editor.js",
-          paths: {
-            'jquery': 'empty:',
-            'text': bower_components + 'text/text',
-            'css': bower_components + 'require-css/css',
-            'css-builder': bower_components + 'require-css/css-builder',
-            'normalize': bower_components + 'require-css/normalize',
-            'rivets': bower_components + 'rivets/dist/rivets',
-            'sightglass': bower_components + 'sightglass/index',
-            'jquery-ui': bower_components + 'jquery-ui/jquery-ui'
-          },
-          optimize: 'none',
-          uglify2: {
-            mangle: false
-          },
-          exclude: ['normalize'],
-          done: function(done, output) {
-            console.log('Completed requirejs optimization for cosmattmp editor successfully.');
-            done();
-          }
-        }
       }
+      // engineEditor: {
+      //   options: {
+      //     baseUrl: engine_src,
+      //     name: "cosmattmp-editor",
+      //     out: dist + "cosmattmp-editor.js",
+      //     paths: {
+      //       'jquery': 'empty:',
+      //       'text': bower_components + 'text/text',
+      //       'css': bower_components + 'require-css/css',
+      //       'css-builder': bower_components + 'require-css/css-builder',
+      //       'normalize': bower_components + 'require-css/normalize',
+      //       'rivets': bower_components + 'rivets/dist/rivets',
+      //       'sightglass': bower_components + 'sightglass/index',
+      //       'jquery-ui': bower_components + 'jquery-ui/jquery-ui'
+      //     },
+      //     optimize: 'none',
+      //     uglify2: {
+      //       mangle: false
+      //     },
+      //     exclude: ['normalize'],
+      //     done: function(done, output) {
+      //       console.log('Completed requirejs optimization for cosmattmp editor successfully.');
+      //       done();
+      //     }
+      //   }
+      // }
     },
     connect: {
       dev: {
