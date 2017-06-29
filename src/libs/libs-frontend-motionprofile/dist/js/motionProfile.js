@@ -725,7 +725,14 @@ COSMATT.MotionProfile.configuration = {
       showProfiles: COSMATT.MotionProfile.configuration.Profiles.showAll,
       smoothness: COSMATT.MotionProfile.configuration.Smoothness.automatic,
       showCheckAnswerButton: false,
-      assessmentMode: false
+      assessmentMode: false,
+      moveDistanceUnit: 0,
+      moveTimeUnit: 0,
+      dwellTimeUnit: 0,
+      peakVelocityUnit: 0,
+      rmsVelocityUnit: 0,
+      peakAccelarationUnit: 0,
+      rmsAccelarationUnit: 0
     };
 
     if (options.assessmentMode) {
@@ -1577,20 +1584,20 @@ COSMATT.MotionProfile.configuration = {
       var bret = true;
       // var errorInputs = [];
       $inputControls.find(".input-entries .form-group").removeClass("has-error");
-      if (!(!isNaN(uiValues.movedistance) && uiValues.movedistance > 0)) {
+      if (!(!isNaN(SIValues.movedistance) && SIValues.movedistance > 0)) {
         $inputControls.find("#moveDistanceInputContainer").addClass("has-error");
         bret = false;
       }
-      if (!(!isNaN(uiValues.movedistance) && uiValues.movedtime > 0)) {
+      if (!(!isNaN(SIValues.movedistance) && SIValues.movedtime > 0)) {
         $inputControls.find("#moveTimeInputContainer").addClass("has-error");
         bret = false;
       }
-      if (!(!isNaN(uiValues.dweltime) && uiValues.dweltime >= 0)) {
+      if (!(!isNaN(SIValues.dweltime) && SIValues.dweltime >= 0)) {
         $inputControls.find("#dwellTimeInputContainer").addClass("has-error");
         bret = false;
       }
 
-      if (!(!isNaN(uiValues.velocityJerk) && (uiValues.velocityJerk >= 0 && uiValues.velocityJerk <= 100))) {
+      if (!(!isNaN(SIValues.velocityJerk) && (SIValues.velocityJerk >= 0 && SIValues.velocityJerk <= 100))) {
         $inputControls.find("#indexTypeInputContainer").addClass("has-error");
         bret = false;
       }
@@ -2021,7 +2028,7 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").unitsComboBox({
         "unitType": "ANGULARDISTANCE",
-        "unit": "0",
+        "unit": settings.moveDistanceUnit,
         "roundOfNumber": "2",
         "value": settings.moveDistance,
         "comboBoxWidthRatio": {
@@ -2029,12 +2036,21 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.movedistance = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "dropdown") {
+              settings.moveDistanceUnit = parseInt(this.unit.split('_')[1]) - 1;
+            } else if (this.type == "textbox") {
+              uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.movedistance = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "movedistance": uiValues.movedistance });
+              settings.userResponseNotifier({
+                "movedistance": {
+                  "value": SIValues.movedistance,
+                  "unit": settings.moveDistanceUnit
+                }
+              });
             }
           }
         }
@@ -2042,7 +2058,7 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").unitsComboBox({
         "unitType": "TIME",
-        "unit": "0",
+        "unit": settings.moveTimeUnit,
         "roundOfNumber": "2",
         "value": settings.moveTime,
         "comboBoxWidthRatio": {
@@ -2050,12 +2066,21 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.movedtime = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "dropdown") {
+              settings.moveTimeUnit = parseInt(this.unit.split('_')[1]) - 1;
+            } else if (this.type == "textbox") {
+              uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.movedtime = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "movedtime": uiValues.movedtime });
+              settings.userResponseNotifier({
+                "movedtime": {
+                  "value": SIValues.movedtime,
+                  "unit": settings.moveTimeUnit
+                }
+              });
             }
           }
         }
@@ -2063,7 +2088,7 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").unitsComboBox({
         "unitType": "TIME",
-        "unit": "0",
+        "unit": settings.dwellTimeUnit,
         "roundOfNumber": "2",
         "value": settings.dwellTime,
         "comboBoxWidthRatio": {
@@ -2071,12 +2096,21 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.dweltime = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "dropdown") {
+              settings.dwellTimeUnit = parseInt(this.unit.split('_')[1]) - 1;
+            } else if (this.type == "textbox") {
+              uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.dweltime = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "dweltime": uiValues.dweltime });
+              settings.userResponseNotifier({
+                "dweltime": {
+                  "value": SIValues.dweltime,
+                  "unit": settings.dwellTimeUnit
+                }
+              });
             }
           }
         }
@@ -2094,12 +2128,18 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.velocityJerk = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "textbox") {
+              uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.velocityJerk = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "velocityJerk": uiValues.velocityJerk });
+              settings.userResponseNotifier({
+                "velocityJerk": {
+                  "value": SIValues.velocityJerk
+                }
+              });
             }
           }
         }
@@ -2121,45 +2161,65 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#peakVelocityInputContainer").find(".comboPeakVelocity").unitsComboBox({
         "unitType": "ANGULARVELOCITY",
-        "unit": "0",
+        "unit": settings.peakVelocityUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.peakVelocityUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
 
       $inputControls.find("#rmsVelocityInputContainer").find(".comboRmsVelocity").unitsComboBox({
         "unitType": "ANGULARVELOCITY",
-        "unit": "0",
+        "unit": settings.rmsVelocityUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.rmsVelocityUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
 
       $inputControls.find("#peakAccInputContainer").find(".comboPeakAcc").unitsComboBox({
         "unitType": "ANGULARACCELERATION",
-        "unit": "0",
+        "unit": settings.peakAccelarationUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.peakAccelarationUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
 
       $inputControls.find("#rmsAccInputContainer").find(".comboRmsAcc").unitsComboBox({
         "unitType": "ANGULARACCELERATION",
-        "unit": "0",
+        "unit": settings.rmsAccelarationUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.rmsAccelarationUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
     };
@@ -2323,24 +2383,37 @@ COSMATT.MotionProfile.configuration = {
     function updateInputs(params) {
       if (params.movedistance) {
         // TODO parseInt to Parse float then to 2 decimal places
-        uiValues.movedistance = parseFloat(params.movedistance);
-        SIValues.movedistance = parseFloat(params.movedistance);
-        $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox').setTextBoxValue(uiValues.movedistance);
+        // uiValues.movedistance = parseFloat(params.movedistance.value);
+        SIValues.movedistance = parseFloat(params.movedistance.value);
+        var $combobox = $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.movedistance);
+        if (params.movedistance.unit) {
+          $combobox.setDropBoxItem(parseInt(params.movedistance.unit));
+        }
       }
       if (params.movedtime) {
-        uiValues.movedtime = parseFloat(params.movedtime);
-        SIValues.movedtime = parseFloat(params.movedtime);
-        $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox').setTextBoxValue(uiValues.movedtime);
+        // uiValues.movedtime = parseFloat(params.movedtime.value);
+        SIValues.movedtime = parseFloat(params.movedtime.value);
+        var $combobox = $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.movedtime);
+        if (params.movedtime.unit) {
+          $combobox.setDropBoxItem(parseInt(params.movedtime.unit));
+        }
       }
       if (params.dweltime) {
-        uiValues.dweltime = parseFloat(params.dweltime);
-        SIValues.dweltime = parseFloat(params.dweltime);
-        $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox').setTextBoxValue(uiValues.dweltime);
+        // uiValues.dweltime = parseFloat(params.dweltime.value);
+        SIValues.dweltime = parseFloat(params.dweltime.value);
+        var $combobox = $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.dweltime);
+        if (params.dweltime.unit) {
+          $combobox.setDropBoxItem(parseInt(params.dweltime.unit));
+        }
       }
       if (params.velocityJerk) {
-        uiValues.velocityJerk = parseFloat(params.velocityJerk);
-        SIValues.velocityJerk = parseFloat(params.velocityJerk);
-        $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox').setTextBoxValue(uiValues.velocityJerk);
+        // uiValues.velocityJerk = parseFloat(params.velocityJerk.value);
+        SIValues.velocityJerk = parseFloat(params.velocityJerk.value);
+        var $combobox = $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.velocityJerk);
       }
       calculateAndPaint();
     }

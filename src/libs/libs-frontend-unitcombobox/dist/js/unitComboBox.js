@@ -1954,6 +1954,7 @@ COSMATT.UNITCONVERTER = (function() {
     plugin.getValueInSelectedUnit = function(siVal) {
 
 
+
       // var textboxValue = 0;
       var SIUnitObj = '';
       if (typeof COSMATT.UNITCONVERTER === 'object') {
@@ -1976,7 +1977,31 @@ COSMATT.UNITCONVERTER = (function() {
       }
       return conversionfactor;
     };
-    /** public function set TextboxValue **/
+    /** public function set DropBox Item **/
+    plugin.setDropBoxItem = function(index) {
+        var $comboBox = $element.find(".unitComboBox");
+        $comboBox.find('option').eq(index).attr("selected", true);
+
+        var textboxValue = 0;
+        textboxValue = plugin.settings.value;
+        if (textboxValue === '') {
+          plugin.setTextBoxValue(textboxValue);
+          plugin.settings.unit = $element.find(":selected").data('id');
+          return;
+        }
+
+        if (plugin.settings.showComboBoxOnly == 'true') {
+          var convertedVal = COSMATT.UNITCONVERTER.getUnitConvertedValue(plugin.settings.unitType, 1, plugin.settings.unit, $element.find(":selected").data('id'));
+        } else {
+          var convertedVal = COSMATT.UNITCONVERTER.getUnitConvertedValue(plugin.settings.unitType, textboxValue, plugin.settings.unit, $element.find(":selected").data('id'));
+        }
+
+        // conversionfactor = COSMATT.UNITCONVERTER.getConversionFactor(plugin.settings.unitType, $(this).val());
+
+        plugin.settings.unit = $element.find(":selected").data('id');
+        plugin.setTextBoxValue(convertedVal);
+      }
+      /** public function set TextboxValue **/
     plugin.setTextBoxValue = function(value) {
       var stringToNum;
       if (value === '') {
@@ -2072,9 +2097,9 @@ COSMATT.UNITCONVERTER = (function() {
 
         if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function    
           // callbackData.conversionfactor = conversionfactor;
-          callbackData.unit = $(this).val();
+          callbackData.unit = plugin.settings.unit;
           callbackData.value = plugin.settings.value;
-          callbackData.SIValue = plugin.settings.SIValue;
+          callbackData.SIValue = plugin.getSIValue({});
           callbackData.type = "dropdown";
           plugin.settings.callBackFn.call(callbackData); // brings the scope to the callback
         }
@@ -2084,11 +2109,11 @@ COSMATT.UNITCONVERTER = (function() {
     /** Text box event handler **/
     var textBoxEventHandler = function() {
       $element.find(".unitTextBox").on('input', function() {
-        
+
         var self = this;
         var $pluginObj = $element
         var callbackData = {};
-        
+
         if (timerId > 0) {
           clearTimeout(timerId);
         }
@@ -2098,7 +2123,7 @@ COSMATT.UNITCONVERTER = (function() {
           if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function    
 
             callbackData.value = plugin.settings.value;
-            callbackData.unit = $(plugin).find(".unitComboBox").find(":selected").val();
+            callbackData.unit = plugin.settings.unit;
             callbackData.type = "textbox";
             callbackData.SIValue = plugin.getSIValue();
 

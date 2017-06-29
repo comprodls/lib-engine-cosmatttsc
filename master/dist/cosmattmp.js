@@ -5824,6 +5824,7 @@ COSMATT.UNITCONVERTER = (function() {
     plugin.getValueInSelectedUnit = function(siVal) {
 
 
+
       // var textboxValue = 0;
       var SIUnitObj = '';
       if (typeof COSMATT.UNITCONVERTER === 'object') {
@@ -5846,7 +5847,31 @@ COSMATT.UNITCONVERTER = (function() {
       }
       return conversionfactor;
     };
-    /** public function set TextboxValue **/
+    /** public function set DropBox Item **/
+    plugin.setDropBoxItem = function(index) {
+        var $comboBox = $element.find(".unitComboBox");
+        $comboBox.find('option').eq(index).attr("selected", true);
+
+        var textboxValue = 0;
+        textboxValue = plugin.settings.value;
+        if (textboxValue === '') {
+          plugin.setTextBoxValue(textboxValue);
+          plugin.settings.unit = $element.find(":selected").data('id');
+          return;
+        }
+
+        if (plugin.settings.showComboBoxOnly == 'true') {
+          var convertedVal = COSMATT.UNITCONVERTER.getUnitConvertedValue(plugin.settings.unitType, 1, plugin.settings.unit, $element.find(":selected").data('id'));
+        } else {
+          var convertedVal = COSMATT.UNITCONVERTER.getUnitConvertedValue(plugin.settings.unitType, textboxValue, plugin.settings.unit, $element.find(":selected").data('id'));
+        }
+
+        // conversionfactor = COSMATT.UNITCONVERTER.getConversionFactor(plugin.settings.unitType, $(this).val());
+
+        plugin.settings.unit = $element.find(":selected").data('id');
+        plugin.setTextBoxValue(convertedVal);
+      }
+      /** public function set TextboxValue **/
     plugin.setTextBoxValue = function(value) {
       var stringToNum;
       if (value === '') {
@@ -5942,9 +5967,9 @@ COSMATT.UNITCONVERTER = (function() {
 
         if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function    
           // callbackData.conversionfactor = conversionfactor;
-          callbackData.unit = $(this).val();
+          callbackData.unit = plugin.settings.unit;
           callbackData.value = plugin.settings.value;
-          callbackData.SIValue = plugin.settings.SIValue;
+          callbackData.SIValue = plugin.getSIValue({});
           callbackData.type = "dropdown";
           plugin.settings.callBackFn.call(callbackData); // brings the scope to the callback
         }
@@ -5954,11 +5979,11 @@ COSMATT.UNITCONVERTER = (function() {
     /** Text box event handler **/
     var textBoxEventHandler = function() {
       $element.find(".unitTextBox").on('input', function() {
-        
+
         var self = this;
         var $pluginObj = $element
         var callbackData = {};
-        
+
         if (timerId > 0) {
           clearTimeout(timerId);
         }
@@ -5968,7 +5993,7 @@ COSMATT.UNITCONVERTER = (function() {
           if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function    
 
             callbackData.value = plugin.settings.value;
-            callbackData.unit = $(plugin).find(".unitComboBox").find(":selected").val();
+            callbackData.unit = plugin.settings.unit;
             callbackData.type = "textbox";
             callbackData.SIValue = plugin.getSIValue();
 
@@ -6717,7 +6742,14 @@ COSMATT.MotionProfile.configuration = {
       showProfiles: COSMATT.MotionProfile.configuration.Profiles.showAll,
       smoothness: COSMATT.MotionProfile.configuration.Smoothness.automatic,
       showCheckAnswerButton: false,
-      assessmentMode: false
+      assessmentMode: false,
+      moveDistanceUnit: 0,
+      moveTimeUnit: 0,
+      dwellTimeUnit: 0,
+      peakVelocityUnit: 0,
+      rmsVelocityUnit: 0,
+      peakAccelarationUnit: 0,
+      rmsAccelarationUnit: 0
     };
 
     if (options.assessmentMode) {
@@ -7569,20 +7601,20 @@ COSMATT.MotionProfile.configuration = {
       var bret = true;
       // var errorInputs = [];
       $inputControls.find(".input-entries .form-group").removeClass("has-error");
-      if (!(!isNaN(uiValues.movedistance) && uiValues.movedistance > 0)) {
+      if (!(!isNaN(SIValues.movedistance) && SIValues.movedistance > 0)) {
         $inputControls.find("#moveDistanceInputContainer").addClass("has-error");
         bret = false;
       }
-      if (!(!isNaN(uiValues.movedistance) && uiValues.movedtime > 0)) {
+      if (!(!isNaN(SIValues.movedistance) && SIValues.movedtime > 0)) {
         $inputControls.find("#moveTimeInputContainer").addClass("has-error");
         bret = false;
       }
-      if (!(!isNaN(uiValues.dweltime) && uiValues.dweltime >= 0)) {
+      if (!(!isNaN(SIValues.dweltime) && SIValues.dweltime >= 0)) {
         $inputControls.find("#dwellTimeInputContainer").addClass("has-error");
         bret = false;
       }
 
-      if (!(!isNaN(uiValues.velocityJerk) && (uiValues.velocityJerk >= 0 && uiValues.velocityJerk <= 100))) {
+      if (!(!isNaN(SIValues.velocityJerk) && (SIValues.velocityJerk >= 0 && SIValues.velocityJerk <= 100))) {
         $inputControls.find("#indexTypeInputContainer").addClass("has-error");
         bret = false;
       }
@@ -8013,7 +8045,7 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").unitsComboBox({
         "unitType": "ANGULARDISTANCE",
-        "unit": "0",
+        "unit": settings.moveDistanceUnit,
         "roundOfNumber": "2",
         "value": settings.moveDistance,
         "comboBoxWidthRatio": {
@@ -8021,12 +8053,21 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.movedistance = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "dropdown") {
+              settings.moveDistanceUnit = parseInt(this.unit.split('_')[1]) - 1;
+            } else if (this.type == "textbox") {
+              uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.movedistance = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "movedistance": uiValues.movedistance });
+              settings.userResponseNotifier({
+                "movedistance": {
+                  "value": SIValues.movedistance,
+                  "unit": settings.moveDistanceUnit
+                }
+              });
             }
           }
         }
@@ -8034,7 +8075,7 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").unitsComboBox({
         "unitType": "TIME",
-        "unit": "0",
+        "unit": settings.moveTimeUnit,
         "roundOfNumber": "2",
         "value": settings.moveTime,
         "comboBoxWidthRatio": {
@@ -8042,12 +8083,21 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.movedtime = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "dropdown") {
+              settings.moveTimeUnit = parseInt(this.unit.split('_')[1]) - 1;
+            } else if (this.type == "textbox") {
+              uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.movedtime = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "movedtime": uiValues.movedtime });
+              settings.userResponseNotifier({
+                "movedtime": {
+                  "value": SIValues.movedtime,
+                  "unit": settings.moveTimeUnit
+                }
+              });
             }
           }
         }
@@ -8055,7 +8105,7 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").unitsComboBox({
         "unitType": "TIME",
-        "unit": "0",
+        "unit": settings.dwellTimeUnit,
         "roundOfNumber": "2",
         "value": settings.dwellTime,
         "comboBoxWidthRatio": {
@@ -8063,12 +8113,21 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.dweltime = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "dropdown") {
+              settings.dwellTimeUnit = parseInt(this.unit.split('_')[1]) - 1;
+            } else if (this.type == "textbox") {
+              uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.dweltime = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "dweltime": uiValues.dweltime });
+              settings.userResponseNotifier({
+                "dweltime": {
+                  "value": SIValues.dweltime,
+                  "unit": settings.dwellTimeUnit
+                }
+              });
             }
           }
         }
@@ -8086,12 +8145,18 @@ COSMATT.MotionProfile.configuration = {
           "comboBox": "40%"
         },
         callBackFn: function() {
-          if (this.type != undefined && this.type == "textbox") {
-            uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-            SIValues.velocityJerk = this.value === '' ? '' : parseFloat(this.SIValue);
-            inputControlsCallbackFn();
+          if (this.type != undefined) {
+            if (this.type == "textbox") {
+              uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
+              SIValues.velocityJerk = this.value === '' ? '' : parseFloat(this.SIValue);
+              inputControlsCallbackFn();
+            }
             if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({ "velocityJerk": uiValues.velocityJerk });
+              settings.userResponseNotifier({
+                "velocityJerk": {
+                  "value": SIValues.velocityJerk
+                }
+              });
             }
           }
         }
@@ -8113,45 +8178,65 @@ COSMATT.MotionProfile.configuration = {
 
       $inputControls.find("#peakVelocityInputContainer").find(".comboPeakVelocity").unitsComboBox({
         "unitType": "ANGULARVELOCITY",
-        "unit": "0",
+        "unit": settings.peakVelocityUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.peakVelocityUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
 
       $inputControls.find("#rmsVelocityInputContainer").find(".comboRmsVelocity").unitsComboBox({
         "unitType": "ANGULARVELOCITY",
-        "unit": "0",
+        "unit": settings.rmsVelocityUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.rmsVelocityUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
 
       $inputControls.find("#peakAccInputContainer").find(".comboPeakAcc").unitsComboBox({
         "unitType": "ANGULARACCELERATION",
-        "unit": "0",
+        "unit": settings.peakAccelarationUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.peakAccelarationUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
 
       $inputControls.find("#rmsAccInputContainer").find(".comboRmsAcc").unitsComboBox({
         "unitType": "ANGULARACCELERATION",
-        "unit": "0",
+        "unit": settings.rmsAccelarationUnit,
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
           "textBox": "60%",
           "comboBox": "40%"
+        },
+        callBackFn: function() {
+          if (this.type != undefined && this.type == "dropdown") {
+            settings.rmsAccelarationUnit = parseInt(this.unit.split('_')[1]) - 1;
+          }
         }
       });
     };
@@ -8315,24 +8400,37 @@ COSMATT.MotionProfile.configuration = {
     function updateInputs(params) {
       if (params.movedistance) {
         // TODO parseInt to Parse float then to 2 decimal places
-        uiValues.movedistance = parseFloat(params.movedistance);
-        SIValues.movedistance = parseFloat(params.movedistance);
-        $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox').setTextBoxValue(uiValues.movedistance);
+        // uiValues.movedistance = parseFloat(params.movedistance.value);
+        SIValues.movedistance = parseFloat(params.movedistance.value);
+        var $combobox = $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.movedistance);
+        if (params.movedistance.unit) {
+          $combobox.setDropBoxItem(parseInt(params.movedistance.unit));
+        }
       }
       if (params.movedtime) {
-        uiValues.movedtime = parseFloat(params.movedtime);
-        SIValues.movedtime = parseFloat(params.movedtime);
-        $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox').setTextBoxValue(uiValues.movedtime);
+        // uiValues.movedtime = parseFloat(params.movedtime.value);
+        SIValues.movedtime = parseFloat(params.movedtime.value);
+        var $combobox = $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.movedtime);
+        if (params.movedtime.unit) {
+          $combobox.setDropBoxItem(parseInt(params.movedtime.unit));
+        }
       }
       if (params.dweltime) {
-        uiValues.dweltime = parseFloat(params.dweltime);
-        SIValues.dweltime = parseFloat(params.dweltime);
-        $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox').setTextBoxValue(uiValues.dweltime);
+        // uiValues.dweltime = parseFloat(params.dweltime.value);
+        SIValues.dweltime = parseFloat(params.dweltime.value);
+        var $combobox = $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.dweltime);
+        if (params.dweltime.unit) {
+          $combobox.setDropBoxItem(parseInt(params.dweltime.unit));
+        }
       }
       if (params.velocityJerk) {
-        uiValues.velocityJerk = parseFloat(params.velocityJerk);
-        SIValues.velocityJerk = parseFloat(params.velocityJerk);
-        $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox').setTextBoxValue(uiValues.velocityJerk);
+        // uiValues.velocityJerk = parseFloat(params.velocityJerk.value);
+        SIValues.velocityJerk = parseFloat(params.velocityJerk.value);
+        var $combobox = $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox');
+        $combobox.setTextBoxValue(SIValues.velocityJerk);
       }
       calculateAndPaint();
     }
@@ -8627,7 +8725,8 @@ define('cosmattmp',[
 
             var interactionId = getInteractionId(property);
             __content.userAnswersJSON[interactionId] = {};
-            __content.userAnswersJSON[interactionId].answer = callbackValue[property].toString();
+            __content.userAnswersJSON[interactionId].answer = callbackValue[property].value.toString();
+            if (callbackValue[property].unit) __content.userAnswersJSON[interactionId].unit = callbackValue[property].unit.toString();
             __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
             __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
@@ -8712,7 +8811,10 @@ define('cosmattmp',[
             __content.userAnswersJSON[interactionId].score = interactionMinScore;
             __content.userAnswersJSON[interactionId].status = 'incorrect';
           }
-          updatePluginVals[__content.optionsJSON[value.id].type] = value.answer;
+          updatePluginVals[__content.optionsJSON[value.id].type] = {
+            value: value.answer
+          };
+          if (value.unit) updatePluginVals[__content.optionsJSON[value.id].type].unit = value.unit;
         });
         __pluginInstance.updateInputs(updatePluginVals);
 
@@ -9115,6 +9217,7 @@ define('cosmattmp',[
             interaction.answer = answers[answerID].answer;
             interaction.maxscore = answers[answerID].maxscore;
             interaction.score = answers[answerID].score;
+            interaction.unit = answers[answerID].unit;
             interactionArray.push(interaction);
           }
         }
@@ -9172,4 +9275,4 @@ define('cosmattmp',[
   });
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-('/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * CSS which is necessary for a default rendering of an\r\n * MCQSC activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid MCQSC layout HTML and/or dynamically\r\n * created by the MCQSC engine JS)\r\n *\r\n *\r\n *******************************************************/\r\n.cosmattmp-engine .question-text{\r\n    color: #366894;\r\n    font-size: 1.286em;\r\n\r\n}.cosmatt-unitComboBox {\n  width: 100%;\n  height: 100%;\n}\n.cosmatt-unitComboBox .form-control {\n  display: block;\n  height: 34px;\n  padding: 6px 12px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  -webkit-border-radius: 4px;\n}\n.cosmatt-unitComboBox .unitTextBox {\n  display: inline;\n  max-width: 100px;\n}\n.cosmatt-unitComboBox .unitComboBox {\n  display: inline;\n  max-width: 100px;\n  padding: 0 6px;\n  margin-left: 10px;\n}\n.cosmatt-unitComboBox .form-control[disabled],\n.cosmatt-unitComboBox .form-control[readonly] {\n  background-color: #eee;\n  opacity: 1;\n}\n.cosmatt-motionProfile {\r\n  position: relative;\r\n}\r\n.cosmatt-motionProfile.unselectable {\r\n  -moz-user-select: -moz-none;\r\n  -khtml-user-select: none;\r\n  -webkit-user-select: none;\r\n  -o-user-select: none;\r\n  user-select: none;\r\n}\r\n.cosmatt-motionProfile.assessment-mode {\r\n  box-shadow: 0 0 0 #ddd !important;\r\n  border: none !important;\r\n}\r\n.cosmatt-motionProfile #inputControls .inputs {\r\n  padding-top: 15px;\r\n}\r\n.cosmatt-motionProfile #inputControls .correct .cosmatt-unitComboBox .unitTextBox {\r\n  background-color: #f0fff0;\r\n  border-color: #7DC27D;\r\n}\r\n.cosmatt-motionProfile #inputControls .incorrect .cosmatt-unitComboBox .unitTextBox {\r\n  background-color: #fff0f0;\r\n  border-color: #A90329;\r\n}\r\n.cosmatt-motionProfile #profileButtons {\r\n  margin: 10px 0;\r\n}\r\n.cosmatt-motionProfile .profileButton {\r\n  margin-right: 10px;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea {\r\n  height: 400px;\r\n  min-width: 10px;\r\n  display: inline-block;\r\n  padding: 0px 5px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea:first-child {\r\n  padding-left: 0px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea:last-child {\r\n  padding-right: 0px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\r\n  pointer-events: none;\r\n  margin: 0px !important;\r\n  width: initial;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\r\n  background-color: transparent !important;\r\n  border-width: 0px !important;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\r\n  border-width: 0px !important;\r\n  padding: 0px !important;\r\n  vertical-align: middle;\r\n}\r\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td.legendColorBox div div {\r\n  border-radius: 0% !important;\r\n  width: 0 !important;\r\n}\r\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\r\n  max-width: 211px;\r\n}\r\n.cosmatt-motionProfile #tooltip {\r\n  padding: 4px 10px !important;\r\n  background-color: rgba(0, 0, 0, 0.8) !important;\r\n  border: solid 1px #000 !important;\r\n  z-index: 100 !important;\r\n  font-size: 12px !important;\r\n  color: #fff !important;\r\n  -webkit-border-radius: 3px !important;\r\n  -moz-border-radius: 3px !important;\r\n  border-radius: 3px !important;\r\n  position: absolute;\r\n  display: none;\r\n}\r\n.cosmatt-motionProfile .control-label {\r\n  text-align: right;\r\n  margin-bottom: 0;\r\n  padding-top: 7px;\r\n}\r\n');
+('/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * CSS which is necessary for a default rendering of an\r\n * MCQSC activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid MCQSC layout HTML and/or dynamically\r\n * created by the MCQSC engine JS)\r\n *\r\n *\r\n *******************************************************/\r\n.cosmattmp-engine .question-text{\r\n    color: #366894;\r\n    font-size: 1.286em;\r\n\r\n}.cosmatt-unitComboBox {\n  width: 100%;\n  height: 100%;\n}\n.cosmatt-unitComboBox .form-control {\n  display: block;\n  height: 34px;\n  padding: 6px 12px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  -webkit-border-radius: 4px;\n}\n.cosmatt-unitComboBox .unitTextBox {\n  display: inline;\n  max-width: 100px;\n}\n.cosmatt-unitComboBox .unitComboBox {\n  display: inline;\n  max-width: 100px;\n  padding: 0 6px;\n  margin-left: 10px;\n}\n.cosmatt-unitComboBox .form-control[disabled],\n.cosmatt-unitComboBox .form-control[readonly] {\n  background-color: #eee;\n  opacity: 1;\n}\n.cosmatt-motionProfile {\n  position: relative;\n}\n.cosmatt-motionProfile.unselectable {\n  -moz-user-select: -moz-none;\n  -khtml-user-select: none;\n  -webkit-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n}\n.cosmatt-motionProfile.assessment-mode {\n  box-shadow: 0 0 0 #ddd !important;\n  border: none !important;\n}\n.cosmatt-motionProfile #inputControls .inputs {\n  padding-top: 15px;\n}\n.cosmatt-motionProfile #inputControls .correct .cosmatt-unitComboBox .unitTextBox {\n  background-color: #f0fff0;\n  border-color: #7DC27D;\n}\n.cosmatt-motionProfile #inputControls .incorrect .cosmatt-unitComboBox .unitTextBox {\n  background-color: #fff0f0;\n  border-color: #A90329;\n}\n.cosmatt-motionProfile #profileButtons {\n  margin: 10px 0;\n}\n.cosmatt-motionProfile .profileButton {\n  margin-right: 10px;\n}\n.cosmatt-motionProfile #graphContainer .graphArea {\n  height: 400px;\n  min-width: 10px;\n  display: inline-block;\n  padding: 0px 5px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea:first-child {\n  padding-left: 0px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea:last-child {\n  padding-right: 0px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table {\n  pointer-events: none;\n  margin: 0px !important;\n  width: initial;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr {\n  background-color: transparent !important;\n  border-width: 0px !important;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td {\n  border-width: 0px !important;\n  padding: 0px !important;\n  vertical-align: middle;\n}\n.cosmatt-motionProfile #graphContainer .graphArea .legend table tr td.legendColorBox div div {\n  border-radius: 0% !important;\n  width: 0 !important;\n}\n.cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {\n  max-width: 211px;\n}\n.cosmatt-motionProfile #tooltip {\n  padding: 4px 10px !important;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  border: solid 1px #000 !important;\n  z-index: 100 !important;\n  font-size: 12px !important;\n  color: #fff !important;\n  -webkit-border-radius: 3px !important;\n  -moz-border-radius: 3px !important;\n  border-radius: 3px !important;\n  position: absolute;\n  display: none;\n}\n.cosmatt-motionProfile .control-label {\n  text-align: right;\n  margin-bottom: 0;\n  padding-top: 7px;\n}\n');

@@ -209,7 +209,8 @@ define([
 
             var interactionId = getInteractionId(property);
             __content.userAnswersJSON[interactionId] = {};
-            __content.userAnswersJSON[interactionId].answer = callbackValue[property].toString();
+            __content.userAnswersJSON[interactionId].answer = callbackValue[property].value.toString();
+            if (callbackValue[property].unit) __content.userAnswersJSON[interactionId].unit = callbackValue[property].unit.toString();
             __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
             __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
@@ -294,7 +295,10 @@ define([
             __content.userAnswersJSON[interactionId].score = interactionMinScore;
             __content.userAnswersJSON[interactionId].status = 'incorrect';
           }
-          updatePluginVals[__content.optionsJSON[value.id].type] = value.answer;
+          updatePluginVals[__content.optionsJSON[value.id].type] = {
+            value: value.answer
+          };
+          if (value.unit) updatePluginVals[__content.optionsJSON[value.id].type].unit = value.unit;
         });
         __pluginInstance.updateInputs(updatePluginVals);
 
@@ -697,6 +701,7 @@ define([
             interaction.answer = answers[answerID].answer;
             interaction.maxscore = answers[answerID].maxscore;
             interaction.score = answers[answerID].score;
+            interaction.unit = answers[answerID].unit;
             interactionArray.push(interaction);
           }
         }
