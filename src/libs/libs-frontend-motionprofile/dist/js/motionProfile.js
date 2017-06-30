@@ -2032,8 +2032,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": settings.moveDistance,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined) {
@@ -2062,8 +2062,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": settings.moveTime,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined) {
@@ -2092,8 +2092,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": settings.dwellTime,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined) {
@@ -2124,8 +2124,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": settings.indexType,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined) {
@@ -2165,8 +2165,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined && this.type == "dropdown") {
@@ -2181,8 +2181,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined && this.type == "dropdown") {
@@ -2197,8 +2197,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined && this.type == "dropdown") {
@@ -2213,8 +2213,8 @@ COSMATT.MotionProfile.configuration = {
         "roundOfNumber": "2",
         "value": 0,
         "comboBoxWidthRatio": {
-          "textBox": "60%",
-          "comboBox": "40%"
+          "textBox": "55%",
+          "comboBox": "45%"
         },
         callBackFn: function() {
           if (this.type != undefined && this.type == "dropdown") {
