@@ -8444,7 +8444,7 @@ COSMATT.MotionProfile.configuration = {
         $moveDistanceInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -8455,7 +8455,7 @@ COSMATT.MotionProfile.configuration = {
         $moveTimeInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -8466,7 +8466,7 @@ COSMATT.MotionProfile.configuration = {
         $dwellTimeInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -8477,7 +8477,7 @@ COSMATT.MotionProfile.configuration = {
         $velocityJerkInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -8730,7 +8730,8 @@ define('cosmattmp',[
             __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
             __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
-            if (callbackValue[property] == __content.answersJSON[interactionId].correct) {
+
+            if (Math.round(parseFloat(callbackValue[property].value) * 100) / 100 == parseFloat(__content.answersJSON[interactionId].correct)) {
               __content.userAnswersJSON[interactionId].score = interactionMaxScore;
               __content.userAnswersJSON[interactionId].status = 'correct';
             } else {
@@ -8804,7 +8805,7 @@ define('cosmattmp',[
           __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
           __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
-          if (value.answer == __content.answersJSON[interactionId].correct) {
+          if (Math.round(parseFloat(value.answer) * 100) / 100 == parseFloat(__content.answersJSON[interactionId].correct)) {
             __content.userAnswersJSON[interactionId].score = interactionMaxScore;
             __content.userAnswersJSON[interactionId].status = 'correct';
           } else {

@@ -2427,7 +2427,7 @@ COSMATT.MotionProfile.configuration = {
         $moveDistanceInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -2438,7 +2438,7 @@ COSMATT.MotionProfile.configuration = {
         $moveTimeInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -2449,7 +2449,7 @@ COSMATT.MotionProfile.configuration = {
         $dwellTimeInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
@@ -2460,7 +2460,7 @@ COSMATT.MotionProfile.configuration = {
         $velocityJerkInput.data('unitsComboBox').update({
           "enable": {
             "textbox": "false",
-            "comboBox": "false"
+            "comboBox": "true"
           }
         });
       }
