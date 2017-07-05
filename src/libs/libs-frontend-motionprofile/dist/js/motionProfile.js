@@ -2022,6 +2022,28 @@ COSMATT.MotionProfile.configuration = {
       calculateAndPaint();
     };
 
+    var responseNotifier = function() {
+      if (settings.assessmentMode && settings.userResponseNotifier) {
+        settings.userResponseNotifier({
+          "movedistance": {
+            "value": SIValues.movedistance,
+            "unit": settings.moveDistanceUnit
+          },
+          "movedtime": {
+            "value": SIValues.movedtime,
+            "unit": settings.moveTimeUnit
+          },
+          "dweltime": {
+            "value": SIValues.dweltime,
+            "unit": settings.dwellTimeUnit
+          },
+          "velocityJerk": {
+            "value": SIValues.velocityJerk
+          }
+        });
+      }
+    }
+
     var generateInputControls = function() {
       var $inputControls = $widgetContainer.find("#inputControls");
       $inputControls.append('<form class="row form-horizontal"><div class="col-6 col-xs-6 input-entries inputs"><div class="row form-group" id="moveDistanceInputContainer"><label for="moveDistance" class="col-4 col-xs-4 control-label">Move Distance</label><div class="col-8 col-xs-8 comboMoveDistance"></div></div><div class="row form-group" id="moveTimeInputContainer"><label for="moveTime" class="col-4 col-xs-4 control-label">Move Time</label><div class="col-8 col-xs-8 comboMoveTime"></div></div><div class="row form-group" id="dwellTimeInputContainer"><label for="dwellTime" class="col-4 col-xs-4 control-label">Dwell Time</label><div class="col-8 col-xs-8 comboDwellTime"></div></div><div class="row form-group" id="indexTypeInputContainer"><label for="indexType" class="col-4 col-xs-4 control-label">Velocity Jerk</label><div class="col-8 col-xs-8 comboIndexType"></div></div><div class="row form-group" id="smoothnessInputContainer"><label for="smoothness" class="col-4 col-xs-4 control-label">Smoothness</label><div class="col-8 col-xs-8 smoothnessDropDown"></div></div></div><div class="col-6 col-xs-6 inputs"><div class="row form-group" id="peakVelocityInputContainer"><label for="peakVelocity" class="col-4 col-xs-4 control-label">Peak Velocity</label><div class="col-8 col-xs-8 comboPeakVelocity"></div></div><div class="row form-group" id="rmsVelocityInputContainer"><label for="rmsVelocity" class="col-4 col-xs-4 control-label">RMS Velocity</label><div class="col-8 col-xs-8 comboRmsVelocity"></div></div><div class="row form-group" id="peakAccInputContainer"><label for="peakAcc" class="col-4 col-xs-4 control-label">Peak Acceleration</label><div class="col-8 col-xs-8 comboPeakAcc"></div></div><div class="row form-group" id="rmsAccInputContainer"><label for="rmsAcc" class="col-4 col-xs-4 control-label">RMS Acceleration</label><div class="col-8 col-xs-8 comboRmsAcc"></div></div></div></form>');
@@ -2044,14 +2066,7 @@ COSMATT.MotionProfile.configuration = {
               SIValues.movedistance = this.value === '' ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
-            if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({
-                "movedistance": {
-                  "value": SIValues.movedistance,
-                  "unit": settings.moveDistanceUnit
-                }
-              });
-            }
+            responseNotifier();
           }
         }
       });
@@ -2074,14 +2089,7 @@ COSMATT.MotionProfile.configuration = {
               SIValues.movedtime = this.value === '' ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
-            if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({
-                "movedtime": {
-                  "value": SIValues.movedtime,
-                  "unit": settings.moveTimeUnit
-                }
-              });
-            }
+            responseNotifier();
           }
         }
       });
@@ -2104,14 +2112,7 @@ COSMATT.MotionProfile.configuration = {
               SIValues.dweltime = this.value === '' ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
-            if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({
-                "dweltime": {
-                  "value": SIValues.dweltime,
-                  "unit": settings.dwellTimeUnit
-                }
-              });
-            }
+            responseNotifier();
           }
         }
       });
@@ -2134,13 +2135,7 @@ COSMATT.MotionProfile.configuration = {
               SIValues.velocityJerk = this.value === '' ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
-            if (settings.assessmentMode && settings.userResponseNotifier) {
-              settings.userResponseNotifier({
-                "velocityJerk": {
-                  "value": SIValues.velocityJerk
-                }
-              });
-            }
+            responseNotifier();
           }
         }
       });
@@ -2388,7 +2383,8 @@ COSMATT.MotionProfile.configuration = {
         var $combobox = $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.movedistance);
         if (params.movedistance.unit) {
-          $combobox.setDropBoxItem(parseInt(params.movedistance.unit));
+          settings.moveDistanceUnit = parseInt(params.movedistance.unit);
+          $combobox.setDropBoxItem(settings.moveDistanceUnit);
         }
       }
       if (params.movedtime) {
@@ -2397,7 +2393,8 @@ COSMATT.MotionProfile.configuration = {
         var $combobox = $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.movedtime);
         if (params.movedtime.unit) {
-          $combobox.setDropBoxItem(parseInt(params.movedtime.unit));
+          settings.moveTimeUnit = parseInt(params.movedtime.unit);
+          $combobox.setDropBoxItem(settings.moveTimeUnit);
         }
       }
       if (params.dweltime) {
@@ -2406,7 +2403,8 @@ COSMATT.MotionProfile.configuration = {
         var $combobox = $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.dweltime);
         if (params.dweltime.unit) {
-          $combobox.setDropBoxItem(parseInt(params.dweltime.unit));
+          settings.dwellTimeUnit = parseInt(params.dweltime.unit);
+          $combobox.setDropBoxItem(settings.dwellTimeUnit);
         }
       }
       if (params.velocityJerk) {

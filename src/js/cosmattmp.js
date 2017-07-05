@@ -210,7 +210,7 @@ define([
             var interactionId = getInteractionId(property);
             __content.userAnswersJSON[interactionId] = {};
             __content.userAnswersJSON[interactionId].answer = callbackValue[property].value.toString();
-            if (callbackValue[property].unit) __content.userAnswersJSON[interactionId].unit = callbackValue[property].unit.toString();
+            if (callbackValue[property].unit != undefined) __content.userAnswersJSON[interactionId].unit = callbackValue[property].unit.toString();
             __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
             __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
