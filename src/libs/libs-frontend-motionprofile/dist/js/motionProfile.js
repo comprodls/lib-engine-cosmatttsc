@@ -2379,7 +2379,7 @@ COSMATT.MotionProfile.configuration = {
       if (params.movedistance) {
         // TODO parseInt to Parse float then to 2 decimal places
         // uiValues.movedistance = parseFloat(params.movedistance.value);
-        SIValues.movedistance = parseFloat(params.movedistance.value);
+        SIValues.movedistance = isNaN(parseFloat(params.movedistance.value)) ? "" : parseFloat(params.movedistance.value);
         var $combobox = $inputControls.find("#moveDistanceInputContainer").find(".comboMoveDistance").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.movedistance);
         if (params.movedistance.unit) {
@@ -2389,7 +2389,7 @@ COSMATT.MotionProfile.configuration = {
       }
       if (params.movedtime) {
         // uiValues.movedtime = parseFloat(params.movedtime.value);
-        SIValues.movedtime = parseFloat(params.movedtime.value);
+        SIValues.movedtime = isNaN(parseFloat(params.movedtime.value)) ? "" : parseFloat(params.movedtime.value);
         var $combobox = $inputControls.find("#moveTimeInputContainer").find(".comboMoveTime").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.movedtime);
         if (params.movedtime.unit) {
@@ -2399,7 +2399,7 @@ COSMATT.MotionProfile.configuration = {
       }
       if (params.dweltime) {
         // uiValues.dweltime = parseFloat(params.dweltime.value);
-        SIValues.dweltime = parseFloat(params.dweltime.value);
+        SIValues.dweltime = isNaN(parseFloat(params.dweltime.value)) ? "" : parseFloat(params.dweltime.value);
         var $combobox = $inputControls.find("#dwellTimeInputContainer").find(".comboDwellTime").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.dweltime);
         if (params.dweltime.unit) {
@@ -2409,7 +2409,7 @@ COSMATT.MotionProfile.configuration = {
       }
       if (params.velocityJerk) {
         // uiValues.velocityJerk = parseFloat(params.velocityJerk.value);
-        SIValues.velocityJerk = parseFloat(params.velocityJerk.value);
+        SIValues.velocityJerk = isNaN(parseFloat(params.velocityJerk.value)) ? "" : parseFloat(params.velocityJerk.value);
         var $combobox = $inputControls.find("#indexTypeInputContainer").find(".comboIndexType").data('unitsComboBox');
         $combobox.setTextBoxValue(SIValues.velocityJerk);
       }
