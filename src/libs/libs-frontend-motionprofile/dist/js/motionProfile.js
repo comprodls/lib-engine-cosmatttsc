@@ -1588,7 +1588,7 @@ COSMATT.MotionProfile.configuration = {
         $inputControls.find("#moveDistanceInputContainer").addClass("has-error");
         bret = false;
       }
-      if (!(!isNaN(SIValues.movedistance) && SIValues.movedtime > 0)) {
+      if (!(!isNaN(SIValues.movedtime) && SIValues.movedtime > 0)) {
         $inputControls.find("#moveTimeInputContainer").addClass("has-error");
         bret = false;
       }

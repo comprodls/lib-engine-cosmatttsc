@@ -176,9 +176,9 @@ define([
 
         // $('input[id^=option]').change(__handleRadioButtonClick);
 
-        $(document).bind('userAnswered', function(e, value) {
-          __saveResults(false);
-        });
+        // $(document).bind('userAnswered', function(e, value) {
+        //   __saveResults(false);
+        // });
 
         /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
 
@@ -202,29 +202,31 @@ define([
       function userResponseHandler(callbackValue) {
         for (var property in callbackValue) {
           if (callbackValue.hasOwnProperty(property)) {
-
             var interactionMinScore = __content.score.min;
             var optionsCount = Object.keys(__content.optionsJSON).length;
             var interactionMaxScore = __content.score.max / optionsCount;
 
             var interactionId = getInteractionId(property);
-            __content.userAnswersJSON[interactionId] = {};
-            __content.userAnswersJSON[interactionId].answer = callbackValue[property].value.toString();
-            if (callbackValue[property].unit != undefined) __content.userAnswersJSON[interactionId].unit = callbackValue[property].unit.toString();
-            __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
-            __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
+            if (interactionId != '') {
+              __content.userAnswersJSON[interactionId] = {};
+              __content.userAnswersJSON[interactionId].answer = callbackValue[property].value.toString();
+              if (callbackValue[property].unit != undefined) __content.userAnswersJSON[interactionId].unit = callbackValue[property].unit.toString();
+              __content.userAnswersJSON[interactionId].correctanswer = __content.answersJSON[interactionId].correct.toString();
+              __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
 
-            if (Math.round(parseFloat(callbackValue[property].value) * 100) / 100 == parseFloat(__content.answersJSON[interactionId].correct)) {
-              __content.userAnswersJSON[interactionId].score = interactionMaxScore;
-              __content.userAnswersJSON[interactionId].status = 'correct';
-            } else {
-              __content.userAnswersJSON[interactionId].score = interactionMinScore;
-              __content.userAnswersJSON[interactionId].status = 'incorrect';
+              if (Math.round(parseFloat(callbackValue[property].value) * 100) / 100 == parseFloat(__content.answersJSON[interactionId].correct)) {
+                __content.userAnswersJSON[interactionId].score = interactionMaxScore;
+                __content.userAnswersJSON[interactionId].status = 'correct';
+              } else {
+                __content.userAnswersJSON[interactionId].score = interactionMinScore;
+                __content.userAnswersJSON[interactionId].status = 'incorrect';
+              }
             }
           }
         }
-        $(document).triggerHandler('userAnswered', callbackValue);
+        // $(document).triggerHandler('userAnswered', callbackValue);
+        __saveResults(false);
       }
 
       function getInteractionId(interactionField) {
@@ -232,10 +234,10 @@ define([
         var interactionId = '';
         for (interactionId in interactions) {
           if (interactions[interactionId].type === interactionField) {
-            break;
+            return interactionId;
           }
         }
-        return interactionId;
+        return '';
       }
       /**
        * ENGINE-SHELL Interface
