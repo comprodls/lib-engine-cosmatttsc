@@ -59,14 +59,6 @@
   border-radius: 0% !important;
   width: 0 !important;
 }
-.cosmatt-motionProfile #graphContainer .graphArea .yaxisLabel {
-  transform-origin: left;
-  transform: rotate(-90deg) !important;
-  width: 100%;
-  top: 100% !important;
-  text-align: center;
-  padding-left: 10%;
-}
 .cosmatt-motionProfile .smoothnessDropDown .smoothnessDDMenu {
   max-width: 211px;
 }
