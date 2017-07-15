@@ -1089,7 +1089,16 @@ COSMATT.MotionProfile.configuration = {
             min: -1 * posMax,
             max: posMax,
             position: "left",
-            axisLabel: "Position (rad)"
+            axisLabel: "Position (rad)",
+            tickFormatter: function(val, axis) {
+              var valStr = val.toString();
+              if ((valStr.length > 5 && valStr[0] == "-") || (valStr.length > 4 && valStr[0] != "-")) {
+                return val.toExponential(1);
+                // let tickValue = val.toExponential(1).toString().split('+');
+                // return tickValue = tickValue[0] + "<br>+" + tickValue[1];
+              }
+              return val;
+            }
           },
           xaxis: {
             min: 0,
@@ -1104,7 +1113,16 @@ COSMATT.MotionProfile.configuration = {
             min: -1 * velMax,
             max: velMax,
             position: "left",
-            axisLabel: "Velocity (rad/sec)"
+            axisLabel: "Velocity (rad/sec)",
+            tickFormatter: function(val, axis) {
+              var valStr = val.toString();
+              if ((valStr.length > 5 && valStr[0] == "-") || (valStr.length > 4 && valStr[0] != "-")) {
+                return val.toExponential(1);
+                // let tickValue = val.toExponential(1).toString().split('+');
+                // return tickValue = tickValue[0] + "<br>+" + tickValue[1];
+              }
+              return val;
+            }
           },
           xaxis: {
             min: 0,
@@ -1119,7 +1137,16 @@ COSMATT.MotionProfile.configuration = {
             min: -1 * accMax,
             max: accMax,
             position: "left",
-            axisLabel: "Acceleration (rad/sec^2)"
+            axisLabel: "Acceleration (rad/sec^2)",
+            tickFormatter: function(val, axis) {
+              var valStr = val.toString();
+              if ((valStr.length > 5 && valStr[0] == "-") || (valStr.length > 4 && valStr[0] != "-")) {
+                return val.toExponential(1);
+                // let tickValue = val.toExponential(1).toString().split('+');
+                // return tickValue = tickValue[0] + "<br>+" + tickValue[1];
+              }
+              return val;
+            }
           },
           xaxis: {
             min: 0,
@@ -1134,7 +1161,14 @@ COSMATT.MotionProfile.configuration = {
             min: -1 * jerkMax,
             max: jerkMax,
             position: "left",
-            axisLabel: "Jerk (rad/sec^3)"
+            axisLabel: "Jerk (rad/sec^3)",
+            tickFormatter: function(val, axis) {
+              var valStr = val.toString();
+              if ((valStr.length > 5 && valStr[0] == "-") || (valStr.length > 4 && valStr[0] != "-")) {
+                return val.toExponential(1);
+              }
+              return val;
+            }
           },
           xaxis: {
             min: 0,
