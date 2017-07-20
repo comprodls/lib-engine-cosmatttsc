@@ -2013,6 +2013,52 @@ COSMATT.MotionProfile.configuration = {
       });
     };
 
+    var updateYaxisLabelCSS = function() {
+      /* This is fix for https://compro.atlassian.net/browse/COSMATT-258
+      This is a chrome specific issue which occurs when rotating text by 90 degrees.
+      The text will become blurry/clear depending on whether the width is odd/even.
+      What appears to be happening here is the layer is being composited to a half-pixel location
+      which is then being rendered to create the appearance of being "between" two pixels.
+      So width of yaxis label is converted to nearest next even number.
+      */
+      if (posPlot) {
+        var $ylabel = $container.find("#posGraph .yaxisLabel");
+        var width = Math.ceil($ylabel.width() > $ylabel.height() ? $ylabel.width() : $ylabel.height());
+        if (width % 2 != 0) width++;
+        $ylabel.width(width);
+        $ylabel.css('top', '-3%');
+      }
+      if (velPlot) {
+        var $ylabel = $container.find("#velGraph .yaxisLabel");
+        var width = Math.ceil($ylabel.width() > $ylabel.height() ? $ylabel.width() : $ylabel.height());
+        if (width % 2 != 0) width++;
+        $ylabel.width(width);
+        $ylabel.css('top', '-3%');
+      }
+      if (accPlot) {
+        var $ylabel = $container.find("#accGraph .yaxisLabel");
+        var width = Math.ceil($ylabel.width() > $ylabel.height() ? $ylabel.width() : $ylabel.height());
+        if (width % 2 != 0) width++;
+        $ylabel.width(width);
+        $ylabel.css('top', '-3%');
+      }
+      if (jerkPlot) {
+        var $ylabel = $container.find("#jerkGraph .yaxisLabel");
+        var width = Math.ceil($ylabel.width() > $ylabel.height() ? $ylabel.width() : $ylabel.height());
+        if (width % 2 != 0) width++;
+        $ylabel.width(width);
+        $ylabel.css('top', '-3%');
+      }
+      if (aioPlot) {
+        var $ylabel = $container.find("#aioGraph .yaxisLabel");
+        var width = Math.ceil($ylabel.width() > $ylabel.height() ? $ylabel.width() : $ylabel.height());
+        if (width % 2 != 0) width++;
+        $ylabel.width(width);
+        $ylabel.css('top', '-3%');
+      }
+    };
+
+
     var calculateData = function(dataonly) {
       outputData = COSMATT.ProfileCalculation.ProfileIndexModel.calculate(SIValues, initialValues);
       var profileElements = outputData.elementsData;
@@ -2405,6 +2451,10 @@ COSMATT.MotionProfile.configuration = {
           plotEmptyGraph();
         }, 0);
       }
+      updateYaxisLabelCSS();
+      $container.on('resize', function() {
+        updateYaxisLabelCSS();
+      });
     }
 
     calculateAndPaint(false, true);
