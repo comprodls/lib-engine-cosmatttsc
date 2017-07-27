@@ -2156,7 +2156,7 @@ COSMATT.MotionProfile.configuration = {
               settings.moveDistanceUnit = this.unit;
             } else if (this.type == "textbox") {
               uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-              SIValues.movedistance = this.value === '' ? '' : parseFloat(this.SIValue);
+              SIValues.movedistance = isNaN(parseFloat(this.value)) || isNaN(this.SIValue) ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
             responseNotifier();
@@ -2179,7 +2179,7 @@ COSMATT.MotionProfile.configuration = {
               settings.moveTimeUnit = this.unit;
             } else if (this.type == "textbox") {
               uiValues.movedtime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-              SIValues.movedtime = this.value === '' ? '' : parseFloat(this.SIValue);
+              SIValues.movedtime = isNaN(parseFloat(this.value)) || isNaN(this.SIValue) ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
             responseNotifier();
@@ -2202,7 +2202,7 @@ COSMATT.MotionProfile.configuration = {
               settings.dwellTimeUnit = this.unit;
             } else if (this.type == "textbox") {
               uiValues.dweltime = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-              SIValues.dweltime = this.value === '' ? '' : parseFloat(this.SIValue);
+              SIValues.dweltime = isNaN(parseFloat(this.value)) || isNaN(this.SIValue) ? '' : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
             responseNotifier();
@@ -2225,7 +2225,7 @@ COSMATT.MotionProfile.configuration = {
           if (this.type != undefined) {
             if (this.type == "textbox") {
               uiValues.velocityJerk = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-              SIValues.velocityJerk = this.value === '' ? '' : parseFloat(this.SIValue);
+              SIValues.velocityJerk = isNaN(parseFloat(this.value)) || isNaN(this.SIValue) ? 0 : parseFloat(this.SIValue);
               inputControlsCallbackFn();
             }
             responseNotifier();
