@@ -1582,12 +1582,13 @@ COSMATT.MotionProfile.configuration = {
 
     $container.find('#profileButtons').on('click', '.profileButton', function(e) {
       e.preventDefault();
-      if ($(this).attr('id') != undefined) {
-        settings.activeProfileIndex = parseInt($(this).attr('id').slice(3));
+      var btnId = $(this).attr('id');
+      if (btnId != undefined && settings.activeProfileIndex != parseInt(btnId.slice(3))) {
+        settings.activeProfileIndex = parseInt(btnId.slice(3));
         settings.smoothness = $inputControls.find("#smoothnessInputContainer").find(".smoothnessDropDown").find('.smoothnessDDMenu')[0].selectedIndex;
         $container.find('#profileButtons').find(".profileButton.btn-primary").removeClass("btn-primary").addClass("btn-default");
         $(this).addClass("btn-primary").removeClass("btn-default");
-        settings.velocityJerk = undefined
+        settings.velocityJerk = undefined;
         readUIValues();
         calculateAndPaint();
       }
@@ -1602,16 +1603,28 @@ COSMATT.MotionProfile.configuration = {
     }
 
     var readUIValues = function() {
-      SIValues.movedistance = uiValues.movedistance = isNaN(parseFloat(settings.moveDistance)) ? settings.moveDistance : parseFloat(settings.moveDistance);
-      SIValues.movedtime = uiValues.movedtime = isNaN(parseFloat(settings.moveTime)) ? settings.moveTime : parseFloat(settings.moveTime);
-      SIValues.dweltime = uiValues.dweltime = isNaN(parseFloat(settings.dwellTime)) ? settings.dwellTime : parseFloat(settings.dwellTime);
+      if (SIValues.movedistance == undefined) {
+        SIValues.movedistance = uiValues.movedistance = isNaN(parseFloat(settings.moveDistance)) ? settings.moveDistance : parseFloat(settings.moveDistance);
+      }
+
+      if (SIValues.movedtime == undefined) {
+        SIValues.movedtime = uiValues.movedtime = isNaN(parseFloat(settings.moveTime)) ? settings.moveTime : parseFloat(settings.moveTime);
+      }
+
+      if (SIValues.dweltime == undefined) {
+        SIValues.dweltime = uiValues.dweltime = isNaN(parseFloat(settings.dwellTime)) ? settings.dwellTime : parseFloat(settings.dwellTime);
+      }
+
       if (settings.velocityJerk === undefined) {
         updateIndexType();
         SIValues.velocityJerk = uiValues.velocityJerk = isNaN(parseFloat(settings.indexType)) ? settings.indexType : parseFloat(settings.indexType);
       } else {
         SIValues.velocityJerk = uiValues.velocityJerk = isNaN(parseFloat(settings.velocityJerk)) ? settings.velocityJerk : parseFloat(settings.velocityJerk);
       }
-      SIValues.smoothness = uiValues.smoothness = isNaN(parseFloat(settings.smoothness)) ? settings.smoothness : parseFloat(settings.smoothness);
+
+      if (SIValues.smoothness == undefined) {
+        SIValues.smoothness = uiValues.smoothness = isNaN(parseFloat(settings.smoothness)) ? settings.smoothness : parseFloat(settings.smoothness);
+      }
     };
 
     var validateUIValues = function() {
