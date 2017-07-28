@@ -3,8 +3,8 @@
  * Engine Module
  * -------------
  * 
- * Item Type: cosmattmp Single Choice Quesion engine
- * Code: cosmattmp
+ * Item Type: cosmatttsc Single Choice Quesion engine
+ * Code: cosmatttsc
  * Interface: ENGINE
  
  *  ENGINE Interface public functions
@@ -31,19 +31,19 @@
 
 // 8:23 22/06/2017
 define([
-    'css!../css/cosmattmp.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
+    'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
     '../../bower_components/flot/jquery.flot.js',
     '../../bower_components/flot/jquery.flot.resize.js',
     '../../bower_components/flot-axislabels/jquery.flot.axislabels.js',
     'css!../libs/libs-frontend-unitcombobox/dist/css/unitComboBox.css',
     '../libs/libs-frontend-unitcombobox/dist/js/unitComboBox.js',
-    'css!../libs/libs-frontend-motionprofile/dist/css/motionProfile.css',
-    '../libs/libs-frontend-motionprofile/dist/js/motionProfile.js'
+    'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.css',
+    '../libs/libs-frontend-TSCurve/dist/js/tsCurve.js'
   ], //Required by Rivets
-  function(cosmattmpTemplateRef) {
+  function(cosmatttscTemplateRef) {
 
 
-    cosmattmp = function() {
+    cosmatttsc = function() {
 
       "use strict";
 
@@ -114,8 +114,8 @@ define([
         /* Incorrect Activity. */
 
         TEMPLATES: {
-          /* Regular cosmattmp Layout */
-          cosmattmp: cosmattmpTemplateRef
+          /* Regular cosmatttsc Layout */
+          cosmatttsc: cosmatttscTemplateRef
         }
       };
       // Array of all interaction tags in question
@@ -155,7 +155,7 @@ define([
 
 
         /* ------ VALIDATION BLOCK END -------- */
-        var $questionContainer = $('<div class="row cosmattmp-engine"></div>');
+        var $questionContainer = $('<div class="row cosmatttsc-engine"></div>');
         var $questionArea = $('<p class="col-sm-12 text-primary question-text"></p>');
         var $pluginArea = $('<div class="col-sm-12"></div>');
 
@@ -163,9 +163,7 @@ define([
 
         //add callback function to appData
         __content.appData.options.data.userResponseNotifier = userResponseHandler;
-        __pluginInstance = $pluginArea.motionProfile(__content.appData.options.data);
-
-        //$container.motionProfile(params.options.data);
+        __pluginInstance = $pluginArea.TSCurve(__content.appData.options.data);
 
         $questionContainer.append($questionArea);
         $questionContainer.append($pluginArea);
@@ -313,7 +311,7 @@ define([
 
       /* ---------------------- JSON PROCESSING FUNCTIONS START ---------------------------------*/
       /**
-       * Parse and Update JSON based on cosmattmp specific requirements.
+       * Parse and Update JSON based on cosmatttsc specific requirements.
        */
       function __parseAndUpdateJSONContent(jsonContent, params, htmlLayout) {
 
@@ -339,7 +337,7 @@ define([
         var interactionId = [];
         var interactionTag = [];
         /* String present in href of interaction tag. */
-        var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
+        var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmatttsc";
         /* Parse questiontext as HTML to get HTML tags. */
         var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
         var j = 0;
@@ -389,7 +387,7 @@ define([
 
 
       /**
-       * Parse and Update Question Set type JSON based on  cosmattmp specific requirements.
+       * Parse and Update Question Set type JSON based on  cosmatttsc specific requirements.
        */
       // function __parseAndUpdateQuestionSetTypeJSON(jsonContent) {
 
@@ -397,7 +395,7 @@ define([
       //     var interactionId = "";
       //     var interactionTag = "";
       //     /* String present in href of interaction tag. */
-      //     var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
+      //     var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmatttsc";
       //     /* Parse questiontext as HTML to get HTML tags. */
       //     var parsedQuestionArray = $.parseHTML(jsonContent.content.canvas.data.questiondata[0].text);
       //     $.each(parsedQuestionArray, function (i, el) {
@@ -448,7 +446,7 @@ define([
              * Original JSON Object
              * ---------------------
              * 
-             * "cosmattmp": [
+             * "cosmatttsc": [
                   {
                     "choiceA": "She has the flu." 
                   },
@@ -460,7 +458,7 @@ define([
                 Modified JSON Object
                 ----------------------
         
-                "cosmattmp": [
+                "cosmatttsc": [
                   {
                       "customAttribs" : {
                             "key" : "choiceA",
@@ -484,7 +482,7 @@ define([
       // function __parseAndUpdateJSONForRivets(jsonContent) {
       //     var processedArray = [];
       //     for (var i = 0; i < __interactionIds.length; i++) {
-      //         jsonContent.content.interactions[__interactionIds[i]].cosmattmp.forEach(function (obj, index) {
+      //         jsonContent.content.interactions[__interactionIds[i]].cosmatttsc.forEach(function (obj, index) {
       //             var processedObj = {};
       //             processedObj.customAttribs = {};
       //             Object.keys(obj).forEach(function (key) {
@@ -493,7 +491,7 @@ define([
       //             });
       //             processedArray.push(processedObj);
       //         });
-      //         jsonContent.content.interactions[__interactionIds[i]].cosmattmp = processedArray;
+      //         jsonContent.content.interactions[__interactionIds[i]].cosmatttsc = processedArray;
       //     }
       // }
 
@@ -519,7 +517,7 @@ define([
       //     /* This formatter is used to append interaction property to the object
       //      * and return text of the question for particular interaction
       //      */
-      //     rivets.formatters.appendInteraction = function (obj, interaction, cosmattmp) {
+      //     rivets.formatters.appendInteraction = function (obj, interaction, cosmatttsc) {
       //         return obj[interaction].text;
       //     }
 
@@ -527,7 +525,7 @@ define([
       //      * interaction so that rivets can iterate over it.
       //      */
       //     rivets.formatters.getArray = function (obj, interaction) {
-      //         return obj[interaction].cosmattmp;
+      //         return obj[interaction].cosmatttsc;
       //     }
 
       //     var isMCQImageEngine = false;
@@ -537,7 +535,7 @@ define([
       //     }
 
       //     /*Bind the data to template using rivets*/
-      //     rivets.bind($('#cosmattmp-engine'), {
+      //     rivets.bind($('#cosmatttsc-engine'), {
       //         content: __processedJsonContent.content,
       //         isMCQImageEngine: isMCQImageEngine,
       //         feedback: __processedJsonContent.feedback,

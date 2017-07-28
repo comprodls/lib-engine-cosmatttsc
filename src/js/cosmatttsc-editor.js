@@ -3,8 +3,8 @@
  * Engine Module Editor
  * -------------------
  * 
- * Item Type: cosmattmp Single Choice Quesion engine
- * Code: cosmattmp
+ * Item Type: cosmatttsc Single Choice Quesion engine
+ * Code: cosmatttsc
  * Interface: Editor
  *  
  *  ENGINE EDITOR Interface public functions
@@ -30,15 +30,15 @@
  * 3. Rivets (0.9.6)
  */
 
-define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
-        'css!../css/cosmattmp-editor.css', //Custom CSS of the Editor
+define(['text!../html/cosmatttsc-editor.html', //Layout of the Editor
+        'css!../css/cosmatttsc-editor.css', //Custom CSS of the Editor
         'jquery-ui', //Jquery Sortable for reordering
         'css!../../bower_components/jquery-ui/themes/base/jquery-ui.css', //CSS for sortable
         'rivets',   // Rivets for two way data binding
         'sightglass' // Required by Rivets
-        ], function (cosmattmpTemplateRef) {
+        ], function (cosmatttscTemplateRef) {
 
-    cosmattmpEditor = function() {
+    cosmatttscEditor = function() {
     "use strict";
         
     /*
@@ -73,8 +73,8 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         ADAPTOR_INSTANCE_IDENTIFIER: "data-objectid",
         
         TEMPLATES: {
-            /* Regular cosmattmp Layout */
-            cosmattmp_EDITOR: cosmattmpTemplateRef
+            /* Regular cosmatttsc Layout */
+            cosmatttsc_EDITOR: cosmatttscTemplateRef
         }
     };
     
@@ -195,8 +195,8 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
      *           e.g. ["i1", "i2"]
      *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
      *          e.g. [
-     *             "<a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i1</a>", 
-     *             "<a href='http://www.comprodls.com/m1.0/interaction/cosmattmp'>i2</a>"
+     *             "<a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i1</a>", 
+     *             "<a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i2</a>"
      *              ]   
      * 2. Replace the interactionTags in questiondata (__editedJsonContent Object) with BLANKs 
      **/ 
@@ -206,7 +206,7 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         var interactionTag;
         for(var i=0; i <__editedJsonContent.content.canvas.data.questiondata.length; i++){
             __parsedQuestionArray = $.parseHTML(__editedJsonContent.content.canvas.data.questiondata[i].text);
-            var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmattmp";
+            var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/cosmatttsc";
             $.each(__parsedQuestionArray, function(index, el) {
               if(this.href === interactionReferenceString) {
                 __interactionIds.push(this.childNodes[0].nodeValue.trim())
@@ -231,7 +231,7 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
      * Original JSON Object
      * ---------------------
      * 
-     * "cosmattmp": [
+     * "cosmatttsc": [
           {
             "choiceA": "She has the flu." 
           },
@@ -243,7 +243,7 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         Modified JSON Object
         ----------------------
 
-        "cosmattmp": [
+        "cosmatttsc": [
           {
               "customAttribs" : {
                     "key" : "choiceA",
@@ -267,7 +267,7 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
     function __parseAndUpdateJSONForRivets(){
         for(var i=0; i <__interactionIds.length; i++){
            var processedArray = [];
-           __editedJsonContent.content.interactions[i].cosmattmp.forEach(function(obj, index){
+           __editedJsonContent.content.interactions[i].cosmatttsc.forEach(function(obj, index){
                 var processedObj = {};
                 processedObj.customAttribs = {};
                 Object.keys(obj).forEach(function(key){
@@ -283,7 +283,7 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
                 });
                 processedArray.push(processedObj);
             });
-            __editedJsonContent.content.interactions[i].cosmattmp = processedArray; 
+            __editedJsonContent.content.interactions[i].cosmatttsc = processedArray; 
         }
     }
 
@@ -312,7 +312,7 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         /* 
          * Bind data to template using rivets
          */
-        rivets.bind($('#cosmattmp-editor'), {
+        rivets.bind($('#cosmatttsc-editor'), {
             content: __editedJsonContent.content, 
             toggleEditing: __toggleEditing, 
             toggleQuestionTextEditing: __toggleQuestionTextEditing, 
@@ -342,9 +342,9 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
 
     /* Remove option item */
     function __removeItem(event, element, interaction){
-        __editedJsonContent.content.interactions[interaction].cosmattmp.splice(element.customAttribs.index,1);
-        for(var option=element.index; option<__editedJsonContent.content.interactions[interaction].cosmattmp.length; option++){
-            obj.interactions[interaction].cosmattmp[option].customAttribs.index--;
+        __editedJsonContent.content.interactions[interaction].cosmatttsc.splice(element.customAttribs.index,1);
+        for(var option=element.index; option<__editedJsonContent.content.interactions[interaction].cosmatttsc.length; option++){
+            obj.interactions[interaction].cosmatttsc[option].customAttribs.index--;
         }
         __state.hasUnsavedChanges = true;
         activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
@@ -368,8 +368,8 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         newObj.customAttribs.key = __guid();
         newObj.customAttribs.value = "";
         newObj.customAttribs.isEdited = true;
-        newObj.customAttribs.index = content.interactions[interaction].cosmattmp.length;
-        content.interactions[interaction].cosmattmp.push(newObj);
+        newObj.customAttribs.index = content.interactions[interaction].cosmatttsc.length;
+        content.interactions[interaction].cosmatttsc.push(newObj);
         __state.hasUnsavedChanges = true;
         activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
     }
@@ -416,12 +416,12 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
                 $(".sortable").sortable("cancel");
 
                 /* Instead do the sorting manually*/
-                var removedItem = __editedJsonContent.content.interactions[interactIndex].cosmattmp.splice(prevIndex, 1);
-                __editedJsonContent.content.interactions[interactIndex].cosmattmp.splice(currentIndex,0,removedItem[0]);
+                var removedItem = __editedJsonContent.content.interactions[interactIndex].cosmatttsc.splice(prevIndex, 1);
+                __editedJsonContent.content.interactions[interactIndex].cosmatttsc.splice(currentIndex,0,removedItem[0]);
                 
                 /* Update index property of customAttribs for each element*/
-                $.each(__editedJsonContent.content.interactions[interactIndex].cosmattmp, function(index, value){
-                    __editedJsonContent.content.interactions[interactIndex].cosmattmp[index].customAttribs.index = index;
+                $.each(__editedJsonContent.content.interactions[interactIndex].cosmatttsc, function(index, value){
+                    __editedJsonContent.content.interactions[interactIndex].cosmatttsc[index].customAttribs.index = index;
                 });
                 
                 __state.hasUnsavedChanges = true;
@@ -440,11 +440,11 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         $(currentTarget).siblings('.correct-answer').show();
         __state.hasUnsavedChanges = true;
         /* Update the isCorrect property for each option*/
-        __editedJsonContent.content.interactions[interactionIndex].cosmattmp.forEach(function(obj, index){
-            if(__editedJsonContent.content.interactions[interactionIndex].cosmattmp[index].customAttribs.key ==  $(currentTarget).attr('key')){
-                __editedJsonContent.content.interactions[interactionIndex].cosmattmp[index].customAttribs.isCorrect = true;
+        __editedJsonContent.content.interactions[interactionIndex].cosmatttsc.forEach(function(obj, index){
+            if(__editedJsonContent.content.interactions[interactionIndex].cosmatttsc[index].customAttribs.key ==  $(currentTarget).attr('key')){
+                __editedJsonContent.content.interactions[interactionIndex].cosmatttsc[index].customAttribs.isCorrect = true;
             } else{
-                __editedJsonContent.content.interactions[interactionIndex].cosmattmp[index].customAttribs.isCorrect = false;
+                __editedJsonContent.content.interactions[interactionIndex].cosmatttsc[index].customAttribs.isCorrect = false;
             }
         });
         __editedJsonContent.responses[__interactionIds[interactionIndex]].correct = $(currentTarget).attr('key');
@@ -459,9 +459,9 @@ define(['text!../html/cosmattmp-editor.html', //Layout of the Editor
         var newObj = {};
         for(var interaction=0;interaction <__finalJSONContent.content.interactions.length; interaction++){
             var content = __finalJSONContent.content.interactions[interaction];
-            for(var option=0;option<content.cosmattmp.length;option++){
-                content.cosmattmp[option][content.cosmattmp[option].customAttribs.key] = content.cosmattmp[option].customAttribs.value;
-                delete content.cosmattmp[option].customAttribs;
+            for(var option=0;option<content.cosmatttsc.length;option++){
+                content.cosmatttsc[option][content.cosmatttsc[option].customAttribs.key] = content.cosmatttsc[option].customAttribs.value;
+                delete content.cosmatttsc[option].customAttribs;
             }
             newObj[content.key] = content;  
             delete newObj[content.key].key;

@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "type": "COSMATTTSC",
+    "score": {
+      "default": 0,
+      "max": 1,
+      "min": 0
+    }
+  },
+  "app-data": {
+    "type": "ts-curve",
+    "options": {
+      "data": {
+        "showApplicationPoints": true,
+        "motorSelectedIndex": 4,
+        "rmsPoints": [
+          100,
+          4.5
+        ],
+        "peakPoints": [
+          150,
+          10
+        ],
+        "quadrant": 1,
+        "sliderLimit": {
+          "peakMaxSpeed": 1000,
+          "peakMaxTorque": 20,
+          "rmsMaxSpeed": 1000,
+          "rmsMaxTorque": 20,
+          "maxTemp": 125,
+          "maxAltitude": 10000,
+          "maxVoltage": 10,
+          "maxTrRatio": 1000
+        },
+        "showQuadrantToggle": true,
+        "showMotorTsCurve": true,
+        "showMotorSelForm": true,
+        "showAppPointsForm": true,
+        "showEnviorForm": true,
+        "showTransmissionForm": true,
+        "graphLineColor": {
+          "peakTSCurve": "#5187B5",
+          "contionusTSCurve": "#FFD700"
+        },
+        "motorData": [
+          {
+            "motorPartNo": "CPA-1-01",
+            "drivePartNo": "CA-050",
+            "voltage": "300",
+            "continuousStallTorque": 1,
+            "peakStallTorque": 2.1,
+            "rollOffPoint": 2.1,
+            "peakTorqueAtMaxSpeed": 1.3,
+            "continuosTorqueAtMaxSpeed": 0.75,
+            "rollOffSpeed": 314.1592,
+            "maxSpeed": 471.2388,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-1-02",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 1.7,
+            "peakStallTorque": 4.4,
+            "rollOffPoint": 4.4,
+            "peakTorqueAtMaxSpeed": 3.3,
+            "continuosTorqueAtMaxSpeed": 1.3,
+            "rollOffSpeed": 356.0471,
+            "maxSpeed": 523.5987,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-1-03",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 2.3,
+            "peakStallTorque": 7.5,
+            "rollOffPoint": 7.5,
+            "peakTorqueAtMaxSpeed": 4.5,
+            "continuosTorqueAtMaxSpeed": 1.65,
+            "rollOffSpeed": 335.1032,
+            "maxSpeed": 471.2388,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-2-01",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 2,
+            "peakStallTorque": 3.8,
+            "rollOffPoint": 3.8,
+            "peakTorqueAtMaxSpeed": 2.5,
+            "continuosTorqueAtMaxSpeed": 1.8,
+            "rollOffSpeed": 460.7669,
+            "maxSpeed": 628.3185,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-2-02",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 3.3,
+            "peakStallTorque": 7.8,
+            "rollOffPoint": 7.8,
+            "peakTorqueAtMaxSpeed": 4,
+            "continuosTorqueAtMaxSpeed": 3.14,
+            "rollOffSpeed": 314.1592,
+            "maxSpeed": 523.5987,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-2-03",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 4.2,
+            "peakStallTorque": 11,
+            "rollOffPoint": 11,
+            "peakTorqueAtMaxSpeed": 7,
+            "continuosTorqueAtMaxSpeed": 3,
+            "rollOffSpeed": 418.879,
+            "maxSpeed": 575.9586,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-3-01",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 7.8,
+            "peakStallTorque": 21,
+            "rollOffPoint": 21,
+            "peakTorqueAtMaxSpeed": 11,
+            "continuosTorqueAtMaxSpeed": 6.24,
+            "rollOffSpeed": 314.1592,
+            "maxSpeed": 418.879,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPA-3-02",
+            "drivePartNo": "CA-050",
+            "voltage": "240",
+            "continuousStallTorque": 10,
+            "peakStallTorque": 27,
+            "rollOffPoint": 27,
+            "peakTorqueAtMaxSpeed": 13,
+            "continuosTorqueAtMaxSpeed": 6.3,
+            "rollOffSpeed": 240.8554,
+            "maxSpeed": 314.1592,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-1-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 1,
+            "peakStallTorque": 2.7,
+            "rollOffPoint": 2.7,
+            "peakTorqueAtMaxSpeed": 1.8,
+            "continuosTorqueAtMaxSpeed": 0.72,
+            "rollOffSpeed": 335.1032,
+            "maxSpeed": 471.2388,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-1-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 1.7,
+            "peakStallTorque": 4.4,
+            "rollOffPoint": 4.4,
+            "peakTorqueAtMaxSpeed": 2.4,
+            "continuosTorqueAtMaxSpeed": 1.302,
+            "rollOffSpeed": 345.5751,
+            "maxSpeed": 523.5987,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-1-03",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 2.3,
+            "peakStallTorque": 7.5,
+            "rollOffPoint": 7.5,
+            "peakTorqueAtMaxSpeed": 4.2,
+            "continuosTorqueAtMaxSpeed": 1.71,
+            "rollOffSpeed": 324.6312,
+            "maxSpeed": 471.2388,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-2-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 2,
+            "peakStallTorque": 3.8,
+            "rollOffPoint": 3.8,
+            "peakTorqueAtMaxSpeed": 2,
+            "continuosTorqueAtMaxSpeed": 1.7,
+            "rollOffSpeed": 418.879,
+            "maxSpeed": 628.3185,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-2-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 3.4,
+            "peakStallTorque": 7.8,
+            "rollOffPoint": 7.8,
+            "peakTorqueAtMaxSpeed": 4,
+            "continuosTorqueAtMaxSpeed": 3.09,
+            "rollOffSpeed": 460.7669,
+            "maxSpeed": 628.3185,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-2-03",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 4.2,
+            "peakStallTorque": 11,
+            "rollOffPoint": 11,
+            "peakTorqueAtMaxSpeed": 6,
+            "continuosTorqueAtMaxSpeed": 2.9,
+            "rollOffSpeed": 324.6312,
+            "maxSpeed": 523.5987,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-3-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 9,
+            "peakStallTorque": 21,
+            "rollOffPoint": 21,
+            "peakTorqueAtMaxSpeed": 13,
+            "continuosTorqueAtMaxSpeed": 6.3,
+            "rollOffSpeed": 335.1032,
+            "maxSpeed": 418.879,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-3-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 10,
+            "peakStallTorque": 29,
+            "rollOffPoint": 29,
+            "peakTorqueAtMaxSpeed": 16,
+            "continuosTorqueAtMaxSpeed": 6.91,
+            "rollOffSpeed": 261.7993,
+            "maxSpeed": 366.5191,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-4-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 20,
+            "peakStallTorque": 50,
+            "rollOffPoint": 50,
+            "peakTorqueAtMaxSpeed": 25,
+            "continuosTorqueAtMaxSpeed": 15.3,
+            "rollOffSpeed": 188.4955,
+            "maxSpeed": 314.1592,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-4-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 25,
+            "peakStallTorque": 68,
+            "rollOffPoint": 68,
+            "peakTorqueAtMaxSpeed": 30,
+            "continuosTorqueAtMaxSpeed": 17.53,
+            "rollOffSpeed": 198.9675,
+            "maxSpeed": 314.1592,
+            "temp": 40,
+            "altitude": 1
+          },
+          {
+            "motorPartNo": "CPB-4-03",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 32,
+            "peakStallTorque": 75,
+            "rollOffPoint": 75,
+            "peakTorqueAtMaxSpeed": 32,
+            "continuosTorqueAtMaxSpeed": 22.8,
+            "rollOffSpeed": 219.9114,
+            "maxSpeed": 314.1592,
+            "temp": 40,
+            "altitude": 1
+          }
+        ]
+      }
+    }
+  },
+  "content": {
+    "instructions": [
+      {
+        "tag": "html",
+        "html": "Enter the correct values in input fields. Click <b>Submit</b> to check your answers."
+      }
+    ],
+    "stimulus": [
+      {
+        "tag": "",
+        "image": ""
+      }
+    ],
+    "canvas": {
+      "layout": "COSMATTTSC",
+      "data": {
+        "questiondata": [
+          {
+            "text": "Using the values obtained in section – Adding the motor inertia”, choose from the standard library the optimum motor for the application.Increase the ambient by 20 degrees and re-check the choice.<a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i1</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i2</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i3</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i4</a>"
+          }
+        ]
+      },
+      "raw": ""
+    },
+    "interactions": {
+      "i1": {
+        "type": "movedistance"
+      },
+      "i2": {
+        "type": "movedtime"
+      },
+      "i3": {
+        "type": "dweltime"
+      },
+      "i4": {
+        "type": "velocityJerk"
+      }
+    },
+    "hint": {}
+  },
+  "feedback": {
+    "global": {
+      "correct": "Perfect. You got it correct",
+      "incorrect": "Sorry, Wrong response.",
+      "empty": "You did not enter anything."
+    }
+  },
+  "responses": {
+    "i1": {
+      "correct": "40",
+      "ignorewhitespace": true
+    },
+    "i2": {
+      "correct": "20",
+      "ignorewhitespace": true
+    },
+    "i3": {
+      "correct": "30",
+      "ignorewhitespace": true
+    },
+    "i4": {
+      "correct": "50",
+      "ignorewhitespace": true
+    }
+  },
+  "learning-objectives": [],
+  "tags": [
+    "test"
+  ]
+}

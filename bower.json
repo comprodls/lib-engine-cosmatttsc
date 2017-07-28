@@ -1,7 +1,7 @@
 {
-  "name": "libs-engine-cosmattmp",
+  "name": "libs-engine-cosmatttsc",
   "version": "0.4.0",
-  "description": "Compro COSMATTMP Activity engine",
+  "description": "Compro COSMATTTSC Activity engine",
   "dependencies": {
     "flot": "~0.8.3",
     "flot-axislabels": "*"

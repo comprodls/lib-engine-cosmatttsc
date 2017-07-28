@@ -17,42 +17,42 @@
  *
  *******************************************************/
 
-#cosmattmp-editor .content-height{
+#cosmatttsc-editor .content-height{
     overflow: hidden;
 }
 
-#cosmattmp-editor .no-left-padding{
+#cosmatttsc-editor .no-left-padding{
     padding-left: 0;
 }
 
-#cosmattmp-editor .edit-procedure{
+#cosmatttsc-editor .edit-procedure{
     padding-bottom: 0;
     font-size: 12px;
     line-height: 1.2;
     color: #555;
 }
 
-#cosmattmp-editor .edit-procedure li{
+#cosmatttsc-editor .edit-procedure li{
     padding: 5px;
 }
 
-#cosmattmp-editor .ques-text-editor.editor-icon{
+#cosmatttsc-editor .ques-text-editor.editor-icon{
 	position: absolute;
 	right: 40px;
     cursor: pointer;
 }
 
-#cosmattmp-editor .question-text-container > div.content-height{
+#cosmatttsc-editor .question-text-container > div.content-height{
     position: relative;
 }
 
-#cosmattmp-editor .question-text-viewer{
+#cosmatttsc-editor .question-text-viewer{
 	font-weight: 700;
 	font-size: 18px;
     padding-top: 5px;
 }
 
-#cosmattmp-editor .question-text-editor{
+#cosmatttsc-editor .question-text-editor{
 	font-weight: 700;
     padding-top: 5px;
 	font-size: 18px;
@@ -60,32 +60,32 @@
     border-bottom: 1px solid black;
 }
 
-#cosmattmp-editor .questions-editor.form{
+#cosmatttsc-editor .questions-editor.form{
 	padding-top: 15px;
     padding-bottom: 15px;
 }
 
-#cosmattmp-editor .form *{
+#cosmatttsc-editor .form *{
     margin: 0;
 }
 
-#cosmattmp-editor .form ul{
+#cosmatttsc-editor .form ul{
     padding-left: 15px;
     padding-bottom: 10px;
     position: relative;
 }
 
-#cosmattmp-editor .form ul li{
+#cosmatttsc-editor .form ul li{
     padding: 10px;
     position: static;
 }
 
-#cosmattmp-editor .form ul li.highlight{
+#cosmatttsc-editor .form ul li.highlight{
     background-color: #F2F2F2;
     border-radius: 6px;
 }
 
-#cosmattmp-editor .form ul li i{
+#cosmatttsc-editor .form ul li i{
     height: 1.8em;
     width: 1.8em;
     border-radius: 50%;
@@ -98,7 +98,7 @@
     background: #FFF;
 }
 
-#cosmattmp-editor .form ul li i:after {
+#cosmatttsc-editor .form ul li i:after {
     background-color: #3276B1;
     content: '';
     border-radius: 50%;
@@ -110,15 +110,15 @@
     opacity: 0;
 }
 
-#cosmattmp-editor .form ul li.highlight i{
+#cosmatttsc-editor .form ul li.highlight i{
     border-color: #3276B1;
 }
 
-#cosmattmp-editor .form ul li.highlight i:after{
+#cosmatttsc-editor .form ul li.highlight i:after{
     opacity: 1;
 }
 
-#cosmattmp-editor .form ul li .radio{
+#cosmatttsc-editor .form ul li .radio{
     font-size: 1em;
     line-height: 1.8em;
     color: #3D3D3D;
@@ -127,73 +127,73 @@
 }
 
 
-#cosmattmp-editor .form ul li .radio input {
+#cosmatttsc-editor .form ul li .radio input {
     position: absolute;
     left: -9999px;
 }
 
-#cosmattmp-editor .form ul li .radio .option-value{
+#cosmatttsc-editor .form ul li .radio .option-value{
 	position: static!important;
 }
 
-#cosmattmp-editor .form ul li .radio div.option-value{
+#cosmatttsc-editor .form ul li .radio div.option-value{
 	display: inline-block;
 }
 
-#cosmattmp-editor .form ul li .radio .correct-answer{
+#cosmatttsc-editor .form ul li .radio .correct-answer{
     font-weight: 700;
 }
 
-#cosmattmp-editor .form ul li .editor-icon {
+#cosmatttsc-editor .form ul li .editor-icon {
 	cursor: pointer;
 }
 
-#cosmattmp-editor .form ul li .editor-icon.cosmattmp-edit{
+#cosmatttsc-editor .form ul li .editor-icon.cosmatttsc-edit{
 	position: absolute;
 	right: 40px;
 }
 
-#cosmattmp-editor .form ul li .delete-icon.cosmattmp-edit{
+#cosmatttsc-editor .form ul li .delete-icon.cosmatttsc-edit{
 	right: 20px;
 }
 
-#cosmattmp-editor .form ul li .drag-icon.cosmattmp-edit{
+#cosmatttsc-editor .form ul li .drag-icon.cosmatttsc-edit{
 	right: 0px;
 }
 
-#cosmattmp-editor .add-container{
+#cosmatttsc-editor .add-container{
     padding-bottom: 20px;
 }
 
-#cosmattmp-editor .add-container .add-item{
+#cosmatttsc-editor .add-container .add-item{
 	cursor: pointer;
 }
 
-#cosmattmp-editor .input-option{
+#cosmatttsc-editor .input-option{
 	width: 90%;
 	border: none;
 	border-bottom: 1px solid black;
 }
-#cosmattmp-editor .bottom-content{
+#cosmatttsc-editor .bottom-content{
     position: relative;
 }
 
-#cosmattmp-editor .bottom-content h3{
+#cosmatttsc-editor .bottom-content h3{
     margin-top: 5px;
     padding-left: 15px;
 }
 
-#cosmattmp-editor .bottom-content .feedback-label{
+#cosmatttsc-editor .bottom-content .feedback-label{
     font-size: 17px;
     padding-left: 15px;
     overflow: hidden
 }
 
-#cosmattmp-editor .bottom-content .feedback-text{
+#cosmatttsc-editor .bottom-content .feedback-text{
 	display: inline-block;
 }
 
-#cosmattmp-editor .bottom-content .feedback-text-editor{
+#cosmatttsc-editor .bottom-content .feedback-text-editor{
     display: inline-block;
     border: none;
     border-bottom: 1px solid black;

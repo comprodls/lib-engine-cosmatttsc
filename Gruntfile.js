@@ -35,13 +35,13 @@ module.exports = function(grunt) {
     },
 
     // RequireJS optimizer
-    // Create two files - cosmattmp.js and cosmattmp-editor.js
+    // Create two files - cosmatttsc.js and cosmatttsc-editor.js
     requirejs: {
       engine: {
         options: {
           baseUrl: engine_src,
-          name: "cosmattmp",
-          out: dist + "cosmattmp.js",
+          name: "cosmatttsc",
+          out: dist + "cosmatttsc.js",
           paths: {
             'text': bower_components + 'text/text',
             'css': bower_components + 'require-css/css',
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
           },
           exclude: ['normalize'],
           done: function(done, output) {
-            console.log('Completed requirejs optimization for cosmattmp renderer successfully.');
+            console.log('Completed requirejs optimization for cosmatttsc renderer successfully.');
             done();
           }
         }
@@ -64,8 +64,8 @@ module.exports = function(grunt) {
       // engineEditor: {
       //   options: {
       //     baseUrl: engine_src,
-      //     name: "cosmattmp-editor",
-      //     out: dist + "cosmattmp-editor.js",
+      //     name: "cosmatttsc-editor",
+      //     out: dist + "cosmatttsc-editor.js",
       //     paths: {
       //       'jquery': 'empty:',
       //       'text': bower_components + 'text/text',
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
       //     },
       //     exclude: ['normalize'],
       //     done: function(done, output) {
-      //       console.log('Completed requirejs optimization for cosmattmp editor successfully.');
+      //       console.log('Completed requirejs optimization for cosmatttsc editor successfully.');
       //       done();
       //     }
       //   }

@@ -1,7 +1,7 @@
 
 <!-- Engine Editor Template -->
 
-<div class="cosmattmp-body" id="cosmattmp-editor"> 
+<div class="cosmatttsc-body" id="cosmatttsc-editor"> 
    <div class="row">
       <div class="col-sm-12 well edit-procedure">
          <div>
@@ -50,19 +50,19 @@
          <div class="col-sm-12 form questions-editor no-left-padding">
           <span class="label label-default">Options/Correct Choice</span>
             <ul class="list-unstyled nested-list editor sortable content-height">
-               <!-- Loop over all options inside interaction  (cosmattmp Array)-->  
-               <li class="col-xs-9 cosmattmp-item" rv-each-element="interact.cosmattmp" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
+               <!-- Loop over all options inside interaction  (cosmatttsc Array)-->  
+               <li class="col-xs-9 cosmatttsc-item" rv-each-element="interact.cosmatttsc" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
                   <label class="radio radio-lg">
                      <span class="invisible wrong pull-left"></span>
-                     <input type="radio" name="optionsRadios" class="option cosmattmp-option" rv-key="element.customAttribs.key" rv-value="element.customAttribs.value" rv-checked="element.customAttribs.isCorrect"></input>
+                     <input type="radio" name="optionsRadios" class="option cosmatttsc-option" rv-key="element.customAttribs.key" rv-value="element.customAttribs.value" rv-checked="element.customAttribs.isCorrect"></input>
                      <i></i>
                      <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
                      <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value"></div>
                      <span class="correct-answer pull-right" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
                   </label>
-                  <a class="editor-icon cosmattmp-edit fa fa-pencil pull-right" rv-on-click="toggleEditing | args element"></a>
-                  <a class="editor-icon delete-icon cosmattmp-edit fa fa-trash-o pull-right" rv-on-click="removeItem | args element %interact%"></a>
-                  <a class="editor-icon drag-icon cosmattmp-edit fa fa-bars pull-right"></a>
+                  <a class="editor-icon cosmatttsc-edit fa fa-pencil pull-right" rv-on-click="toggleEditing | args element"></a>
+                  <a class="editor-icon delete-icon cosmatttsc-edit fa fa-trash-o pull-right" rv-on-click="removeItem | args element %interact%"></a>
+                  <a class="editor-icon drag-icon cosmatttsc-edit fa fa-bars pull-right"></a>
                </li>           
             </ul>
         </div>
