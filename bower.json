@@ -4,7 +4,8 @@
   "description": "Compro COSMATTTSC Activity engine",
   "dependencies": {
     "flot": "~0.8.3",
-    "flot-axislabels": "*"
+    "flot-axislabels": "*",
+    "bootstrap-slider": "*"
   },
   "devDependencies": {
     "jquery": "2.1.1",

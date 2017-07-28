@@ -11,6 +11,7 @@
     "type": "ts-curve",
     "options": {
       "data": {
+        "assessmentMode" : true,
         "showApplicationPoints": true,
         "motorSelectedIndex": 4,
         "rmsPoints": [
@@ -331,7 +332,7 @@
       "data": {
         "questiondata": [
           {
-            "text": "Using the values obtained in section – Adding the motor inertia”, choose from the standard library the optimum motor for the application.Increase the ambient by 20 degrees and re-check the choice.<a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i1</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i2</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i3</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i4</a>"
+            "text": "Using the values obtained in section – Adding the motor inertia”, choose from the standard library the optimum motor for the application.Increase the ambient by 20 degrees and re-check the choice.<a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i1</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i2</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i3</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i4</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i5</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i6</a><a href='http://www.comprodls.com/m1.0/interaction/cosmatttsc'>i7</a>"
           }
         ]
       },
@@ -339,16 +340,25 @@
     },
     "interactions": {
       "i1": {
-        "type": "movedistance"
+        "type": "peakTorque"
       },
       "i2": {
-        "type": "movedtime"
+        "type": "peakSpeed"
       },
       "i3": {
-        "type": "dweltime"
+        "type": "rmsTorque"
       },
       "i4": {
-        "type": "velocityJerk"
+        "type": "rmsSpeed"
+      },
+      "i5": {
+        "type": "temperature"
+      },
+      "i6": {
+        "type": "altitude"
+      },
+      "i7": {
+        "type": "transmissionRatio"
       }
     },
     "hint": {}
@@ -374,6 +384,18 @@
       "ignorewhitespace": true
     },
     "i4": {
+      "correct": "50",
+      "ignorewhitespace": true
+    },
+    "i5": {
+      "correct": "50",
+      "ignorewhitespace": true
+    },
+    "i6": {
+      "correct": "50",
+      "ignorewhitespace": true
+    },
+    "i7": {
       "correct": "50",
       "ignorewhitespace": true
     }

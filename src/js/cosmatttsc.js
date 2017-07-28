@@ -28,10 +28,11 @@
  * 2. Boostrap (TODO: version) 
  */
 
-
 // 8:23 22/06/2017
 define([
     'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
+    '../../bower_components/bootstrap-slider/bootstrap-slider.js',
+    'css!../../bower_components/bootstrap-slider/slider.css',
     '../../bower_components/flot/jquery.flot.js',
     '../../bower_components/flot/jquery.flot.resize.js',
     '../../bower_components/flot-axislabels/jquery.flot.axislabels.js',
@@ -162,7 +163,7 @@ define([
         $questionArea.html(__content.questionText);
 
         //add callback function to appData
-        __content.appData.options.data.userResponseNotifier = userResponseHandler;
+        __content.appData.options.data.assessmentCallback = userResponseHandler;
         __pluginInstance = $pluginArea.TSCurve(__content.appData.options.data);
 
         $questionContainer.append($questionArea);
