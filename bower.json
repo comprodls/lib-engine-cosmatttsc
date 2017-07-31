@@ -5,7 +5,7 @@
   "dependencies": {
     "flot": "~0.8.3",
     "flot-axislabels": "*",
-    "bootstrap-slider": "*"
+    "seiyria-bootstrap-slider": "*"
   },
   "devDependencies": {
     "jquery": "2.1.1",
