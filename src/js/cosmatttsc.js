@@ -37,7 +37,7 @@ define([
     '../../bower_components/flot/jquery.flot.resize.js',
     '../../bower_components/flot-axislabels/jquery.flot.axislabels.js',
     'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min.css',
-    '../libs/libs-frontend-TSCurve/dist/js/tsCurve.min.js'
+    '../libs/libs-frontend-TSCurve/dist/js/tsCurve.js'
   ], //Required by Rivets
   function(cosmatttscTemplateRef) {
 
