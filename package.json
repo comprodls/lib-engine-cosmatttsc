@@ -3,6 +3,12 @@
   "version": "0.4.0",
   "description": "Compro COSMATTTSC Activity engine",
   "main": "Gruntfile.js",
+  "dependencies": {
+    "jquery-flot": "0.8.3",
+    "jquery.flot.tooltip": "0.9.0",
+    "bootstrap-slider": "9.7.1",
+    "bootstrap": "3.3.7"
+  },
   "devDependencies": {
     "bower": "1.8.0",
     "grunt": "1.0.1",

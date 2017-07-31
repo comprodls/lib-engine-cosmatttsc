@@ -2,11 +2,6 @@
   "name": "libs-engine-cosmatttsc",
   "version": "0.4.0",
   "description": "Compro COSMATTTSC Activity engine",
-  "dependencies": {
-    "flot": "~0.8.3",
-    "flot-axislabels": "*",
-    "seiyria-bootstrap-slider": "*"
-  },
   "devDependencies": {
     "jquery": "2.1.1",
     "requirejs": "*",
