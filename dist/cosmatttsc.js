@@ -5704,7 +5704,7 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
                 updateApplicationRequPoints("TransmissionRatio");
             }
             if (params.motorSelectedIndex) {
-                // Todo
+                $container.find('#solutionSliderId').slider('setValue', parseInt(params.motorSelectedIndex.value));
             }
         }
 
