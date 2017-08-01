@@ -199,7 +199,7 @@ define([
 
       function userResponseHandler(callbackValue) {
         for (var property in callbackValue) {
-          if (callbackValue.hasOwnProperty(property)) {
+          if (callbackValue.hasOwnProperty(property) && callbackValue[property].value  !== undefined) {
             var interactionMinScore = __content.score.min;
             var optionsCount = Object.keys(__content.optionsJSON).length;
             var interactionMaxScore = __content.score.max / optionsCount;
