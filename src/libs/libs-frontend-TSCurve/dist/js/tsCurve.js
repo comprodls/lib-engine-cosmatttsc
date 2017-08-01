@@ -1697,8 +1697,8 @@
                         "value": $container.find('#trRatioValue').val(),
                         "unit": ""
                     },
-                    "status": {
-                        "value": checkMotorStatus(settings.motorData[settings.motorSelectedIndex]).status,
+                    "motorSelectedIndex": {
+                        "value": settings.motorSelectedIndex,
                         "unit": ""
                     }
                 });
@@ -1742,6 +1742,9 @@
                 $container.find('#trRatioSlider').slider('setValue', params.transmissionRatio.value);
                 $container.find("#trRatioValue").val(params.transmissionRatio.value);
                 updateApplicationRequPoints("TransmissionRatio");
+            }
+            if (params.motorSelectedIndex) {
+                // Todo
             }
         }
 

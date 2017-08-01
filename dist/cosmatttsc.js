@@ -5657,8 +5657,8 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
                         "value": $container.find('#trRatioValue').val(),
                         "unit": ""
                     },
-                    "status": {
-                        "value": checkMotorStatus(settings.motorData[settings.motorSelectedIndex]).status,
+                    "motorSelectedIndex": {
+                        "value": settings.motorSelectedIndex,
                         "unit": ""
                     }
                 });
@@ -5702,6 +5702,9 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
                 $container.find('#trRatioSlider').slider('setValue', params.transmissionRatio.value);
                 $container.find("#trRatioValue").val(params.transmissionRatio.value);
                 updateApplicationRequPoints("TransmissionRatio");
+            }
+            if (params.motorSelectedIndex) {
+                // Todo
             }
         }
 
