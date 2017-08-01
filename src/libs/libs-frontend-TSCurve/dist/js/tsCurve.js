@@ -1704,31 +1704,45 @@
                 });
             }
         }
+
+
         var updateInputs = function (params) {
+
             if (params.peakTorque) {
-                // TODO
+                $container.find('#peakTorqueSlider').slider('setValue', params.peakTorque);
+                $container.find("#peakTorqueValue").val(params.peakTorque);
+                updateApplicationRequPoints("PeakTorque");
             }
             if (params.peakSpeed) {
-                
+                $container.find('#peakSpeedSlider').slider('setValue', params.peakSpeed);
+                $container.find("#peakSpeedValue").val(params.peakSpeed);
+                updateApplicationRequPoints("PeakSpeed");
             }
             if (params.rmsTorque) {
-               
+               $container.find('#rmsTorqueSlider').slider('setValue', params.rmsTorque);
+               $container.find("#rmsTorqueValue").val(params.rmsTorque);
+               updateApplicationRequPoints("RmsTorque");
             }
             if (params.rmsSpeed) {
-                
+                $container.find('#rmsSpeedSlider').slider('setValue', params.rmsSpeed);
+                $container.find("#rmsSpeedValue").val(params.rmsSpeed);
+                updateApplicationRequPoints("RmsSpeed");
             }
             if (params.temperature) {
                 $container.find('#tempSlider').slider('setValue', params.temperature);
                 $container.find("#tempValue").val(params.temperature);
+                updateApplicationRequPoints("Temperature");
             }
             if (params.altitude) {
                 $container.find('#altitudeSlider').slider('setValue', params.altitude);
                 $container.find("#altitudeValue").val(params.altitude);
+                updateApplicationRequPoints("Altitude");
             }
             if (params.transmissionRatio) {
-                
+                $container.find('#trRatioSlider').slider('setValue', params.transmissionRatio);
+                $container.find("#trRatioValue").val(params.transmissionRatio);
+                updateApplicationRequPoints("TransmissionRatio");
             }
-            
         }
 
         var markAnswers = function (params) {
@@ -1736,72 +1750,37 @@
             if (params.peakTorque) {
                 cssClass = params.peakTorque.status ? 'correct' : 'incorrect';
                 $container.find('#peakTorqueValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
             if (params.peakSpeed) {
                 cssClass = params.peakSpeed.status ? 'correct' : 'incorrect';
                 $container.find('#peakSpeedValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
             if (params.rmsTorque) {
                 cssClass = params.rmsTorque.status ? 'correct' : 'incorrect';
                 $container.find('#rmsTorqueValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
             if (params.rmsSpeed) {
                 cssClass = params.rmsSpeed.status ? 'correct' : 'incorrect';
                 $container.find('#rmsSpeedValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
             if (params.temperature) {
                 cssClass = params.temperature.status ? 'correct' : 'incorrect';
                 $container.find('#tempValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
             if (params.altitude) {
                 cssClass = params.altitude.status ? 'correct' : 'incorrect';
                 $container.find('#altitudeValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
             if (params.transmissionRatio) {
                 cssClass = params.transmissionRatio.status ? 'correct' : 'incorrect';
                 $container.find('#trRatioValue').addClass(cssClass)
-                // $peakTorqueInput.data('unitsComboBox').update({
-                //     "enable": {
-                //         "textbox": "false",
-                //         "comboBox": "true"
-                //     }
-                // });
+                // disable slider and input
             }
         }
 
