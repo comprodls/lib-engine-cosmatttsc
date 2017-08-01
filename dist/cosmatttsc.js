@@ -5669,38 +5669,38 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
         var updateInputs = function (params) {
 
             if (params.peakTorque) {
-                $container.find('#peakTorqueSlider').slider('setValue', params.peakTorque);
-                $container.find("#peakTorqueValue").val(params.peakTorque);
+                $container.find('#peakTorqueSlider').slider('setValue', params.peakTorque.value);
+                $container.find("#peakTorqueValue").val(params.peakTorque.value);
                 updateApplicationRequPoints("PeakTorque");
             }
             if (params.peakSpeed) {
-                $container.find('#peakSpeedSlider').slider('setValue', params.peakSpeed);
-                $container.find("#peakSpeedValue").val(params.peakSpeed);
+                $container.find('#peakSpeedSlider').slider('setValue', params.peakSpeed.value);
+                $container.find("#peakSpeedValue").val(params.peakSpeed.value);
                 updateApplicationRequPoints("PeakSpeed");
             }
             if (params.rmsTorque) {
-               $container.find('#rmsTorqueSlider').slider('setValue', params.rmsTorque);
-               $container.find("#rmsTorqueValue").val(params.rmsTorque);
+               $container.find('#rmsTorqueSlider').slider('setValue', params.rmsTorque.value);
+               $container.find("#rmsTorqueValue").val(params.rmsTorque.value);
                updateApplicationRequPoints("RmsTorque");
             }
             if (params.rmsSpeed) {
-                $container.find('#rmsSpeedSlider').slider('setValue', params.rmsSpeed);
-                $container.find("#rmsSpeedValue").val(params.rmsSpeed);
+                $container.find('#rmsSpeedSlider').slider('setValue', params.rmsSpeed.value);
+                $container.find("#rmsSpeedValue").val(params.rmsSpeed.value);
                 updateApplicationRequPoints("RmsSpeed");
             }
             if (params.temperature) {
-                $container.find('#tempSlider').slider('setValue', params.temperature);
-                $container.find("#tempValue").val(params.temperature);
+                $container.find('#tempSlider').slider('setValue', params.temperature.value);
+                $container.find("#tempValue").val(params.temperature.value);
                 updateApplicationRequPoints("Temperature");
             }
             if (params.altitude) {
-                $container.find('#altitudeSlider').slider('setValue', params.altitude);
-                $container.find("#altitudeValue").val(params.altitude);
+                $container.find('#altitudeSlider').slider('setValue', params.altitude.value);
+                $container.find("#altitudeValue").val(params.altitude.value);
                 updateApplicationRequPoints("Altitude");
             }
             if (params.transmissionRatio) {
-                $container.find('#trRatioSlider').slider('setValue', params.transmissionRatio);
-                $container.find("#trRatioValue").val(params.transmissionRatio);
+                $container.find('#trRatioSlider').slider('setValue', params.transmissionRatio.value);
+                $container.find("#trRatioValue").val(params.transmissionRatio.value);
                 updateApplicationRequPoints("TransmissionRatio");
             }
         }
