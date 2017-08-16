@@ -427,7 +427,7 @@
             var $peakTorqueSlider = $('<div class="col-sm-4"><input id="peakTorqueSlider" data-slider-value="' + settings.peakPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $peakTorqueSliderContainer.append($peakTorqueSlider);
 
-            var $peakTorqueInput = $('<div class="col-sm-5"><input type="number" name="quantity" id="peakTorqueValue" min="0" max="'+settings.sliderLimit.peakMaxTorque+'" value="' + settings.peakPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
+            var $peakTorqueInput = $('<div class="col-sm-5"><input type="number" name="quantity" id="peakTorqueValue" step=".1" min="0" max="'+settings.sliderLimit.peakMaxTorque+'" value="' + settings.peakPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
             $peakTorqueSliderContainer.append($peakTorqueInput);
             //var $peakTorqueValue = $('<div class="col-sm-3"><label class="value" id="peakTorqueValue">' + settings.peakPoints[1] + ' N-m </label></div>');
             //$peakTorqueSliderContainer.append($peakTorqueValue);
@@ -449,12 +449,43 @@
                 peakTorqueOldValue = $peakTorqueSlider.find('#peakTorqueSlider').slider('getValue');
                 //$container.find("#peakTorqueValue").val($peakTorqueSlider.find('#peakTorqueSlider').slider('getValue'));
             });
+            if(settings.disableControls && settings.disableControls.peakTorqueSlider){
+                peakTorqueSlider.slider("disable");
+            }
             var peakTorqueOldValue = $peakTorqueSlider.find('#peakTorqueSlider').slider('getValue');
 
+            $container.find('#peakTorqueValue').on('focusin',function(e){
+              $(this).data('oldValue', $(this).val());
+            });
             $container.find('#peakTorqueValue').on('change',function(e){
 
-                   applicationRequPointsOntextChan("PeakTorque",e.target.value);
+                if (e.target.value < settings.rmsPoints[1]) {                    
+                    $container.find('#peakTorqueValue').val($(this).data('oldValue'));
+                    setAlertMessage("Peak Torque can not be less than RMS Torque.");                    
+                    return false;
+                }
+                
+                setAlertMessage("");
+
+                var minValue =  parseInt($(this).attr('min'));
+                var maxValue =  parseInt($(this).attr('max')); 
+                var valueCurrent = ($(this).val());   
+
+                if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                    $(this).data('oldValue', $(this).val());
+                    applicationRequPointsOntextChan("PeakTorque",e.target.value);
+                }             
+                else{
+
+                    $(this).val($peakTorqueSlider.find('#peakTorqueSlider').slider('getValue'));
+                    return;
+                } 
+               
             });
+
+            if(settings.disableControls && settings.disableControls.peakTorqueTextBox){
+                $container.find('#peakTorqueValue').attr("disabled",true);
+            }
 
             var $peakSpeedSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $tsPointsPanelContainer.append($peakSpeedSliderContainer);
@@ -487,14 +518,44 @@
 
 
             });
-          
+
+            if(settings.disableControls && settings.disableControls.peakSpeedSlider){
+                peakSpeedSlider.slider("disable");
+            }
+            
+            $container.find('#peakSpeedValue').on('focusin',function(e){
+              $(this).data('oldValue', $(this).val());
+            });
             $container.find('#peakSpeedValue').on('change',function(e){
 
-                   applicationRequPointsOntextChan("PeakSpeed",e.target.value);
+                if (e.target.value < settings.rmsPoints[0]) {
+                    console.log("$(this).data('oldValue'): ",$(this).data('oldValue'));
+                    $container.find('#peakSpeedValue').val($(this).data('oldValue'));
+                    setAlertMessage("Peak Speed can not be less than RMS Speed.");
+                    return false;
+                }
+                setAlertMessage("");
+                 
+                var minValue =  parseInt($(this).attr('min'));
+                var maxValue =  parseInt($(this).attr('max')); 
+                var valueCurrent = ($(this).val());                
+                if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                    $(this).data('oldValue', $(this).val()); 
+                    applicationRequPointsOntextChan("PeakSpeed",e.target.value);
+                } 
+                else{
+
+                    $(this).val($peakSpeedSlider.find('#peakSpeedSlider').slider('getValue'));
+                    return;
+                }     
+
+                
             });
 
 
-
+            if(settings.disableControls && settings.disableControls.peakSpeedTextBox){
+                $container.find('#peakSpeedValue').attr("disabled",true);
+            }
 
             var $rmsTorqueSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $tsPointsPanelContainer.append($rmsTorqueSliderContainer);
@@ -507,7 +568,7 @@
             var $rmsTorqueSlider = $('<div class="col-sm-4"><input id="rmsTorqueSlider" data-slider-value="' + settings.rmsPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueSlider);
 
-            var $rmsTorqueInput = $('<div class="col-sm-5"><input type="number" id="rmsTorqueValue" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
+            var $rmsTorqueInput = $('<div class="col-sm-5"><input type="number" id="rmsTorqueValue" step=".1" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);
 
             //var $rmsTorqueValue = $('<div class="col-sm-3"><label class="value" id="rmsTorqueValue">' + settings.rmsPoints[1] + ' N-m </label></div>');
@@ -529,11 +590,44 @@
                 }
             });
 
+            if(settings.disableControls && settings.disableControls.rmsTorqueSlider){
+                rmsTorqueSlider.slider("disable");
+            }
 
+            $container.find('#rmsTorqueValue').on('focusin',function(e){
+              $(this).data('oldValue', $(this).val());
+            });
             $container.find('#rmsTorqueValue').on('change',function(e){
 
-                   applicationRequPointsOntextChan("RmsTorque",e.target.value);
+                if (e.target.value > settings.peakPoints[1]) {
+                        $container.find('#rmsTorqueValue').val($(this).data('oldValue'));
+                        setAlertMessage("RMS Torque can not be greater than Peak Torque.");
+                        return false;
+                } else {
+                        setAlertMessage("");
+
+                        var minValue =  parseInt($(this).attr('min'));
+                        var maxValue =  parseInt($(this).attr('max')); 
+                        var valueCurrent = ($(this).val());                
+                        if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                            $(this).data('oldValue', $(this).val());
+                            applicationRequPointsOntextChan("RmsTorque",e.target.value);
+                        } 
+                        else{
+
+                            $(this).val($rmsTorqueSlider.find('#rmsTorqueSlider').slider('getValue'));
+                            return;
+                        } 
+                    
+                }
+
+               
             });
+
+            if(settings.disableControls && settings.disableControls.rmsTorqueTextBox){
+                $container.find('#rmsTorqueValue').attr("disabled",true);
+            }
+
             var $rmsSpeedSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $tsPointsPanelContainer.append($rmsSpeedSliderContainer);
 
@@ -560,15 +654,44 @@
                     return;
                 }
                 setAlertMessage("");
-                updateApplicationRequPoints("RmsSpeed");
+                updateApplicationRequPoints("RmsSpeed");               
 
             });
 
+            if(settings.disableControls && settings.disableControls.rmsSpeedSlider){
+                rmsSpeedSlider.slider("disable");
+            }
+
+            $container.find('#rmsSpeedValue').on('focusin',function(e){
+              $(this).data('oldValue', $(this).val());
+            });
             $container.find('#rmsSpeedValue').on('change',function(e){
+                if (e.target.value > settings.peakPoints[0]) {
+                    $container.find('#rmsSpeedValue').val($(this).data('oldValue'));
+                    setAlertMessage("RMS Speed can not be greater than Peak Speed.");
+                    return;
+                }
+                setAlertMessage("");
 
-                   applicationRequPointsOntextChan("RmsSpeed",e.target.value);
+                var minValue =  parseInt($(this).attr('min'));
+                var maxValue =  parseInt($(this).attr('max')); 
+                var valueCurrent = ($(this).val());                
+                if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                    $(this).data('oldValue', $(this).val());
+                    applicationRequPointsOntextChan("RmsSpeed",e.target.value);
+                } 
+                else{
+
+                    $(this).val($rmsSpeedSlider.find('#rmsSpeedSlider').slider('getValue'));
+                    return;
+                } 
+
+                
+                
             });
-
+            if(settings.disableControls && settings.disableControls.rmsSpeedTextBox){
+                $container.find('#rmsSpeedValue').attr("disabled",true);
+            }
 
             if (settings.showMotorTsCurve) {
                 var $statusContainer = $('<div id="sliderContainer" class="row"></div>');
@@ -660,6 +783,11 @@
                 }
 
             });
+
+            if(settings.disableControls && settings.disableControls.tempSlider){
+                $tempSliderContainer.find('#tempSlider').slider("disable");
+            }
+
             $container.find('#tempValue').on('change',function(e){
                     $container.find('#tempSlider').slider('setValue', parseInt(e.target.value));
                     updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
@@ -667,6 +795,11 @@
 
                   
             });
+
+            if(settings.disableControls && settings.disableControls.tempTextBox){
+                $container.find('#tempValue').attr("disabled",true);
+            }
+
             var updatePlotDataOnTempChange = function(plotType, currentTemp) {
 
                 var tsPlotSeries = tsPlot.getData();
@@ -903,6 +1036,10 @@
                 updateMotorStatus();
             });
 
+            if(settings.disableControls && settings.disableControls.altitudeSlider){
+                $altitudeSlider.find('#altitudeSlider').slider("disable");
+            }
+
             $container.find('#altitudeValue').on('change',function(e){
                     var currentTextBoxVal = parseInt(e.target.value);
                     //updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
@@ -940,6 +1077,10 @@
 
                   
             });
+
+            if(settings.disableControls && settings.disableControls.transmRatioTextBox){
+                $container.find('#altitudeValue').attr("disabled",true);
+            }
 
 
         };
@@ -1003,10 +1144,19 @@
                 updateApplicationRequPoints("TransmissionRatio");
 
             });
+
+            if(settings.disableControls && settings.disableControls.transmRatioSlider){
+                $trRatioSlider.find('#trRatioSlider').slider("disable");
+            }
+
             $container.find('#trRatioValue').on('change',function(e){
 
                    applicationRequPointsOntextChan("TransmissionRatio",e.target.value);
             });
+
+            if(settings.disableControls && settings.disableControls.transmRatioTextBox){
+                $container.find('#trRatioValue').attr("disabled",true);
+            }
 
         };
 
@@ -1021,12 +1171,12 @@
             var $tsCurvePlotArea = $('<div class="tsPlotArea"></div>');
             $tsCurveContainer.append($tsCurvePlotArea);
 
-            var $curveConfigContainer = $('<div class="curveConfigContainer row"></div>');
+            /*var $curveConfigContainer = $('<div class="curveConfigContainer row"></div>');
             $containerEle.append($curveConfigContainer);
 
             if (settings.showQuadrantToggle) {
                 generatePlotModeToggleSwitch($curveConfigContainer);
-            }
+            }*/
 
             calculateTSCurevePoints();
         };
