@@ -28,7 +28,8 @@
             showAppPointsForm: true,
             showEnviorForm: true,
             showTransmissionForm: true,
-            uniqeId:'1'
+            uniqeId:'1',
+            firstTimeCall:'0'
         };
 
         
@@ -111,7 +112,7 @@
             var $motorPanel = $('<div class="panelNew panel-defaultNew"></div>');
             $containerEle.append($motorPanel);
 
-            var $motorPanelHeading = $('<div class="panel-heading panelHeadingNew" role="tab" id="headingOne"> <h4 class="panel-title"> <span id="panelHeading"> Solution Selection</span> <span class="accordion-plus-minus  pull-right" aria-hidden="true" style="color: grey;"></span></h4> </div>');
+            var $motorPanelHeading = $('<div class="panel-heading panelHeadingNew" role="tab" id="headingOne"> <div id="PaginationDiv" class="Pagination"></div><span class="accordion-plus-minus  pull-right" aria-hidden="true" style="color: grey;"></span> </div>');
             $motorPanel.append($motorPanelHeading);
 
             var $motorPanelBodyContainer = $('<div id="collapseOne" class="panel-collapse collapse motorDataOpenPanle" role="tabpanel" aria-labelledby="headingOne"></div>');
@@ -127,7 +128,97 @@
                 $(this).find('.accordion-plus-minus').removeClass('glyphicon-chevron-up fa fa-chevron-up').addClass('glyphicon-chevron-down fa fa-chevron-down');
             });
 
-            generateMotorDataPanelBody($motorPanel);
+            /***********************************************/
+
+
+            var $motorPanelBody = $motorPanel.find('#collapseOne .panel-body');
+            var $motorDataContainer = $('<div id="motorDataContainer" class="row"></div>');
+            $motorPanelBody.append($motorDataContainer);
+
+            var $solutionTitle = $('<div class="col-sm-12 title"><span id="solutionTitle">Solution Size: </sapn></div>');
+            $motorDataContainer.append($solutionTitle);
+
+            /*var $solutionSlider = $('<div class="col-sm-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
+            $motorDataContainer.append($solutionSlider);*/
+
+
+          
+
+            /*var $solutionValue = $('<div class="col-md-3"><label class="value" id="solutionValue">10 N-m </label></div>');
+            $motorDataContainer.append($solutionValue);*/
+
+            var $solutionDivider = $('<div class="col-sm-11 solutionDivider"></div>');
+            $motorDataContainer.append($solutionDivider);
+
+            var $solutionInfoTitle = $('<div class="col-sm-12 solutionInfoTitle">Solution Summary</div>');
+            $motorDataContainer.append($solutionInfoTitle);
+
+            var $solutionInfoRowOne = $('<div class="col-sm-12 solutionInfoContainer row"></div>');
+            $motorDataContainer.append($solutionInfoRowOne);
+
+            var $driveInfo = $('<div class="col-sm-6"><span class="driveTitle">Drive:</span><span class="driveName" id="driveNameId">'+settings.motorData[settings.motorSelectedIndex].drivePartNo+'</span></div>');
+            $solutionInfoRowOne.append($driveInfo);
+
+            var $motorInfo = $('<div class="col-sm-6"><span class="motorTitle">Motor:</span><span class="motorName" id="motorNameId">'+settings.motorData[settings.motorSelectedIndex].motorPartNo+'</span></div>');
+            $solutionInfoRowOne.append($motorInfo);
+
+            var $solutionInfoRowTwo = $('<div class="col-sm-12 solutionInfoContainer row"></div>');
+            $motorDataContainer.append($solutionInfoRowTwo);
+
+            var $voltageInfo = $('<div class="col-sm-6"><span class="voltageTitle">Voltage:</span><span class="voltageName" id="voltageInfoId">'+settings.motorData[settings.motorSelectedIndex].voltage+' V</span></div>');
+            $solutionInfoRowTwo.append($voltageInfo);
+
+            var $solutionStatus = $('<div class="col-sm-6"><span class="solutionStatusTitle">Solution Status:</span><span class="solutionStatus motorPass" id="statusValueContainer">Pass</span></div>');
+            $solutionInfoRowTwo.append($solutionStatus);
+
+            $motorPanelHeading.find('#PaginationDiv').Folio({
+                totalPages: 20,
+                maxPages:12,
+                activePage:1,
+                previousClass: 'fa fa-chevron-left',
+                nextClass: 'fa fa-chevron-right',              
+                onUpdate: function (index) {
+                    settings.firstTimeCall = index;
+                    updateMessage(index);
+                   
+                }
+            })
+
+            function updateMessage(motorIndex){
+
+                //var motorIndex = index;
+
+                console.log(settings.motorData[motorIndex].drivePartNo);
+                $motorDataContainer.find('#driveNameId').text(settings.motorData[motorIndex].drivePartNo);
+                $motorDataContainer.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
+                $motorDataContainer.find('#voltageInfoId').text(settings.motorData[motorIndex].voltage + ' V');
+                $motorDataContainer.find('#solutionTitle').text('Soultion Size: '+ motorIndex);
+
+
+                settings.motorSelectedIndex = motorIndex;
+
+                $container.find('#tempSlider').slider('setValue', settings.motorData[settings.motorSelectedIndex].temp);
+                $container.find("#tempValue").val(settings.motorData[settings.motorSelectedIndex].temp);
+
+                $container.find('#altitudeSlider').slider('setValue', settings.motorData[settings.motorSelectedIndex].altitude);
+                $container.find("#altitudeValue").val(settings.motorData[settings.motorSelectedIndex].altitude);
+
+                //settings.defalutMotorContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
+
+                //settings.defalutMotorContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
+
+                settings.defaultPeakStallTorque =  settings.motorData[settings.motorSelectedIndex].peakStallTorque;
+                settings.defaultRollOffPoint =  settings.motorData[settings.motorSelectedIndex].rollOffPoint;
+                settings.defaultRollOffSpeed =  settings.motorData[settings.motorSelectedIndex].rollOffSpeed;
+                settings.defaultPeakTorqueAtMaxSpeed =  settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
+                settings.defaultContinuousStallTorque =  settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
+                settings.defaultContinuosTorqueAtMaxSpeed =  settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
+                settings.motorSelectedIndex = motorIndex
+                calculateTSCurevePoints();
+                updateMotorStatus();
+            }
+            
+            //generateMotorDataPanelBody($motorPanel);
         };
 
         // generates motor selection accordion body
@@ -147,7 +238,11 @@
             var $solutionTitle = $('<div class="col-sm-3 title"><span id="solutionTitle">Solution Size: </sapn></div>');
             $motorDataContainer.append($solutionTitle);
 
-            var $solutionSlider = $('<div class="col-sm-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
+            /*var $solutionSlider = $('<div class="col-sm-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
+            $motorDataContainer.append($solutionSlider);*/
+
+
+            var $solutionSlider = $('<div class="col-sm-9"></div>');
             $motorDataContainer.append($solutionSlider);
 
             /*var $solutionValue = $('<div class="col-md-3"><label class="value" id="solutionValue">10 N-m </label></div>');
@@ -177,7 +272,7 @@
             var $solutionStatus = $('<div class="col-sm-6"><span class="solutionStatusTitle">Solution Status:</span><span class="solutionStatus motorPass" id="statusValueContainer">Pass</span></div>');
             $solutionInfoRowTwo.append($solutionStatus);
 
-            var solutionSlider = $solutionSlider.find('#solutionSliderId').slider({}).on("change", function(slideEvt) {
+           /* var solutionSlider = $solutionSlider.find('#solutionSliderId').slider({}).on("change", function(slideEvt) {
                 console.log(settings.motorData[slideEvt.value.newValue].drivePartNo);
                 $motorDataContainer.find('#driveNameId').text(settings.motorData[slideEvt.value.newValue].drivePartNo);
                 $motorDataContainer.find('#motorNameId').text(settings.motorData[slideEvt.value.newValue].motorPartNo);
@@ -204,7 +299,7 @@
                 settings.motorSelectedIndex = slideEvt.value.newValue
                 calculateTSCurevePoints();
                 updateMotorStatus();
-            });
+            });*/
 
         };
 
@@ -300,18 +395,18 @@
 
 
                     if (tsPlotSeries[1].data[0][0] > settings.sliderLimit.peakMaxSpeed) {
-                      $container.find('#peakSpeedValue').attr('max', parseInt(tsPlotSeries[1].data[0][0]));
+                      $container.find('#peakSpeedValue').attr('data-max', parseInt(tsPlotSeries[1].data[0][0]));
                     }
                     else{
-                      $container.find('#peakSpeedValue').attr('max', settings.sliderLimit.peakMaxSpeed); 
+                      $container.find('#peakSpeedValue').attr('data-max', settings.sliderLimit.peakMaxSpeed); 
                     }
                    
 
                     if (tsPlotSeries[3].data[0][0] > settings.sliderLimit.rmsMaxSpeed) {
-                        $container.find('#rmsSpeedValue').attr('max', parseInt(tsPlotSeries[3].data[0][0]));
+                        $container.find('#rmsSpeedValue').attr('data-max', parseInt(tsPlotSeries[3].data[0][0]));
                     }
                     else{
-                      $container.find('#rmsSpeedValue').attr('max', settings.sliderLimit.rmsMaxSpeed); 
+                      $container.find('#rmsSpeedValue').attr('data-max', settings.sliderLimit.rmsMaxSpeed); 
                     }
                    
                     $container.find('#trRatioSlider').slider('setValue', value);
@@ -424,13 +519,17 @@
             var $peakTorqueTitle = $('<div class="col-sm-3 title"><span id="peakTorqueTitle">Peak Torque: </span></div>');
             $peakTorqueSliderContainer.append($peakTorqueTitle);
 
-            var $peakTorqueSlider = $('<div class="col-sm-4"><input id="peakTorqueSlider" data-slider-value="' + settings.peakPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $peakTorqueSlider = $('<div class="col-sm-4 slider-right-padding"><input id="peakTorqueSlider" data-slider-value="' + settings.peakPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $peakTorqueSliderContainer.append($peakTorqueSlider);
 
-            var $peakTorqueInput = $('<div class="col-sm-5"><input type="number" name="quantity" id="peakTorqueValue" step=".1" min="0" max="'+settings.sliderLimit.peakMaxTorque+'" value="' + settings.peakPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
+           
+          
+           var $peakTorqueInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="peakTorqueSpinner"><input id="peakTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.peakPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>')
             $peakTorqueSliderContainer.append($peakTorqueInput);
-            //var $peakTorqueValue = $('<div class="col-sm-3"><label class="value" id="peakTorqueValue">' + settings.peakPoints[1] + ' N-m </label></div>');
-            //$peakTorqueSliderContainer.append($peakTorqueValue);
+            
+
+
+
 
             var peakTorqueSlider = $peakTorqueSlider.find('#peakTorqueSlider').slider({
                 min: 0,
@@ -454,11 +553,39 @@
             }
             var peakTorqueOldValue = $peakTorqueSlider.find('#peakTorqueSlider').slider('getValue');
 
-            $container.find('#peakTorqueValue').on('focusin',function(e){
+            
+            $container.find('#peakTorqueSpinner').spinner('changed',function(e, newVal, oldVal){
+               
+
+                $(this).data('oldValue', oldVal);
+              
+                 if (newVal < settings.rmsPoints[1]) {                    
+                    $container.find('#peakTorqueValue').val($(this).data('oldValue'));
+                    setAlertMessage("Peak Torque can not be less than RMS Torque.");                    
+                    return false;
+                }
+                
+                setAlertMessage("");
+
+                var minValue =  parseInt($(this).attr('data-min'));
+                var maxValue =  parseInt($(this).attr('data-max')); 
+                var valueCurrent = ($(this).val());   
+
+                if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                    $(this).data('oldValue', $(this).val());
+                    applicationRequPointsOntextChan("PeakTorque",newVal);
+                }             
+                else{
+
+                    $(this).val($peakTorqueSlider.find('#peakTorqueSlider').slider('getValue'));
+                    return;
+                } 
+            });
+            /*$container.find('#peakTorqueValue').on('focusin',function(e){
               $(this).data('oldValue', $(this).val());
             });
             $container.find('#peakTorqueValue').on('change',function(e){
-
+debugger;
                 if (e.target.value < settings.rmsPoints[1]) {                    
                     $container.find('#peakTorqueValue').val($(this).data('oldValue'));
                     setAlertMessage("Peak Torque can not be less than RMS Torque.");                    
@@ -482,7 +609,7 @@
                 } 
                
             });
-
+*/
             if(settings.disableControls && settings.disableControls.peakTorqueTextBox){
                 $container.find('#peakTorqueValue').attr("disabled",true);
             }
@@ -493,14 +620,13 @@
             var $peakSpeedTitle = $('<div class="col-sm-3 title"><span id="peakSpeedTitle">Peak Speed: </sapn></div>');
             $peakSpeedSliderContainer.append($peakSpeedTitle);
 
-            var $peakSpeedSlider = $('<div class="col-sm-4"><input id="peakSpeedSlider" data-slider-value="' + settings.peakPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $peakSpeedSlider = $('<div class="col-sm-4 slider-right-padding"><input id="peakSpeedSlider" data-slider-value="' + settings.peakPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $peakSpeedSliderContainer.append($peakSpeedSlider);
 
-            var $peakSpeedInput = $('<div class="col-sm-5"><input step="1"  data-wrap="true" type="number" id="peakSpeedValue" name="quantity" min="0" max="'+settings.sliderLimit.peakMaxSpeed+'" value="' + settings.peakPoints[0] + '" class="widgetNumberInput form-control bfh-number form-control bfh-number"><lable class="value">&nbsp;&nbsp;rad/sec</label></div>');
+            var $peakSpeedInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="peakSpeedSpinner"><input id="peakSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.peakPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>')
             $peakSpeedSliderContainer.append($peakSpeedInput);
 
-            //var $peakSpeedValue = $('<div class="col-md-3"><label class="value" id="peakSpeedValue">' + settings.peakPoints[0] + ' rad/sec </label></div>');
-            //$peakSpeedSliderContainer.append($peakSpeedValue);
+           
 
             var peakSpeedSlider = $peakSpeedSlider.find('#peakSpeedSlider').slider({
                 min: 0,
@@ -523,7 +649,34 @@
                 peakSpeedSlider.slider("disable");
             }
             
-            $container.find('#peakSpeedValue').on('focusin',function(e){
+            $container.find('#peakSpeedSpinner').spinner('changed',function(e, newVal, oldVal){
+       
+
+                $(this).data('oldValue', oldVal);
+              
+                if (newVal < settings.rmsPoints[0]) {
+                    console.log("$(this).data('oldValue'): ",$(this).data('oldValue'));
+                    $container.find('#peakSpeedValue').val($(this).data('oldValue'));
+                    setAlertMessage("Peak Speed can not be less than RMS Speed.");
+                    return false;
+                }
+                setAlertMessage("");
+                 
+                var minValue =  parseInt($(this).attr('data-min'));
+                var maxValue =  parseInt($(this).attr('data-max')); 
+                var valueCurrent = ($(this).val());                
+                if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                    $(this).data('oldValue', $(this).val()); 
+                    applicationRequPointsOntextChan("PeakSpeed",e.target.value);
+                } 
+                else{
+
+                    $(this).val($peakSpeedSlider.find('#peakSpeedSlider').slider('getValue'));
+                    return;
+                }     
+
+            });
+           /* $container.find('#peakSpeedValue').on('focusin',function(e){
               $(this).data('oldValue', $(this).val());
             });
             $container.find('#peakSpeedValue').on('change',function(e){
@@ -551,7 +704,7 @@
 
                 
             });
-
+*/
 
             if(settings.disableControls && settings.disableControls.peakSpeedTextBox){
                 $container.find('#peakSpeedValue').attr("disabled",true);
@@ -565,15 +718,15 @@
 
 
 
-            var $rmsTorqueSlider = $('<div class="col-sm-4"><input id="rmsTorqueSlider" data-slider-value="' + settings.rmsPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $rmsTorqueSlider = $('<div class="col-sm-4 slider-right-padding"><input id="rmsTorqueSlider" data-slider-value="' + settings.rmsPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueSlider);
 
-            var $rmsTorqueInput = $('<div class="col-sm-5"><input type="number" id="rmsTorqueValue" step=".1" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
+            var $rmsTorqueInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="rmsTorqueSpinner"><input id="rmsTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.rmsPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);
+            /*var $rmsTorqueInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="rmsTorqueValue" step=".1" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
+            $rmsTorqueSliderContainer.append($rmsTorqueInput);*/
 
-            //var $rmsTorqueValue = $('<div class="col-sm-3"><label class="value" id="rmsTorqueValue">' + settings.rmsPoints[1] + ' N-m </label></div>');
-            //$rmsTorqueSliderContainer.append($rmsTorqueValue);
-
+           
             var rmsTorqueSlider = $rmsTorqueSlider.find('#rmsTorqueSlider').slider({
                 min: 0,
                 max: settings.sliderLimit.rmsMaxTorque,
@@ -594,7 +747,35 @@
                 rmsTorqueSlider.slider("disable");
             }
 
-            $container.find('#rmsTorqueValue').on('focusin',function(e){
+            $container.find('#rmsTorqueSpinner').spinner('changed',function(e, newVal, oldVal){
+       
+
+                $(this).data('oldValue', oldVal);
+              
+                if (newVal > settings.peakPoints[1]) {
+                        $container.find('#rmsTorqueValue').val($(this).data('oldValue'));
+                        setAlertMessage("RMS Torque can not be greater than Peak Torque.");
+                        return false;
+                } else {
+                        setAlertMessage("");
+
+                        var minValue =  parseInt($(this).attr('data-min'));
+                        var maxValue =  parseInt($(this).attr('data-max')); 
+                        var valueCurrent = ($(this).val());                
+                        if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                            $(this).data('oldValue', $(this).val());
+                            applicationRequPointsOntextChan("RmsTorque",e.target.value);
+                        } 
+                        else{
+
+                            $(this).val($rmsTorqueSlider.find('#rmsTorqueSlider').slider('getValue'));
+                            return;
+                        } 
+                    
+                }
+            });
+
+           /* $container.find('#rmsTorqueValue').on('focusin',function(e){
               $(this).data('oldValue', $(this).val());
             });
             $container.find('#rmsTorqueValue').on('change',function(e){
@@ -622,7 +803,7 @@
                 }
 
                
-            });
+            });*/
 
             if(settings.disableControls && settings.disableControls.rmsTorqueTextBox){
                 $container.find('#rmsTorqueValue').attr("disabled",true);
@@ -634,15 +815,16 @@
             var $rmsSpeedTitle = $('<div class="col-sm-3 title"><span id="rmsSpeedTitle">RMS Speed: </span></div>');
             $rmsSpeedSliderContainer.append($rmsSpeedTitle);
 
-            var $rmsSpeedSlider = $('<div class="col-sm-4"><input id="rmsSpeedSlider" data-slider-value="' + settings.rmsPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $rmsSpeedSlider = $('<div class="col-sm-4 slider-right-padding"><input id="rmsSpeedSlider" data-slider-value="' + settings.rmsPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $rmsSpeedSliderContainer.append($rmsSpeedSlider);
 
-            var $rmsSpeedInput = $('<div class="col-sm-5"><input type="number" id="rmsSpeedValue" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxSpeed+'" value="' + settings.rmsPoints[0] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;rad/sec</label></div>');
+            var $rmsSpeedInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="rmsSpeedSpinner"><input id="rmsSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.rmsPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>');
             $rmsSpeedSliderContainer.append($rmsSpeedInput);
 
-            //var $rmsSpeedValue = $('<div class="col-sm-3"><label class="value" id="rmsSpeedValue">' + settings.rmsPoints[0] + ' rad/sec </label></div>');
-            //$rmsSpeedSliderContainer.append($rmsSpeedValue);
+           /* var $rmsSpeedInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="rmsSpeedValue" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxSpeed+'" value="' + settings.rmsPoints[0] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;rad/sec</label></div>');
+            $rmsSpeedSliderContainer.append($rmsSpeedInput);*/
 
+           
             var rmsSpeedSlider = $rmsSpeedSlider.find('#rmsSpeedSlider').slider({
                 min: 0,
                 max: settings.sliderLimit.rmsMaxSpeed,
@@ -662,7 +844,32 @@
                 rmsSpeedSlider.slider("disable");
             }
 
-            $container.find('#rmsSpeedValue').on('focusin',function(e){
+            $container.find('#rmsSpeedSpinner').spinner('changed',function(e, newVal, oldVal){
+       
+
+                $(this).data('oldValue', oldVal);
+              
+                if (newVal > settings.peakPoints[0]) {
+                    $container.find('#rmsSpeedValue').val($(this).data('oldValue'));
+                    setAlertMessage("RMS Speed can not be greater than Peak Speed.");
+                    return;
+                }
+                setAlertMessage("");
+
+                var minValue =  parseInt($(this).attr('data-min'));
+                var maxValue =  parseInt($(this).attr('data-max')); 
+                var valueCurrent = ($(this).val());                
+                if(valueCurrent >= minValue && valueCurrent <= maxValue) {
+                    $(this).data('oldValue', $(this).val());
+                    applicationRequPointsOntextChan("RmsSpeed",newVal);
+                } 
+                else{
+
+                    $(this).val($rmsSpeedSlider.find('#rmsSpeedSlider').slider('getValue'));
+                    return;
+                } 
+            });
+            /*$container.find('#rmsSpeedValue').on('focusin',function(e){
               $(this).data('oldValue', $(this).val());
             });
             $container.find('#rmsSpeedValue').on('change',function(e){
@@ -688,7 +895,7 @@
 
                 
                 
-            });
+            });*/
             if(settings.disableControls && settings.disableControls.rmsSpeedTextBox){
                 $container.find('#rmsSpeedValue').attr("disabled",true);
             }
@@ -745,17 +952,20 @@
             var $tempTitle = $('<div class="col-sm-3 title"><span id="tempTitle">Temperature: </span></div>');
             $tempSliderContainer.append($tempTitle);
 
-            var $tempSlider = $('<div class="col-sm-4"><input id="tempSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $tempSlider = $('<div class="col-sm-4 slider-right-padding"><input id="tempSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $tempSliderContainer.append($tempSlider);
 
-            var $tempInput = $('<div class="col-sm-5"><input type="number" id="tempValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].temp + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&deg;C</label></div>');
-            $tempSliderContainer.append($tempInput);
+            /*var $tempInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="tempValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].temp + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&deg;C</label></div>');
+            $tempSliderContainer.append($tempInput);*/
+            var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
+            var $tempInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;C</div>');
+            $tempSliderContainer.append($tempInput);
 
             //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
             //$tempSliderContainer.append($tempValue);
 
-            var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
+            
 
             settings.defaultPeakStallTorque =  settings.motorData[settings.motorSelectedIndex].peakStallTorque;
             settings.defaultRollOffPoint =  settings.motorData[settings.motorSelectedIndex].rollOffPoint;
@@ -788,12 +998,19 @@
                 $tempSliderContainer.find('#tempSlider').slider("disable");
             }
 
-            $container.find('#tempValue').on('change',function(e){
+            /*$container.find('#tempValue').on('change',function(e){
                     $container.find('#tempSlider').slider('setValue', parseInt(e.target.value));
                     updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
                     updatePlotDataOnTempChange("rmsPlot", parseInt(e.target.value));
 
                   
+            });*/
+            $container.find('#tempValueSpinner').spinner('changed',function(e, newVal, oldVal){
+       
+                $container.find('#tempSlider').slider('setValue', parseInt(newVal));
+                updatePlotDataOnTempChange("peakPlot", parseInt(newVal));
+                updatePlotDataOnTempChange("rmsPlot", parseInt(newVal));
+                
             });
 
             if(settings.disableControls && settings.disableControls.tempTextBox){
@@ -979,16 +1196,20 @@
             var $altitudeTitle = $('<div class="col-sm-3 title"><span id="altitudeTitle">Altitude: </span></div>');
             $altitudeSliderContainer.append($altitudeTitle);
 
-            var $altitudeSlider = $('<div class="col-sm-4"><input id="altitudeSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $altitudeSlider = $('<div class="col-sm-4 slider-right-padding"><input id="altitudeSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $altitudeSliderContainer.append($altitudeSlider);
 
-            var $altitudeInput = $('<div class="col-sm-5"><input type="number" id="altitudeValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" class="widgetNumberInput form-control bfh-number"><label class="value">&nbsp;&nbsp;m</label></div>');
+            /*var $altitudeInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="altitudeValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" class="widgetNumberInput form-control bfh-number"><label class="value">&nbsp;&nbsp;m</label></div>');
+            $altitudeSliderContainer.append($altitudeInput);*/
+            var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
+
+            var $altitudeInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;m</div>');
             $altitudeSliderContainer.append($altitudeInput);
 
             //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
             //$altitudeSliderContainer.append($altitudeValue);
 
-            var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
+            
 
 
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
@@ -1039,8 +1260,44 @@
             if(settings.disableControls && settings.disableControls.altitudeSlider){
                 $altitudeSlider.find('#altitudeSlider').slider("disable");
             }
+            $container.find('#altitudeSpinner').spinner('changed',function(e, newVal, oldVal){
+       
+                var currentTextBoxVal = parseInt(newVal);
+                  
+                var tsPlotSeries = tsPlot.getData();
+                var rmsPlotData = tsPlotSeries[2].data;
+                $container.find('#altitudeSlider').slider('setValue', currentTextBoxVal);
+                if (currentTextBoxVal > 1500) {
 
-            $container.find('#altitudeValue').on('change',function(e){
+                    var altitConstant = [1 - (currentTextBoxVal - 1500) / 10000];
+
+                    rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.defaultContinuousStallTorque * altitConstant).toFixed(3);
+
+                    rmsPlotData[1][1] = (settings.defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
+
+                    tsPlotSeries[2].data = rmsPlotData;
+                    settings.motorData[settings.motorSelectedIndex].continuousStallTorque = rmsPlotData[0][1];
+                    settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed = rmsPlotData[1][1];
+
+                }
+                else{
+
+                    var altitConstant = 1;
+
+                    rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.defaultContinuousStallTorque * altitConstant).toFixed(3);
+
+                    rmsPlotData[1][1] = (settings.defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
+
+                    tsPlotSeries[2].data = rmsPlotData;
+                    settings.motorData[settings.motorSelectedIndex].continuousStallTorque = rmsPlotData[0][1];
+                    settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed = rmsPlotData[1][1];
+                }
+                updateTSGraph(tsPlotSeries);
+                updateMotorStatus();
+                
+            });
+
+            /*$container.find('#altitudeValue').on('change',function(e){
                     var currentTextBoxVal = parseInt(e.target.value);
                     //updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
                     //updatePlotDataOnTempChange("rmsPlot", parseInt(e.target.value));
@@ -1076,7 +1333,9 @@
                 updateMotorStatus();
 
                   
-            });
+            });*/
+
+
 
             if(settings.disableControls && settings.disableControls.transmRatioTextBox){
                 $container.find('#altitudeValue').attr("disabled",true);
@@ -1120,15 +1379,16 @@
             var $trRatioTitle = $('<div class="col-sm-3 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
             $trRatioSliderContainer.append($trRatioTitle);
 
-            var $trRatioSlider = $('<div class="col-sm-4" ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $trRatioSlider = $('<div class="col-sm-4 slider-right-padding" ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $trRatioSliderContainer.append($trRatioSlider);
 
-            var $trRatioInput = $('<div class="col-sm-5"><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
+            var $trRatioInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="trRatioSpinner"><input id="trRatioValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.maxTrRatio+'" data-min="1" data-step="1"  value="' + settings.transmissionRaioVal + '" data-rule="quantity"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;: 1</div>');
             $trRatioSliderContainer.append($trRatioInput);
 
-            //var $trRatioValue = $('<div class="col-sm-3"><label class="value" id="trRatioValue">' + "1" + '</label><label class="value">:1</label></div>');
-            //$trRatioSliderContainer.append($trRatioValue);
+            /*var $trRatioInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
+            $trRatioSliderContainer.append($trRatioInput);*/
 
+            
             settings.defaultRmsTorque = settings.rmsPoints[1];
             settings.defaultRmsSpeed = settings.rmsPoints[0];
             settings.defaultPeakTorque = settings.peakPoints[1];
@@ -1149,10 +1409,16 @@
                 $trRatioSlider.find('#trRatioSlider').slider("disable");
             }
 
-            $container.find('#trRatioValue').on('change',function(e){
+            $container.find('#trRatioSpinner').spinner('changed',function(e, newVal, oldVal){
+        
+                applicationRequPointsOntextChan("TransmissionRatio",newVal);
+               
+            });
+
+           /* $container.find('#trRatioValue').on('change',function(e){
 
                    applicationRequPointsOntextChan("TransmissionRatio",e.target.value);
-            });
+            });*/
 
             if(settings.disableControls && settings.disableControls.transmRatioTextBox){
                 $container.find('#trRatioValue').attr("disabled",true);
@@ -1509,15 +1775,24 @@
 
             var updateDataforTorqueGraph = function(motorPoints) {
                 resetData();
-                var motorNewPoints = addTempEffectOnMotorData(motorPoints);
-                interpolatePositiveVelocityDataPoints(motorNewPoints);
-                interpolateNegativeVelocityDataPoints(motorNewPoints);
+               if(settings.firstTimeCall == '0'){
+                    var motorNewPoints = addTempEffectOnMotorData(motorPoints);
+                    interpolatePositiveVelocityDataPoints(motorNewPoints);
+                    interpolateNegativeVelocityDataPoints(motorNewPoints);
 
-                updateFourQuadrantData(motorNewPoints);
+                    updateFourQuadrantData(motorNewPoints);
+               }else{
+                     
+                    interpolatePositiveVelocityDataPoints(motorPoints);
+                    interpolateNegativeVelocityDataPoints(motorPoints);
+
+                    updateFourQuadrantData(motorPoints);
+               } 
+                
 
             };
 
-            if (settings.showMotorTsCurve) {
+            if (settings.showMotorTsCurve) {                
                 updateDataforTorqueGraph(settings.motorData[settings.motorSelectedIndex]);
             }
 
@@ -1726,46 +2001,46 @@
             // var tsPlotAxes = tsPlot.getAxes();
 
             // if (settings.showMotorTsCurve) {
-            // 	var maxX = Math.max(settings.peakPoints[0] + 50, settings.rmsPoints[0] + 50, 600);
-            // 	var maxY = Math.max(settings.peakPoints[1] + 10, settings.rmsPoints[1] + 10, 200);
+            //  var maxX = Math.max(settings.peakPoints[0] + 50, settings.rmsPoints[0] + 50, 600);
+            //  var maxY = Math.max(settings.peakPoints[1] + 10, settings.rmsPoints[1] + 10, 200);
 
-            // 	if (tsPlotAxes.xaxis.datamax < maxX) {
-            // 		tsPlot.getOptions().xaxes[0].max = maxX;
-            // 	} else {
-            // 		tsPlot.getOptions().xaxes[0].max = tsPlotAxes.xaxis.datamax + 50;
-            // 	}
+            //  if (tsPlotAxes.xaxis.datamax < maxX) {
+            //      tsPlot.getOptions().xaxes[0].max = maxX;
+            //  } else {
+            //      tsPlot.getOptions().xaxes[0].max = tsPlotAxes.xaxis.datamax + 50;
+            //  }
 
-            // 	if (tsPlotAxes.yaxis.datamax < maxY) {
-            // 		tsPlot.getOptions().yaxes[0].max = maxY;
-            // 	} else {
-            // 		tsPlot.getOptions().yaxes[0].max = tsPlotAxes.yaxis.datamax + 20;
-            // 	}
+            //  if (tsPlotAxes.yaxis.datamax < maxY) {
+            //      tsPlot.getOptions().yaxes[0].max = maxY;
+            //  } else {
+            //      tsPlot.getOptions().yaxes[0].max = tsPlotAxes.yaxis.datamax + 20;
+            //  }
 
 
-            // 	if (settings.quadrant === 4) {
-            // 		// tsPlot.getOptions().yaxes[0].min = -1 * maxX;
-            // 		// tsPlot.getOptions().xaxes[0].min = -1 * maxY;
+            //  if (settings.quadrant === 4) {
+            //      // tsPlot.getOptions().yaxes[0].min = -1 * maxX;
+            //      // tsPlot.getOptions().xaxes[0].min = -1 * maxY;
 
-            // 		// if (tsPlotAxes.xaxis.min < -1 * maxX) {
-            // 		// 	tsPlot.getOptions().xaxes[0].min = -1 * maxX;
-            // 		// }
+            //      // if (tsPlotAxes.xaxis.min < -1 * maxX) {
+            //      //  tsPlot.getOptions().xaxes[0].min = -1 * maxX;
+            //      // }
 
-            // 		// if (tsPlotAxes.yaxis.min < -1 * maxY) {
-            // 		// 	tsPlot.getOptions().yaxes[0].min = -1 * maxY;
-            // 		// }
+            //      // if (tsPlotAxes.yaxis.min < -1 * maxY) {
+            //      //  tsPlot.getOptions().yaxes[0].min = -1 * maxY;
+            //      // }
 
-            // 		if (tsPlotAxes.xaxis.datamin < -1*maxX) {
-            // 			tsPlot.getOptions().xaxes[0].min = -1*maxX;
-            // 		} else {
-            // 			tsPlot.getOptions().xaxes[0].min = tsPlotAxes.xaxis.datamin - 50;
-            // 		}
+            //      if (tsPlotAxes.xaxis.datamin < -1*maxX) {
+            //          tsPlot.getOptions().xaxes[0].min = -1*maxX;
+            //      } else {
+            //          tsPlot.getOptions().xaxes[0].min = tsPlotAxes.xaxis.datamin - 50;
+            //      }
 
-            // 		if (tsPlotAxes.yaxis.datamin < -1*maxY) {
-            // 			tsPlot.getOptions().yaxes[0].min = -1*maxY;
-            // 		} else {
-            // 			tsPlot.getOptions().yaxes[0].min = tsPlotAxes.yaxis.datamin - 20;
-            // 		}
-            // 	}
+            //      if (tsPlotAxes.yaxis.datamin < -1*maxY) {
+            //          tsPlot.getOptions().yaxes[0].min = -1*maxY;
+            //      } else {
+            //          tsPlot.getOptions().yaxes[0].min = tsPlotAxes.yaxis.datamin - 20;
+            //      }
+            //  }
             // }
 
             if (!settings.showMotorTsCurve) {
