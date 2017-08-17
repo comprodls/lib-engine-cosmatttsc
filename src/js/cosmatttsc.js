@@ -37,6 +37,10 @@ define([
     'css!../../node_modules/bootstrap/dist/css/bootstrap.min.css',
     '../../node_modules/jquery-flot/jquery.flot.js',
     '../../node_modules/jquery.flot.tooltip/js/jquery.flot.tooltip.js',
+    'css!../libs/Foliojs/dist/css/Folio.css',
+    "../libs/Foliojs/dist/js/Folio.js",
+    "css!../../node_modules/jquery.spinner/dist/css/bootstrap-spinner.css",
+    "../../node_modules/jquery.spinner/dist/js/jquery.spinner.min.js",
     'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min.css',
     '../libs/libs-frontend-TSCurve/dist/js/tsCurve.js'
   ], //Required by Rivets
