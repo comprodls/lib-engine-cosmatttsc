@@ -172,7 +172,7 @@
             $solutionInfoRowTwo.append($solutionStatus);
 
             $motorPanelHeading.find('#PaginationDiv').Folio({
-                totalPages: 20,
+                totalPages: settings.motorData.length,
                 maxPages:12,
                 activePage:1,
                 previousClass: 'fa fa-chevron-left',
@@ -186,7 +186,7 @@
 
             function updateMessage(motorIndex){
 
-                //var motorIndex = index;
+                var motorIndex = (motorIndex -1);
 
                 console.log(settings.motorData[motorIndex].drivePartNo);
                 $motorDataContainer.find('#driveNameId').text(settings.motorData[motorIndex].drivePartNo);
