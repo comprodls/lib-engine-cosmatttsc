@@ -59,7 +59,8 @@
               generateServoMotorArea($servoMotorArea);
             }
             else{
-              $servoMotorTSCurve.addClass('col-md-12 widthMaxLimit');
+              $servoMotorTSCurve.addClass('col-md-12');
+              $container.find('.tsCruveContainer').addClass('widthMaxLimit')
             }
                         
             generateTSCurvePlotArea($servoMotorTSCurve);           
@@ -135,8 +136,8 @@
             var $motorDataContainer = $('<div id="motorDataContainer" class="row"></div>');
             $motorPanelBody.append($motorDataContainer);
 
-            var $solutionTitle = $('<div class="col-sm-12 title"><span id="solutionTitle">Solution Size: </sapn></div>');
-            $motorDataContainer.append($solutionTitle);
+           /* var $solutionTitle = $('<div class="col-sm-12 title"><span id="solutionTitle">Solution Size: </sapn></div>');
+            $motorDataContainer.append($solutionTitle);*/
 
             /*var $solutionSlider = $('<div class="col-sm-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
             $motorDataContainer.append($solutionSlider);*/
@@ -147,10 +148,10 @@
             /*var $solutionValue = $('<div class="col-md-3"><label class="value" id="solutionValue">10 N-m </label></div>');
             $motorDataContainer.append($solutionValue);*/
 
-            var $solutionDivider = $('<div class="col-sm-11 solutionDivider"></div>');
-            $motorDataContainer.append($solutionDivider);
+            /*var $solutionDivider = $('<div class="col-sm-11 solutionDivider"></div>');
+            $motorDataContainer.append($solutionDivider);*/
 
-            var $solutionInfoTitle = $('<div class="col-sm-12 solutionInfoTitle">Solution Summary</div>');
+            var $solutionInfoTitle = $('<div class="col-sm-12 solutionInfoTitle" id="solutionTitle">Solution Summary</div>');
             $motorDataContainer.append($solutionInfoTitle);
 
             var $solutionInfoRowOne = $('<div class="col-sm-12 solutionInfoContainer row"></div>');
@@ -173,8 +174,8 @@
 
             $motorPanelHeading.find('#PaginationDiv').Folio({
                 totalPages: settings.motorData.length,
-                maxPages:12,
-                activePage:1,
+                maxPages:9,
+                activePage:settings.motorSelectedIndex,
                 previousClass: 'fa fa-chevron-left',
                 nextClass: 'fa fa-chevron-right',              
                 onUpdate: function (index) {
@@ -192,7 +193,7 @@
                 $motorDataContainer.find('#driveNameId').text(settings.motorData[motorIndex].drivePartNo);
                 $motorDataContainer.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
                 $motorDataContainer.find('#voltageInfoId').text(settings.motorData[motorIndex].voltage + ' V');
-                $motorDataContainer.find('#solutionTitle').text('Soultion Size: '+ motorIndex);
+                $motorDataContainer.find('#solutionTitle').text('Soultion Summary: # '+ (motorIndex + 1));
 
 
                 settings.motorSelectedIndex = motorIndex;
@@ -213,7 +214,7 @@
                 settings.defaultPeakTorqueAtMaxSpeed =  settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
                 settings.defaultContinuousStallTorque =  settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
                 settings.defaultContinuosTorqueAtMaxSpeed =  settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
-                settings.motorSelectedIndex = motorIndex
+                settings.motorSelectedIndex = motorIndex;                
                 calculateTSCurevePoints();
                 updateMotorStatus();
             }
@@ -351,7 +352,7 @@
         }
         var applicationRequPointsOntextChan = function(appPointType,value) {
             var tsPlotSeries = tsPlot.getData();
-            //debugger;
+            
             switch (appPointType) {
 
                 case "PeakSpeed":
@@ -444,6 +445,7 @@
                     tsPlotSeries[1].data[0][1] = settings.peakPoints[1] = $container.find('#peakTorqueSlider').slider('getValue');
                     settings.defaultPeakTorque = $container.find('#peakTorqueSlider').slider('getValue');
                     $container.find("#peakTorqueValue").val($('#peakTorqueSlider').slider('getValue'));
+                    
                     break;
 
                 case "RmsSpeed":
@@ -456,6 +458,7 @@
                     tsPlotSeries[3].data[0][1] = settings.rmsPoints[1] = $container.find('#rmsTorqueSlider').slider('getValue');
                     settings.defaultRmsTorque = $container.find('#rmsTorqueSlider').slider('getValue');
                     $container.find("#rmsTorqueValue").val($('#rmsTorqueSlider').slider('getValue'));
+                    
                     break;
 
                 case "TransmissionRatio":
@@ -585,7 +588,7 @@
               $(this).data('oldValue', $(this).val());
             });
             $container.find('#peakTorqueValue').on('change',function(e){
-debugger;
+
                 if (e.target.value < settings.rmsPoints[1]) {                    
                     $container.find('#peakTorqueValue').val($(this).data('oldValue'));
                     setAlertMessage("Peak Torque can not be less than RMS Torque.");                    
@@ -1006,7 +1009,7 @@ debugger;
                   
             });*/
             $container.find('#tempValueSpinner').spinner('changed',function(e, newVal, oldVal){
-       
+       console.log("focus came:")
                 $container.find('#tempSlider').slider('setValue', parseInt(newVal));
                 updatePlotDataOnTempChange("peakPlot", parseInt(newVal));
                 updatePlotDataOnTempChange("rmsPlot", parseInt(newVal));
@@ -1035,7 +1038,7 @@ debugger;
                 var K1 =  (1-(ta-tr)/(twl-tr)); 
                 var K2 = ((ts+234.5)/(tmr+234.5));   
                 var K3  = (1+(tm - tmr )* Km);
-               //debugger;
+               
                 switch (plotType) {
                     case "peakPlot":
                         var peakPlotData = tsPlotSeries[0].data;
@@ -1663,6 +1666,7 @@ debugger;
             };
 
             var updatefirstQadrant = function(motorPoints) {
+
                 peakTorqueGraphData = peakTorqueGraphData.concat(positiveVelocityPointsPeakTorque);
 
                 contTorqueGraphData = contTorqueGraphData.concat(positiveVelocityPointsContTorque);
@@ -1726,7 +1730,8 @@ debugger;
             };
 
             var coCOMPeteCycle = function(motorPoints) {
-                peakTorqueGraphData.push([0, motorPoints.peakStallTorque]);
+                //debugger;
+                peakTorqueGraphData.push([0, (motorPoints.peakStallTorque)]);
 
                 contTorqueGraphData.push([0, motorPoints.continuousStallTorque]);
             };
@@ -1998,6 +2003,19 @@ debugger;
         };
 
         var updatePlotMaxMinValues = function() {
+            var tsPlotAxes = tsPlot.getAxes();
+
+            if (settings.showMotorTsCurve) {
+                var maxY = Math.max(settings.peakPoints[1] + 1, settings.rmsPoints[1] + 1, 35);
+
+                if (tsPlotAxes.yaxis.datamax < maxY) {
+                      tsPlot.getOptions().yaxes[0].max = maxY;
+                }else {
+                    
+                     tsPlot.getOptions().yaxes[0].max = (tsPlotAxes.yaxis.datamax + 30);
+                }
+
+             }   
             // var tsPlotAxes = tsPlot.getAxes();
 
             // if (settings.showMotorTsCurve) {
@@ -2056,6 +2074,7 @@ debugger;
         };
 
         var modifyTSPlot = function() {
+            debugger;
             if (settings.quadrant == 4) {
                 tsPlot.getOptions().grid.markings[0].color = "#bdbdbd";
                 tsPlot.getOptions().grid.markings[1].color = "#bdbdbd"
@@ -2069,7 +2088,7 @@ debugger;
         };
 
         var plotTSGraph = function(data, options) {
-        
+     
             setTimeout(function() {
                 tsPlot = $.plot( $container.find(".tsPlotArea"), data, options);
                 modifyTSPlot();
@@ -2077,7 +2096,9 @@ debugger;
         };
 
         var updateTSGraph = function(data, options) {
+
             if (options) {
+                 
                 if (options.xaxis.min != undefined && options.yaxis.min != undefined) {
                     tsPlot.getOptions().yaxes[0].min = options.yaxis.min;
                     tsPlot.getOptions().xaxes[0].min = options.xaxis.min;
@@ -2086,6 +2107,7 @@ debugger;
                     tsPlot.getOptions().xaxes[0].min = null;
                 }
             }
+            
             tsPlot.setData(data);
             modifyTSPlot();
             assessmentNotifier();
