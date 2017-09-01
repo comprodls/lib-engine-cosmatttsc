@@ -5377,7 +5377,7 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;C</div>');
+            var $tempInput = $('<div class="col-sm-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;C</div>');
             $tempSliderContainer.append($tempInput);
 
             //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
@@ -5424,7 +5424,7 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
                   
             });*/
             $container.find('#tempValueSpinner').spinner('changed',function(e, newVal, oldVal){
-       console.log("focus came:")
+       
                 $container.find('#tempSlider').slider('setValue', parseInt(newVal));
                 updatePlotDataOnTempChange("peakPlot", parseInt(newVal));
                 updatePlotDataOnTempChange("rmsPlot", parseInt(newVal));
@@ -6145,7 +6145,7 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
             };
 
             var coCOMPeteCycle = function(motorPoints) {
-                //debugger;
+                
                 peakTorqueGraphData.push([0, (motorPoints.peakStallTorque)]);
 
                 contTorqueGraphData.push([0, motorPoints.continuousStallTorque]);
@@ -6489,7 +6489,7 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
         };
 
         var modifyTSPlot = function() {
-            debugger;
+          
             if (settings.quadrant == 4) {
                 tsPlot.getOptions().grid.markings[0].color = "#bdbdbd";
                 tsPlot.getOptions().grid.markings[1].color = "#bdbdbd"
