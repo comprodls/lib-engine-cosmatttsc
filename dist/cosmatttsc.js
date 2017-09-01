@@ -4506,7 +4506,7 @@ define('css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min',[],function(){})
       if (valid !== 0) {
         v = (valid === -1) ? this.min : this.max;
       }
-      debugger;
+     
       this.$el.val(v.toFixed(this.options.precision));
 /***************If condition commneted to fix the issue COSMATT-666**************/
       //if (this.oldValue !== this.value()) {
