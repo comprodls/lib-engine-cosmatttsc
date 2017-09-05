@@ -305,13 +305,16 @@
         // generates graph plot area container and accordions container
         var generateServoMotorTSCurveSection = function($containerEle) {
           
+         // $containerEle.append($('<div class="col-md-1"></div>'));
             var $servoMotorTSCurve = $('<div id="servoMotorTSCurve"></div>');
             $containerEle.append($servoMotorTSCurve);
 
             
             if(settings.showMotorSelForm || settings.showAppPointsForm || settings.showEnviorForm || settings.showTransmissionForm){
-              $servoMotorTSCurve.addClass('col-md-7');
-              var $servoMotorArea = $('<div class="col-md-5 row" id="servoMotorArea"></div>');
+              $servoMotorTSCurve.addClass('col-md-6');
+
+              // $containerEle.append($('<div class="col-md-1"></div>'));
+              var $servoMotorArea = $('<div class="col-md-6" id="servoMotorArea"></div>');
               $containerEle.append($servoMotorArea);
               generateServoMotorArea($servoMotorArea);
             }
@@ -322,7 +325,7 @@
                         
             generateTSCurvePlotArea($servoMotorTSCurve);           
 
-            generateServoMotorSpec();
+            //generateServoMotorSpec();
         };
 
         // generates accordion container
@@ -2007,6 +2010,7 @@
                 var K2 = ((ts+234.5)/(tmr+234.5));   
                 var K3  = (1+(tm - tmr )* Km);
 
+
                 motorPoints.peakStallTorque = (motorPoints.peakStallTorque * K3).toFixed(2);
                 motorPoints.rollOffPoint = (motorPoints.rollOffPoint * K3).toFixed(2);
                 motorPoints.rollOffSpeed = (motorPoints.rollOffSpeed / K3).toFixed(2);
@@ -2349,9 +2353,40 @@
             setTimeout(function() {
                 tsPlot = $.plot( $container.find(".tsPlotArea"), data, options);
                 modifyTSPlot();
+                attachResizeToPlots();
             }, 0);
+
+
         };
 
+        var attachResizeToPlots = function() {
+
+            $container.find('.tsCruveContainer').resize(function(e) {
+                 var ele = $(e.target);
+
+                 if(ele.width() < 777){
+                    ele.find('#servoMotorArea').addClass('resizeWidth');
+                    ele.find('#servoMotorTSCurve').addClass('resizeWidth');
+                    //ele.css('height',ele.width());
+                    //console.log("Resized less 777",ele.width());
+
+
+
+                 }
+                 else if(ele.width() > 777){
+                    ele.find('#servoMotorArea').removeClass('resizeWidth');
+                    ele.find('#servoMotorTSCurve').removeClass('resizeWidth');
+                    //ele.css('height',ele.width());
+                    //console.log("Resized less 777",ele.width());
+
+                 }
+
+                
+
+            }) ;  
+
+        };    
+        
         var updateTSGraph = function(data, options) {
 
             if (options) {
