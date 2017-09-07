@@ -31,17 +31,20 @@
 // 8:23 22/06/2017
 
 define([
-    'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
-    '../../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js',
-    'css!../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css',
+    
     'css!../../node_modules/bootstrap/dist/css/bootstrap.min.css',
+    'css!../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css',
+     "css!../../node_modules/jquery.spinner/dist/css/bootstrap-spinner.css",
+     'css!../libs/Foliojs/dist/css/Folio.css',
+    '../../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js',   
     '../../node_modules/jquery-flot/jquery.flot.js',
-    '../../node_modules/jquery.flot.tooltip/js/jquery.flot.tooltip.js',
-    'css!../libs/Foliojs/dist/css/Folio.css',
-    "../libs/Foliojs/dist/js/Folio.js",
-    "css!../../node_modules/jquery.spinner/dist/css/bootstrap-spinner.css",
+    '../../node_modules/jquery-flot/jquery.flot.resize.js',
+    '../../node_modules/flot-axislabels/jquery.flot.axislabels.js',
+    '../../node_modules/jquery.flot.tooltip/js/jquery.flot.tooltip.js',    
+    "../libs/Foliojs/dist/js/Folio.js",   
     "../../node_modules/jquery.spinner/dist/js/jquery.spinner.min.js",
     'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min.css',
+    'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
     '../libs/libs-frontend-TSCurve/dist/js/tsCurve.js'
   ], //Required by Rivets
   function(cosmatttscTemplateRef) {
