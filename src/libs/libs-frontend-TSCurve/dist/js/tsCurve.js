@@ -305,7 +305,7 @@
         // generates graph plot area container and accordions container
         var generateServoMotorTSCurveSection = function($containerEle) {
           
-         // $containerEle.append($('<div class="col-xs-1"></div>'));
+         // $containerEle.append($('<div class="col-md-1"></div>'));
             var $servoMotorTSCurve = $('<div id="servoMotorTSCurve"></div>');
             $containerEle.append($servoMotorTSCurve);
 
@@ -313,7 +313,7 @@
             if(settings.showMotorSelForm || settings.showAppPointsForm || settings.showEnviorForm || settings.showTransmissionForm){
               $servoMotorTSCurve.addClass('col-xs-6');
 
-              // $containerEle.append($('<div class="col-xs-1"></div>'));
+              // $containerEle.append($('<div class="col-md-1"></div>'));
               var $servoMotorArea = $('<div class="col-xs-6" id="servoMotorArea"></div>');
               $containerEle.append($servoMotorArea);
               generateServoMotorArea($servoMotorArea);
@@ -396,19 +396,19 @@
             var $motorDataContainer = $('<div id="motorDataContainer" class="row"></div>');
             $motorPanelBody.append($motorDataContainer);
 
-           /* var $solutionTitle = $('<div class="col-xs-12 title"><span id="solutionTitle">Solution Size: </sapn></div>');
+           /* var $solutionTitle = $('<div class="col-sm-12 title"><span id="solutionTitle">Solution Size: </sapn></div>');
             $motorDataContainer.append($solutionTitle);*/
 
-            /*var $solutionSlider = $('<div class="col-xs-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
+            /*var $solutionSlider = $('<div class="col-sm-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
             $motorDataContainer.append($solutionSlider);*/
 
 
           
 
-            /*var $solutionValue = $('<div class="col-xs-3"><label class="value" id="solutionValue">10 N-m </label></div>');
+            /*var $solutionValue = $('<div class="col-md-3"><label class="value" id="solutionValue">10 N-m </label></div>');
             $motorDataContainer.append($solutionValue);*/
 
-            /*var $solutionDivider = $('<div class="col-xs-11 solutionDivider"></div>');
+            /*var $solutionDivider = $('<div class="col-sm-11 solutionDivider"></div>');
             $motorDataContainer.append($solutionDivider);*/
 
             var $solutionInfoTitle = $('<div class="col-xs-12 solutionInfoTitle" id="solutionTitle">Solution Summary</div>');
@@ -499,14 +499,14 @@
             var $solutionTitle = $('<div class="col-xs-3 title"><span id="solutionTitle">Solution Size: </sapn></div>');
             $motorDataContainer.append($solutionTitle);
 
-            /*var $solutionSlider = $('<div class="col-xs-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
+            /*var $solutionSlider = $('<div class="col-sm-9"><input width="300" id="solutionSliderId" class="span2" type="text" data-slider-id="sizeSlider" data-slider-ticks="['+sizeSliderTicks+']" data-slider-min="0" data-slider-max="'+motorSliderLen+'" data-slider-step="1" data-slider-value="'+settings.motorSelectedIndex +'" data-slider-tooltip="hide"  /></div>');
             $motorDataContainer.append($solutionSlider);*/
 
 
             var $solutionSlider = $('<div class="col-xs-9"></div>');
             $motorDataContainer.append($solutionSlider);
 
-            /*var $solutionValue = $('<div class="col-xs-3"><label class="value" id="solutionValue">10 N-m </label></div>');
+            /*var $solutionValue = $('<div class="col-md-3"><label class="value" id="solutionValue">10 N-m </label></div>');
             $motorDataContainer.append($solutionValue);*/
 
             var $solutionDivider = $('<div class="col-xs-11 solutionDivider"></div>');
@@ -986,7 +986,7 @@
 
             var $rmsTorqueInput = $('<div class="col-xs-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="rmsTorqueSpinner"><input id="rmsTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.rmsPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);
-            /*var $rmsTorqueInput = $('<div class="col-xs-5 slider-right-padding"><input type="number" id="rmsTorqueValue" step=".1" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
+            /*var $rmsTorqueInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="rmsTorqueValue" step=".1" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);*/
 
            
@@ -1084,7 +1084,7 @@
             var $rmsSpeedInput = $('<div class="col-xs-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="rmsSpeedSpinner"><input id="rmsSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.rmsPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>');
             $rmsSpeedSliderContainer.append($rmsSpeedInput);
 
-           /* var $rmsSpeedInput = $('<div class="col-xs-5 slider-right-padding"><input type="number" id="rmsSpeedValue" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxSpeed+'" value="' + settings.rmsPoints[0] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;rad/sec</label></div>');
+           /* var $rmsSpeedInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="rmsSpeedValue" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxSpeed+'" value="' + settings.rmsPoints[0] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;rad/sec</label></div>');
             $rmsSpeedSliderContainer.append($rmsSpeedInput);*/
 
            
@@ -1218,14 +1218,14 @@
             var $tempSlider = $('<div class="col-xs-4 slider-right-padding"><input id="tempSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $tempSliderContainer.append($tempSlider);
 
-            /*var $tempInput = $('<div class="col-xs-5 slider-right-padding"><input type="number" id="tempValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].temp + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&deg;C</label></div>');
+            /*var $tempInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="tempValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].temp + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&deg;C</label></div>');
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
             var $tempInput = $('<div class="col-xs-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;C</div>');
             $tempSliderContainer.append($tempInput);
 
-            //var $tempValue = $('<div class="col-xs-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
+            //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
             //$tempSliderContainer.append($tempValue);
 
             
@@ -1462,14 +1462,14 @@
             var $altitudeSlider = $('<div class="col-xs-4 slider-right-padding"><input id="altitudeSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $altitudeSliderContainer.append($altitudeSlider);
 
-            /*var $altitudeInput = $('<div class="col-xs-5 slider-right-padding"><input type="number" id="altitudeValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" class="widgetNumberInput form-control bfh-number"><label class="value">&nbsp;&nbsp;m</label></div>');
+            /*var $altitudeInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="altitudeValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" class="widgetNumberInput form-control bfh-number"><label class="value">&nbsp;&nbsp;m</label></div>');
             $altitudeSliderContainer.append($altitudeInput);*/
             var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
 
             var $altitudeInput = $('<div class="col-xs-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;m</div>');
             $altitudeSliderContainer.append($altitudeInput);
 
-            //var $altitudeValue = $('<div class="col-xs-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
+            //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
             //$altitudeSliderContainer.append($altitudeValue);
 
             
@@ -1648,7 +1648,7 @@
             var $trRatioInput = $('<div class="col-xs-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="trRatioSpinner"><input id="trRatioValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.maxTrRatio+'" data-min="1" data-step="1"  value="' + settings.transmissionRaioVal + '" data-rule="quantity"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;: 1</div>');
             $trRatioSliderContainer.append($trRatioInput);
 
-            /*var $trRatioInput = $('<div class="col-xs-5 slider-right-padding"><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
+            /*var $trRatioInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
             $trRatioSliderContainer.append($trRatioInput);*/
 
             
