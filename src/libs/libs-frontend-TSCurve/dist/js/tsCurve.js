@@ -2362,22 +2362,18 @@
         var attachResizeToPlots = function() {
 
             $container.find('.tsCruveContainer').resize(function(e) {
-                 var ele = $(e.target);
+                 var ele = $(this);
 
                  if(ele.width() < 777){
                     ele.find('#servoMotorArea').addClass('resizeWidth');
-                    ele.find('#servoMotorTSCurve').addClass('resizeWidth');
-                    //ele.css('height',ele.width());
-                    //console.log("Resized less 777",ele.width());
-
-
-
+                    ele.find('#servoMotorTSCurve').addClass('resizeWidth');                 
+                    ele.find('.tsPlotArea').css('min-height',ele.find('.tsPlotArea').width());
                  }
                  else if(ele.width() > 777){
                     ele.find('#servoMotorArea').removeClass('resizeWidth');
-                    ele.find('#servoMotorTSCurve').removeClass('resizeWidth');
-                    //ele.css('height',ele.width());
-                    //console.log("Resized less 777",ele.width());
+                    ele.find('#servoMotorTSCurve').removeClass('resizeWidth');                   
+                   ele.find('.tsPlotArea').css('min-height',ele.find('.tsPlotArea').width());
+                   console.log("Resized greater 777",ele.find('.tsPlotArea').width());
 
                  }
 
