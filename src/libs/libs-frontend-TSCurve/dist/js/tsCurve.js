@@ -453,7 +453,7 @@
                 $motorDataContainer.find('#driveNameId').text(settings.motorData[motorIndex].drivePartNo);
                 $motorDataContainer.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
                 $motorDataContainer.find('#voltageInfoId').text(settings.motorData[motorIndex].voltage + ' V');
-                $motorDataContainer.find('#solutionTitle').text('Soultion Summary: # '+ (motorIndex + 1));
+                $motorDataContainer.find('#solutionTitle').text('Selected Soultion: # '+ (motorIndex + 1));
 
 
                 settings.motorSelectedIndex = motorIndex;
@@ -512,7 +512,7 @@
             var $solutionDivider = $('<div class="col-xs-11 col-11 solutionDivider"></div>');
             $motorDataContainer.append($solutionDivider);
 
-            var $solutionInfoTitle = $('<div class="col-xs-12 col-12solutionInfoTitle">Solution Summary</div>');
+            var $solutionInfoTitle = $('<div class="col-xs-12 col-12solutionInfoTitle">Selected Solution</div>');
             $motorDataContainer.append($solutionInfoTitle);
 
             var $solutionInfoRowOne = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
@@ -787,7 +787,7 @@
 
            
           
-           var $peakTorqueInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="peakTorqueSpinner"><input id="peakTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.peakPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>')
+           var $peakTorqueInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="peakTorqueSpinner"><input id="peakTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.peakPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>')
             $peakTorqueSliderContainer.append($peakTorqueInput);
             
 
@@ -886,7 +886,7 @@
             var $peakSpeedSlider = $('<div class="col-xs-4 col-4 slider-right-padding"><input id="peakSpeedSlider" data-slider-value="' + settings.peakPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $peakSpeedSliderContainer.append($peakSpeedSlider);
 
-            var $peakSpeedInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="peakSpeedSpinner"><input id="peakSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.peakPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>')
+            var $peakSpeedInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="peakSpeedSpinner"><input id="peakSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.peakPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>')
             $peakSpeedSliderContainer.append($peakSpeedInput);
 
            
@@ -984,7 +984,7 @@
             var $rmsTorqueSlider = $('<div class="col-xs-4 col-4 slider-right-padding"><input id="rmsTorqueSlider" data-slider-value="' + settings.rmsPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueSlider);
 
-            var $rmsTorqueInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="rmsTorqueSpinner"><input id="rmsTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.rmsPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>');
+            var $rmsTorqueInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="rmsTorqueSpinner"><input id="rmsTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.rmsPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);
             /*var $rmsTorqueInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="rmsTorqueValue" step=".1" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxTorque+'" value="' + settings.rmsPoints[1] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;Nm</label></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);*/
@@ -1081,7 +1081,7 @@
             var $rmsSpeedSlider = $('<div class="col-xs-4 col-4 slider-right-padding"><input id="rmsSpeedSlider" data-slider-value="' + settings.rmsPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $rmsSpeedSliderContainer.append($rmsSpeedSlider);
 
-            var $rmsSpeedInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="rmsSpeedSpinner"><input id="rmsSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.rmsPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>');
+            var $rmsSpeedInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="rmsSpeedSpinner"><input id="rmsSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.rmsPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>');
             $rmsSpeedSliderContainer.append($rmsSpeedInput);
 
            /* var $rmsSpeedInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="rmsSpeedValue" name="quantity" min="0" max="'+settings.sliderLimit.rmsMaxSpeed+'" value="' + settings.rmsPoints[0] + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&nbsp;rad/sec</label></div>');
@@ -1222,7 +1222,7 @@
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;&#176;C</div>');
+            var $tempInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;&#176;C</div>');
             $tempSliderContainer.append($tempInput);
 
             //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
@@ -1466,7 +1466,7 @@
             $altitudeSliderContainer.append($altitudeInput);*/
             var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
 
-            var $altitudeInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;m</div>');
+            var $altitudeInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;m</div>');
             $altitudeSliderContainer.append($altitudeInput);
 
             //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
@@ -1645,7 +1645,7 @@
             var $trRatioSlider = $('<div class="col-xs-4 col-4 slider-right-padding" ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $trRatioSliderContainer.append($trRatioSlider);
 
-            var $trRatioInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex"> <div class="input-group spinner" data-trigger="spinner" id="trRatioSpinner"><input id="trRatioValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.maxTrRatio+'" data-min="1" data-step="1"  value="' + settings.transmissionRaioVal + '" data-rule="quantity"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;: 1</div>');
+            var $trRatioInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="trRatioSpinner"><input id="trRatioValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.maxTrRatio+'" data-min="1" data-step="1"  value="' + settings.transmissionRaioVal + '" data-rule="quantity"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;: 1</div>');
             $trRatioSliderContainer.append($trRatioInput);
 
             /*var $trRatioInput = $('<div class="col-sm-5 slider-right-padding"><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
