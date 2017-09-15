@@ -630,6 +630,8 @@ define([
         var userAnswers = __content.userAnswersJSON;
         var options = __content.optionsJSON;
         var interactions = Object.keys(__content.optionsJSON);
+        var answers = __content.answersJSON;
+
         interactions.forEach(function(element, index) {
           if (userAnswers[element] && userAnswers[element].status) {
             if (userAnswers[element].status == "correct") {
@@ -640,6 +642,7 @@ define([
           } else {
             markAnswerObj[options[element].type] = { status: false };
           }
+          markAnswerObj[options[element].type].correctAnswer = answers[element].correct;
 
         });
         __pluginInstance.markAnswers(markAnswerObj);
