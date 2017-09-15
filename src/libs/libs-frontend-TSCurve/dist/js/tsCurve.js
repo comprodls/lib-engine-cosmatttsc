@@ -411,8 +411,10 @@
             /*var $solutionDivider = $('<div class="col-sm-11 solutionDivider"></div>');
             $motorDataContainer.append($solutionDivider);*/
 
-            var $solutionInfoTitle = $('<div class="col-xs-12 col-12 solutionInfoTitle" id="solutionTitle">Solution Summary</div>');
+            var $solutionInfoTitle = $('<div class="col-xs-12 col-12 solutionInfoTitle"><div id="solutionTitle"></div></div>');
             $motorDataContainer.append($solutionInfoTitle);
+
+            $solutionInfoTitle.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
             var $solutionInfoRowOne = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowOne);
@@ -437,7 +439,7 @@
                 maxPages:9,
                 activePage:settings.motorSelectedIndex,
                 previousClass: 'fa fa-chevron-left',
-                nextClass: 'fa fa-chevron-right',              
+                nextClass: 'fa fa-chevron-right',       
                 onUpdate: function (index) {
                     settings.firstTimeCall = index;
                     updateMessage(index);
@@ -453,7 +455,7 @@
                 $motorDataContainer.find('#driveNameId').text(settings.motorData[motorIndex].drivePartNo);
                 $motorDataContainer.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
                 $motorDataContainer.find('#voltageInfoId').text(settings.motorData[motorIndex].voltage + ' V');
-                $motorDataContainer.find('#solutionTitle').text('Selected Soultion: # '+ (motorIndex + 1));
+                $motorDataContainer.find('#solutionTitle').text('Selected Soultion: # '+(motorIndex + 1));
 
 
                 settings.motorSelectedIndex = motorIndex;
@@ -1222,12 +1224,13 @@
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;&#176;C</div>');
+            var $tempInput = $('<div class="col-xs-5 col-5 slider-right-padding display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+sliderMax+'" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value">&nbsp;&nbsp;&#176;C</label></div>');
             $tempSliderContainer.append($tempInput);
+            $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
             //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
             //$tempSliderContainer.append($tempValue);
-
+  
             
 
             settings.defaultPeakStallTorque =  settings.motorData[settings.motorSelectedIndex].peakStallTorque;
@@ -2359,7 +2362,7 @@
 
         };
 
-        var attachResizeToPlots = function() {
+           var attachResizeToPlots = function() {
 
             $container.find('.tsCruveContainer').resize(function(e) {
                  var ele = $(this);
@@ -2368,13 +2371,23 @@
                     ele.find('#servoMotorArea').addClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').addClass('resizeWidth');                 
                     ele.find('.tsPlotArea').css('min-height',ele.find('.tsPlotArea').width());
+                    ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width','88%');
                  }
-                 else if(ele.width() > 777){
+                 else if(ele.width() > 777 && ele.width() < 1280){
+                   
                     ele.find('#servoMotorArea').removeClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').removeClass('resizeWidth');                   
                    ele.find('.tsPlotArea').css('min-height',ele.find('.tsPlotArea').width());
-                   console.log("Resized greater 777",ele.find('.tsPlotArea').width());
+                   ele.find('#servoMotorArea').find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').css('width','54%');
+                   ele.find('#servoMotorArea').find('.response-status').attr('title',$container.find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').text());
+                   
 
+                 }
+                 else{
+                    ele.find('#servoMotorArea').removeClass('resizeWidth');
+                    ele.find('#servoMotorTSCurve').removeClass('resizeWidth');                   
+                   ele.find('.tsPlotArea').css('min-height',ele.find('.tsPlotArea').width()); 
+                   ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width','88%');
                  }
 
                 
@@ -2479,15 +2492,18 @@
                 updateApplicationRequPoints("TransmissionRatio");
             }
             if (params.motorSelectedIndex) {
-                $container.find('#solutionSliderId').slider('setValue', parseInt(params.motorSelectedIndex.value));
+                $container.find('#solutionSliderId').slider('setValue', parseInt(settings.motorSelectedIndex));
+                $container.find('#PaginationDiv').Folio({activePage:settings.motorSelectedIndex});
             }
         }
 
         var markAnswers = function (params) {
             var cssClass;
+            
             if (params.peakTorque) {
                 cssClass = params.peakTorque.status ? 'correct' : 'incorrect';
-                $container.find('#peakTorqueValue').addClass(cssClass)
+                $container.find('#peakTorqueValue').addClass(cssClass);
+
                 // disable slider and input
             }
             if (params.peakSpeed) {
@@ -2506,9 +2522,16 @@
                 // disable slider and input
             }
             if (params.temperature) {
+              
                 cssClass = params.temperature.status ? 'correct' : 'incorrect';
-                $container.find('#tempValue').addClass(cssClass)
-                // disable slider and input
+                $container.find('#tempValue').addClass(cssClass);
+                cssClass = params.temperature.status ? 'fa-check correct' : 'fa-times incorrect';
+                $container.find('#envFactorsPanelContainer').find('.response-status').css('display','block');
+                $container.find('#envFactorsPanelContainer').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.temperature.status ? '' : '(' + params.temperature.correctAnswer + '&#176;C' + ')';
+                $container.find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('#envFactorsPanelContainer').find('#tempSlider').slider("disable");
+                $container.find('#envFactorsPanelContainer').find('#tempValue').attr("disabled",true);
             }
             if (params.altitude) {
                 cssClass = params.altitude.status ? 'correct' : 'incorrect';
@@ -2520,7 +2543,16 @@
                 $container.find('#trRatioValue').addClass(cssClass)
                 // disable slider and input
             }
-        }
+             if (params.motorSelectedIndex) {
+              
+                cssClass = params.motorSelectedIndex.status ? 'fa-check correct' : 'fa-times incorrect';
+                $container.find('.solutionInfoTitle').find('.response-status').css('display','inline-block');               
+                $container.find('.solutionInfoTitle').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.motorSelectedIndex.status ? '' : '(# ' + params.motorSelectedIndex.correctAnswer +')';
+                $container.find('.solutionInfoTitle').find('.response-status').find('.correct-answer').append(correctAns);
+                // disable slider and input
+            }
+        };
 
         generateTSCurveArea();
 
