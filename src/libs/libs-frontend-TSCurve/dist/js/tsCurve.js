@@ -2550,6 +2550,16 @@
                 $container.find('.solutionInfoTitle').find('.response-status').find('span.fa').addClass(cssClass);
                 var correctAns = params.motorSelectedIndex.status ? '' : '(# ' + params.motorSelectedIndex.correctAnswer +')';
                 $container.find('.solutionInfoTitle').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('#PaginationDiv').find('.Active').css({
+                  'background-color':'#888',
+                  'border':'#888',
+                  'color':'#fff'
+                })
+                $container.find('#PaginationDiv').find('.FolioPrevious ').addClass('Disabled');
+                $container.find('#PaginationDiv').find('.FolioNext').addClass('Disabled');
+                $container.find('#PaginationDiv').find('.FolioPage').addClass('Disabled');
+
+                $container.find('#PaginationDiv').click(false);
                 // disable slider and input
             }
         };
