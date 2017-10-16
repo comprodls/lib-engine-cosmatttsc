@@ -6513,7 +6513,7 @@ define('css!../css/cosmatttsc',[],function(){});
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + sliderMax + '" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value">&nbsp;&nbsp;&#176;C</label></div>');
+            var $tempInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + sliderMax + '" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label style="padding-top: 3px" class="value">&nbsp;&nbsp;&#176;C</label></div>');
             $tempSliderContainer.append($tempInput);
             $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
@@ -6758,7 +6758,7 @@ define('css!../css/cosmatttsc',[],function(){});
             $altitudeSliderContainer.append($altitudeInput);*/
             var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
 
-            var $altitudeInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + sliderMax + '" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;m</div>');
+            var $altitudeInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + sliderMax + '" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label style="padding-top: 10px" class="value"></label>&nbsp;&nbsp;m</div>');
             $altitudeSliderContainer.append($altitudeInput);
 
             //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
@@ -7673,7 +7673,7 @@ define('css!../css/cosmatttsc',[],function(){});
                     ele.find('#servoMotorArea').removeClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').removeClass('resizeWidth');
                     ele.find('.tsPlotArea').css('min-height', ele.find('.tsPlotArea').width());
-                    ele.find('#servoMotorArea').find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').css('width', '54%');
+                    ele.find('#servoMotorArea').find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').css('width', 'auto');
                     ele.find('#servoMotorArea').find('.response-status').attr('title', $container.find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').text());
 
 
@@ -7824,7 +7824,6 @@ define('css!../css/cosmatttsc',[],function(){});
                 cssClass = params.temperature.status ? 'fa-check correct' : 'fa-times incorrect';
                 $container.find('#envFactorsPanelContainer').find('.response-status').css({
                   'display': 'flex',
-                  'justify-content': 'center',
                   'align-items': 'center'
                 });
                 $container.find('#envFactorsPanelContainer').find('.response-status').find('span.fa').addClass(cssClass);
@@ -7848,7 +7847,6 @@ define('css!../css/cosmatttsc',[],function(){});
                 cssClass = params.motorSelectedIndex.status ? 'fa-check correct' : 'fa-times incorrect';
                 $container.find('.solutionInfoTitle').find('.response-status').css({
                   'display': 'inline-flex',
-                  'justify-content': 'center',
                   'align-items': 'center'
                 }); 
                 $container.find('.solutionInfoTitle').find('.response-status').find('span.fa').addClass(cssClass);
