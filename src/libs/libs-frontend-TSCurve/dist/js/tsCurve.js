@@ -286,7 +286,162 @@
             showEnviorForm: true,
             showTransmissionForm: true,
             uniqeId: '1',
-            firstTimeCall: '0'
+            firstTimeCall: '0',
+            motorData: [{
+            "motorPartNo": "CPB-1-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 1.0,
+            "peakStallTorque": 2.70,
+            "rollOffPoint": 2.70,
+            "peakTorqueAtMaxSpeed": 1.8,
+            "continuosTorqueAtMaxSpeed": 0.72,
+            "rollOffSpeed": 3200,
+            "maxSpeed": 4500,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.00001
+          }, {
+            "motorPartNo": "CPB-1-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 1.7,
+            "peakStallTorque": 4.40,
+            "rollOffPoint": 4.40,
+            "peakTorqueAtMaxSpeed": 2.4,
+            "continuosTorqueAtMaxSpeed": 1.302,
+            "rollOffSpeed": 3300,
+            "maxSpeed": 5000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.000015
+          }, {
+            "motorPartNo": "CPB-1-03",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 2.3,
+            "peakStallTorque": 7.50,
+            "rollOffPoint": 7.50,
+            "peakTorqueAtMaxSpeed": 4.2,
+            "continuosTorqueAtMaxSpeed": 1.71,
+            "rollOffSpeed": 3100,
+            "maxSpeed": 4500,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.000025
+          }, {
+            "motorPartNo": "CPB-2-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 2.0,
+            "peakStallTorque": 3.8,
+            "rollOffPoint": 3.8,
+            "peakTorqueAtMaxSpeed": 2.0,
+            "continuosTorqueAtMaxSpeed": 1.7,
+            "rollOffSpeed": 4000,
+            "maxSpeed": 6000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.000065
+          }, {
+            "motorPartNo": "CPB-2-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 3.4,
+            "peakStallTorque": 7.8,
+            "rollOffPoint": 7.8,
+            "peakTorqueAtMaxSpeed": 4.0,
+            "continuosTorqueAtMaxSpeed": 3.09,
+            "rollOffSpeed": 4400,
+            "maxSpeed": 6000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.00008
+          }, {
+            "motorPartNo": "CPB-2-03",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 4.2,
+            "peakStallTorque": 11.0,
+            "rollOffPoint": 11.0,
+            "peakTorqueAtMaxSpeed": 6.0,
+            "continuosTorqueAtMaxSpeed": 2.9,
+            "rollOffSpeed": 3100,
+            "maxSpeed": 5000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.00012
+          }, {
+            "motorPartNo": "CPB-3-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 9.0,
+            "peakStallTorque": 21.0,
+            "rollOffPoint": 21.0,
+            "peakTorqueAtMaxSpeed": 13.0,
+            "continuosTorqueAtMaxSpeed": 6.3,
+            "rollOffSpeed": 3200,
+            "maxSpeed": 4000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.0004
+          }, {
+            "motorPartNo": "CPB-3-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 10.0,
+            "peakStallTorque": 29.0,
+            "rollOffPoint": 29.0,
+            "peakTorqueAtMaxSpeed": 16.0,
+            "continuosTorqueAtMaxSpeed": 6.91,
+            "rollOffSpeed": 2500,
+            "maxSpeed": 3500,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.0006
+          }, {
+            "motorPartNo": "CPB-4-01",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 20.0,
+            "peakStallTorque": 50.0,
+            "rollOffPoint": 50.0,
+            "peakTorqueAtMaxSpeed": 25.0,
+            "continuosTorqueAtMaxSpeed": 15.3,
+            "rollOffSpeed": 1800,
+            "maxSpeed": 3000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.0015
+          }, {
+            "motorPartNo": "CPB-4-02",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 25.0,
+            "peakStallTorque": 68.0,
+            "rollOffPoint": 68.0,
+            "peakTorqueAtMaxSpeed": 30.0,
+            "continuosTorqueAtMaxSpeed": 17.53,
+            "rollOffSpeed": 1900,
+            "maxSpeed": 3000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.0022
+          }, {
+            "motorPartNo": "CPB-4-03",
+            "drivePartNo": "CB-250",
+            "voltage": "480",
+            "continuousStallTorque": 32.0,
+            "peakStallTorque": 75.0,
+            "rollOffPoint": 75.0,
+            "peakTorqueAtMaxSpeed": 32.0,
+            "continuosTorqueAtMaxSpeed": 22.8,
+            "rollOffSpeed": 2100,
+            "maxSpeed": 3000,
+            "temp": 40,
+            "altitude": 1,
+            "motorInertia":0.0029
+          }]
         };
 
 
@@ -459,17 +614,21 @@
             })
             checkContainerWidth();
 
-            function updateMessage(motorIndex) {
+           
+
+
+        };
+         function updateMessage(motorIndex) {
 
                 var motorIndex = (motorIndex - 1);
 
                 //console.log(settings.motorData[motorIndex].drivePartNo);
-                $motorDataContainer.find('#driveNameId').text(settings.motorData[motorIndex].maxSpeed + ' rad/sec');
-                $motorDataContainer.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
-                $motorDataContainer.find('#voltageInfoId').text(settings.motorData[motorIndex].motorInertia);
-                $motorDataContainer.find('#peakStallTorque').text(settings.motorData[motorIndex].peakStallTorque + ' N-m');
-                $motorDataContainer.find('#continuousStallTorque').text(settings.motorData[motorIndex].continuousStallTorque + ' N-m');
-                $motorDataContainer.find('#solutionTitle').text('Selected Soultion: # ' + (motorIndex + 1));
+                $container.find('#driveNameId').text(settings.motorData[motorIndex].maxSpeed + ' rpm');
+                $container.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
+                $container.find('#voltageInfoId').text(settings.motorData[motorIndex].motorInertia);
+                $container.find('#peakStallTorque').text(settings.motorData[motorIndex].peakStallTorque + ' N-m');
+                $container.find('#continuousStallTorque').text(settings.motorData[motorIndex].continuousStallTorque + ' N-m');
+                $container.find('#solutionTitle').text('Selected Soultion: # ' + (motorIndex + 1));
 
 
                 settings.motorSelectedIndex = motorIndex;
@@ -532,9 +691,6 @@
                 calculateTSCurevePoints();
                 updateMotorStatus();
             }
-
-
-        };
         var checkContainerWidth = function () {
 
             var $containerWidth = $container.find('.tsCruveContainer');
@@ -552,7 +708,7 @@
 
 
             var tsPlotSeries = tsPlot.getData();
-            settings.transmissionRaioVal = parseInt(trnsRatio);
+            settings.transmissionRaioVal = parseFloat(trnsRatio);
 
             switch (OperatingPointType) {
 
@@ -899,37 +1055,16 @@
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
+
+                        if (this.value < settings.rmsPoints[1]) {
+                              $container.find('.peakTorqueDataSide').data('unitsComboBox').setTextBoxValue(settings.peakPoints[1]);
+                             setAlertMessage("Peak Torque can not be less than RMS Torque.");
+                             return false;
+                        }
+                        setAlertMessage("");
                         settings.peakPoints[1] = this.SIValue;
                         updateMotorOperatingPoints('PeakTorque', settings.transmissionRaioVal);
                     }
-
-                    /*if(this.value){
-                       if(this.value >= settings.sliderLimit.peakMaxTorque){
-                           $container.find('.peakTorqueDataSide').data('unitsComboBox').setTextBoxValue(settings.sliderLimit.peakMaxTorque);
-                       }                   
-                       else{
-   
-                           $container.find('.peakTorqueDataSide').data('unitsComboBox').setTextBoxValue("0");                        
-                       } 
-                       settings.peakPoints[1] = this.value;
-                       updateMotorOperatingPoints('PeakTorque',settings.transmissionRaioVal); 
-                     }
-   
-                   if (this.type != undefined) {
-                   if (this.type == "dropdown") {
-                     settings.moveDistanceUnit = this.unit;
-                   } else if (this.type == "textbox") {
-                     uiValues.movedistance = isNaN(parseFloat(this.value)) ? '' : parseFloat(this.value);
-                     SIValues.movedistance = isNaN(parseFloat(this.value)) || isNaN(this.SIValue) ? '' : parseFloat(this.SIValue);
-                     inputControlsCallbackFn();
-                   }
-                   responseNotifier();
-                 }
-   
-                   
-   
-                     */
-
                 }
             });
 
@@ -1065,21 +1200,16 @@
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
+                        if (this.value > settings.peakPoints[1]) {                           
+                                $container.find('.rmsTorqueLoadSide').data('unitsComboBox').setTextBoxValue(settings.rmsPoints[1]);                              
+                                setAlertMessage("RMS Torque can not be greater than Peak Torque.");
+                                return false;
+                        }
+                        setAlertMessage("");
                         settings.rmsPoints[1] = this.SIValue;
                         updateMotorOperatingPoints('RmsTorque', settings.transmissionRaioVal);
                     }
 
-                    /*if(this.value){  
-                       if(this.value >= settings.sliderLimit.rmsMaxTorque){
-                          $container.find('.rmsTorqueLoadSide').data('unitsComboBox').setTextBoxValue(settings.sliderLimit.rmsMaxTorque);
-                      }                   
-                      else if(this.value <= 0){
-  
-                          $container.find('.rmsTorqueLoadSide').data('unitsComboBox').setTextBoxValue("0");                        
-                      } 
-                        settings.rmsPoints[1] = this.value;
-                        updateMotorOperatingPoints('RmsTorque',settings.transmissionRaioVal); 
-                    }*/
                 }
             });
 
@@ -1201,7 +1331,7 @@
 
             $peakSpeedLoadSide.unitsComboBox({
                 "unitType": "ANGULARVELOCITY",
-                "unit": 'radianpersecond',
+                "unit": 'revolutionsperminute',
                 "mode": 'spin',
                 "min": 0,
                 "value": settings.peakPoints[0],
@@ -1230,7 +1360,7 @@
             });
             $peakSpeedMotorSide.unitsComboBox({
                 "unitType": "ANGULARVELOCITY",
-                "unit": 'radianpersecond',
+                "unit": 'revolutionsperminute',
                 "mode": 'spin',
                 "value": settings.peakMotorData[0],
                 "enable": { "textbox": "false", "comboBox": "true" },
@@ -1325,66 +1455,7 @@
                  $container.find('#peakSpeedValue').attr("disabled",true);
              }*/
 
-            var $rmsAccContainer = $('<div id="sliderContainer" class="row"></div>');
-            $tsPointsPanelContainer.append($rmsAccContainer);
-
-            var $rmsSpeedTitle = $('<div class="col-xs-2 col-2 title"><div id="rmsSpeedTitle" title="RMS Acceleration" class="rmsAccele">RMS Acceleration: </div></div>');
-            $rmsAccContainer.append($rmsSpeedTitle);
-
-
-            var $rmsAccelerationLoadSide = $('<div class="col-xs-5 col-5  rmsAccelerationLoadSide"></div>');
-            $rmsAccContainer.append($rmsAccelerationLoadSide);
-
-            var $rmsAccelerationMotorSide = $('<div class="col-xs-5 col-5  rmsAccelerationMotorSide"></div>');
-            $rmsAccContainer.append($rmsAccelerationMotorSide);
-
-
-            $rmsAccelerationLoadSide.unitsComboBox({
-                "unitType": "ANGULARACCELERATION",
-                "unit": 'radianpersecondsquare',
-                "mode": 'spin',
-                "min": 0,
-                "value": settings.rmsAcceData,
-                "comboBoxWidthRatio": {
-                    "textBox": "50%",
-                    "comboBox": "42%"
-                },
-                callBackFn: function () {
-                    if (this.type != undefined && this.type != 'dropdown') {
-                        settings.rmsAcceData = this.SIValue;
-                        updateMotorOperatingPoints('RmsAcceleration', settings.transmissionRaioVal);
-                    }
-
-                    /*if(this.value){    
-                      if(this.value >= settings.sliderLimit.rmsAccMax){
-                          $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue(settings.sliderLimit.rmsAccMax);
-                      }                   
-                      else if(this.value <= 0){
-  
-                          $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue("0");                        
-                      }
-                        settings.rmsAcceData = this.value;
-                        updateMotorOperatingPoints('RmsAcceleration',settings.transmissionRaioVal); 
-                    }*/
-                }
-            });
-            $rmsAccelerationMotorSide.unitsComboBox({
-                "unitType": "ANGULARACCELERATION",
-                "unit": 'radianpersecondsquare',
-                "mode": 'spin',
-                "value": settings.rmsAcceMotor,
-                "enable": { "textbox": "false", "comboBox": "true" },
-                "comboBoxWidthRatio": {
-                    "textBox": "50%",
-                    "comboBox": "42%"
-                },
-                callBackFn: function () {
-
-                }
-            });
-            if (settings.disableControls && settings.disableControls.rmsSpeedTextBox) {
-                $container.find('#rmsSpeedValue').attr("disabled", true);
-            }
+         
 
 
             var $peakAccContainer = $('<div id="sliderContainer" class="row"></div>');
@@ -1402,7 +1473,7 @@
 
             $peakAccelerationLoadSide.unitsComboBox({
                 "unitType": "ANGULARACCELERATION",
-                "unit": 'radianpersecondsquare',
+                "unit": 'revolutions',
                 "mode": 'spin',
                 "value": settings.peakAcceData,
                 "min": 0,
@@ -1412,6 +1483,13 @@
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
+
+                        if (this.value < settings.rmsAcceData) {                           
+                                $container.find('.peakAccelerationLoadSide').data('unitsComboBox').setTextBoxValue(settings.peakAcceData);                              
+                                setAlertMessage("Peak Acceleration can not be less than RMS Acceleration.");
+                                return false;
+                        }
+                        setAlertMessage("");
                         settings.peakAcceData = this.SIValue;
                         updateMotorOperatingPoints('PeakAcceleration', settings.transmissionRaioVal);
                     }
@@ -1420,7 +1498,7 @@
             });
             $peakAccelerationMotorSide.unitsComboBox({
                 "unitType": "ANGULARACCELERATION",
-                "unit": 'radianpersecondsquare',
+                "unit": 'revolutions',
                 "mode": 'spin',
                 "value": settings.peakAcceMotor,
                 "enable": { "textbox": "false", "comboBox": "true" },
@@ -1506,7 +1584,73 @@
                 
                 
             });*/
+               var $rmsAccContainer = $('<div id="sliderContainer" class="row"></div>');
+            $tsPointsPanelContainer.append($rmsAccContainer);
 
+            var $rmsSpeedTitle = $('<div class="col-xs-2 col-2 title"><div id="rmsSpeedTitle" title="RMS Acceleration" class="rmsAccele">RMS Acceleration: </div></div>');
+            $rmsAccContainer.append($rmsSpeedTitle);
+
+
+            var $rmsAccelerationLoadSide = $('<div class="col-xs-5 col-5  rmsAccelerationLoadSide"></div>');
+            $rmsAccContainer.append($rmsAccelerationLoadSide);
+
+            var $rmsAccelerationMotorSide = $('<div class="col-xs-5 col-5  rmsAccelerationMotorSide"></div>');
+            $rmsAccContainer.append($rmsAccelerationMotorSide);
+
+
+            $rmsAccelerationLoadSide.unitsComboBox({
+                "unitType": "ANGULARACCELERATION",
+                "unit": 'radianpersecondsquare',
+                "mode": 'spin',
+                "min": 0,
+                "value": settings.rmsAcceData,
+                "comboBoxWidthRatio": {
+                    "textBox": "50%",
+                    "comboBox": "42%"
+                },
+                callBackFn: function () {
+                    if (this.type != undefined && this.type != 'dropdown') {
+
+                        if (this.value > settings.peakAcceData) {                           
+                                $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue(settings.rmsAcceData);                              
+                                setAlertMessage("RMS Acceleration can not be greater than Peak Acceleration.");
+                                return false;
+                        }
+                        setAlertMessage("");
+                        settings.rmsAcceData = this.SIValue;
+                        updateMotorOperatingPoints('RmsAcceleration', settings.transmissionRaioVal);
+                    }
+
+                    /*if(this.value){    
+                      if(this.value >= settings.sliderLimit.rmsAccMax){
+                          $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue(settings.sliderLimit.rmsAccMax);
+                      }                   
+                      else if(this.value <= 0){
+  
+                          $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue("0");                        
+                      }
+                        settings.rmsAcceData = this.value;
+                        updateMotorOperatingPoints('RmsAcceleration',settings.transmissionRaioVal); 
+                    }*/
+                }
+            });
+            $rmsAccelerationMotorSide.unitsComboBox({
+                "unitType": "ANGULARACCELERATION",
+                "unit": 'radianpersecondsquare',
+                "mode": 'spin',
+                "value": settings.rmsAcceMotor,
+                "enable": { "textbox": "false", "comboBox": "true" },
+                "comboBoxWidthRatio": {
+                    "textBox": "50%",
+                    "comboBox": "42%"
+                },
+                callBackFn: function () {
+
+                }
+            });
+            if (settings.disableControls && settings.disableControls.rmsSpeedTextBox) {
+                $container.find('#rmsSpeedValue').attr("disabled", true);
+            }
 
             if (settings.showMotorTsCurve) {
                 var $statusContainer = $('<div id="sliderContainer" class="row"></div>');
@@ -1520,8 +1664,14 @@
                     $tsPointsPanelContainer.find('#alertMessageContainer').hide();
                     return;
                 }
-                $tsPointsPanelContainer.find('#alertMessageContainer').show();
+
                 $tsPointsPanelContainer.find('#alertMessageContainer span').text(alertText);
+
+                $tsPointsPanelContainer.find('#alertMessageContainer').show();
+
+                setTimeout(function(){
+                     $tsPointsPanelContainer.find('#alertMessageContainer').fadeOut("slow");
+                },3000)
             };
         };
 
@@ -1985,13 +2135,13 @@
             var $trRatioSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $transmissionRatioPanelContainer.append($trRatioSliderContainer);
 
-            var $trRatioTitle = $('<div class="col-xs-3 col-3 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
+            var $trRatioTitle = $('<div class="col-xs-4 col-4 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
             $trRatioSliderContainer.append($trRatioTitle);
 
-            var $trRatioSlider = $('<div class="col-xs-4 col-4  " ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
-            $trRatioSliderContainer.append($trRatioSlider);
+            /*var $trRatioSlider = $('<div class="col-xs-4 col-4  " ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            $trRatioSliderContainer.append($trRatioSlider);*/
 
-            var $trRatioInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="trRatioSpinner"><input id="trRatioValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + settings.sliderLimit.maxTrRatio + '" data-min="1" data-step="1"  value="' + settings.transmissionRaioVal + '" data-rule="quantity"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;: 1</div>');
+            var $trRatioInput = $('<div class="col-xs-6 col-6 margin-bottom"><div class="tansmComboBox"> </div><lable class="value">&nbsp;: 1</label></div>');
             $trRatioSliderContainer.append($trRatioInput);
 
             /*var $trRatioInput = $('<div class="col-sm-5  "><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
@@ -2003,7 +2153,7 @@
             settings.defaultPeakTorque = settings.peakMotorData[1];
             settings.defaultPeakSpeed = settings.peakMotorData[0];
 
-            $trRatioSlider.find('#trRatioSlider').slider({
+            /*$trRatioSlider.find('#trRatioSlider').slider({
                 min: 1,
                 value: 1,
                 max: settings.sliderLimit.maxTrRatio || defaults.sliderLimit.maxTrRatio,
@@ -2012,13 +2162,31 @@
 
                 updateMotorOperatingPoints('TransmissionRatio', slideEvt.value.newValue);
                 $container.find('#trRatioValue').val(slideEvt.value.newValue);
+            });*/
+            $trRatioInput.find('.tansmComboBox').unitsComboBox({
+                "unitType": "PERCENTAGE",
+                "unit": 'percentage',
+                "mode": 'spin',
+                "value": settings.transmissionRaioVal,
+                "min":1,
+                "showTextBoxOnly":"true", 
+                "max": settings.sliderLimit.maxTrRatio || defaults.sliderLimit.maxTrRatio,
+                "comboBoxWidthRatio": {
+                    "textBox": "100%",
+                    "comboBox": "0"
+                },
+                callBackFn: function () {
+                    if (this.type != undefined && this.type != 'dropdown') {
+                        
+                        updateMotorOperatingPoints('TransmissionRatio', this.value);
+                    }
+                }
             });
-
             if (settings.disableControls && settings.disableControls.transmRatioSlider) {
                 $trRatioSlider.find('#trRatioSlider').slider("disable");
             }
 
-            $container.find('#trRatioSpinner').spinner('changed', function (e, newVal, oldVal) {
+            /*$container.find('#trRatioSpinner').spinner('changed', function (e, newVal, oldVal) {
 
                 if (newVal != oldVal) {
 
@@ -2027,7 +2195,7 @@
 
                 }
 
-            });
+            });*/
 
             /* $container.find('#trRatioValue').on('change',function(e){
  
@@ -2058,6 +2226,7 @@
                 generatePlotModeToggleSwitch($curveConfigContainer);
             }*/
 
+            updateMessage(settings.motorSelectedIndex);
             calculateTSCurevePoints();
         };
 
@@ -2112,8 +2281,8 @@
             $tableBody.append('<tr> <td class="leftCol"> Frame Size </td><td class="rightCol">' + settings.motorData[selectedIndex].FrameSize + '</td></tr>');
             $tableBody.append('<tr> <td class="leftCol"> Peak Stall Torque </td><td class="rightCol">' + settings.motorData[selectedIndex].peakStallTorque + ' N-m</td></tr>');
             $tableBody.append('<tr> <td class="leftCol"> Roll Off Point </td><td class="rightCol">' + settings.motorData[selectedIndex].rollOffPoint + ' N-m</td></tr>');
-            $tableBody.append('<tr> <td class="leftCol"> Roll Off Speed </td><td class="rightCol">' + settings.motorData[selectedIndex].rollOffSpeed + ' rad/sec</td></tr>');
-            $tableBody.append('<tr> <td class="leftCol"> Max Speed </td><td class="rightCol">' + settings.motorData[selectedIndex].maxSpeed + ' rad/sec</td></tr>');
+            $tableBody.append('<tr> <td class="leftCol"> Roll Off Speed </td><td class="rightCol">' + settings.motorData[selectedIndex].rollOffSpeed + ' rpm</td></tr>');
+            $tableBody.append('<tr> <td class="leftCol"> Max Speed </td><td class="rightCol">' + settings.motorData[selectedIndex].maxSpeed + ' rpm</td></tr>');
             $tableBody.append('<tr> <td class="leftCol"> Peak Torque at Max Speed </td><td class="rightCol">' + settings.motorData[selectedIndex].peakTorqueAtMaxSpeed + ' N-m</td></tr>');
             $tableBody.append('<tr> <td class="leftCol"> Continuous Stall Torque </td><td class="rightCol">' + settings.motorData[selectedIndex].continuousStallTorque + ' N-m</td></tr>');
             $tableBody.append('<tr> <td class="leftCol"> Continuos Torque at Max Speed </td><td class="rightCol">' + settings.motorData[selectedIndex].continuosTorqueAtMaxSpeed + ' N-m</td></tr>');
@@ -2139,7 +2308,7 @@
                     show: true
                 },
                 xaxis: {
-                    axisLabel: "Speed (rad/sec)",
+                    axisLabel: "Speed (rpm)",
 
                 },
                 yaxis: {
@@ -2391,6 +2560,7 @@
             };
 
             var updateDataforTorqueGraph = function (motorPoints) {
+               
                 resetData();
                 if (settings.firstTimeCall == '0') {
                     var motorNewPoints = addTempEffectOnMotorData(motorPoints);
