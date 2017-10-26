@@ -464,6 +464,8 @@
             var $servoMotorTSCurve = $('<div id="servoMotorTSCurve"></div>');
             $containerEle.append($servoMotorTSCurve);
 
+            
+
 
             if (settings.showMotorSelForm || settings.showAppPointsForm || settings.showEnviorForm || settings.showTransmissionForm) {
                 $servoMotorTSCurve.addClass('col-xs-6 col-6');
@@ -471,6 +473,10 @@
                 // $containerEle.append($('<div class="col-md-1"></div>'));
                 var $servoMotorArea = $('<div class="col-xs-6 col-6" id="servoMotorArea"></div>');
                 $containerEle.append($servoMotorArea);
+
+                var $titleSection = $('<div class="titleSection"></div>');
+                $servoMotorArea.append($titleSection);
+
                 generateServoMotorArea($servoMotorArea);
             }
             else {
@@ -2170,7 +2176,6 @@
                 "value": settings.transmissionRaioVal,
                 "min":1,
                 "showTextBoxOnly":"true", 
-                "max": settings.sliderLimit.maxTrRatio || defaults.sliderLimit.maxTrRatio,
                 "comboBoxWidthRatio": {
                     "textBox": "100%",
                     "comboBox": "0"
@@ -2214,6 +2219,10 @@
 
         // generates TS Curve grapgh plot area
         var generateTSCurvePlotArea = function ($containerEle) {
+
+            var $titleSection = $('<div class="titleSection">Motor T-S Curve</div>');
+            $containerEle.append($titleSection);
+
             var $tsCurveContainer = $('<div class="tsPlotContainer"></div>');
             $containerEle.append($tsCurveContainer);
             var $tsCurvePlotArea = $('<div class="tsPlotArea"></div>');
@@ -2590,7 +2599,7 @@
 
             TSCurveData.push({
                 data: peakTorqueGraphData,
-                label: 'Peak T-S Curve',
+                label: 'Peak',
                 lines: {
                     lineWidth: 2,
                     show: true,
@@ -2605,7 +2614,7 @@
                     }
                 }, {
                     data: contTorqueGraphData,
-                    label: 'Continous T-S Curve',
+                    label: 'Continous',
                     lines: {
                         lineWidth: 2,
                         show: true,
@@ -2788,7 +2797,7 @@
         var updatePlotMaxMinValues = function () {
             var tsPlotAxes = tsPlot.getAxes();
 
-            if (settings.showMotorTsCurve) {
+           /* if (settings.showMotorTsCurve) {
                 var maxY = Math.max(settings.peakMotorData[1] + 1, settings.rmsMotorData[1] + 1, 35);
 
                 if (tsPlotAxes.yaxis.datamax < maxY) {
@@ -2798,7 +2807,7 @@
                     tsPlot.getOptions().yaxes[0].max = (tsPlotAxes.yaxis.datamax + 30);
                 }
 
-            }
+            }*/
             // var tsPlotAxes = tsPlot.getAxes();
 
             // if (settings.showMotorTsCurve) {
