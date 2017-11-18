@@ -31,17 +31,22 @@
 // 8:23 22/06/2017
 
 define([
-    
+    'css!../../node_modules/font-awesome/css/font-awesome.min.css',
     'css!../../node_modules/bootstrap/dist/css/bootstrap.min.css',
     'css!../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css',
      "css!../../node_modules/jquery.spinner/dist/css/bootstrap-spinner.css",
      'css!../libs/Foliojs/dist/css/Folio.css',
+     'css!../libs/libs-frontend-unitLabelControl/dist/css/unitLabelControl.min.css',
+     'css!../libs/libs-frontend-unitcombobox/dist/css/unitComboBox.min.css',
     '../../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js',   
     '../../node_modules/jquery-flot/jquery.flot.js',
     '../../node_modules/jquery-flot/jquery.flot.resize.js',
     '../../node_modules/flot-axislabels/jquery.flot.axislabels.js',
     '../../node_modules/jquery.flot.tooltip/js/jquery.flot.tooltip.js',    
-    "../libs/Foliojs/dist/js/Folio.js",   
+    "../libs/Foliojs/dist/js/Folio.js", 
+    '../libs/number-formatter/dist/cosmatt-number-formatter.js',  
+    '../libs/libs-frontend-unitcombobox/dist/js/unitComboBox.js',
+    '../libs/libs-frontend-unitLabelControl/dist/js/unitLabelControl.min.js',
     "../../node_modules/jquery.spinner/dist/js/jquery.spinner.min.js",
     'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min.css',
     'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)

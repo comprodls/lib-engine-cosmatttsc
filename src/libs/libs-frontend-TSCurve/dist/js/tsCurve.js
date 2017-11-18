@@ -1,260 +1,3 @@
-/*!
- * jquery.spinner v0.2.1 (https://vsn4ik.github.io/jquery.spinner/)
- * Copyright 2013-2017 xixilive
- * Licensed under the MIT license
- */
-'use strict';
-
-(function(factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module
-    define(['jquery'], factory);
-  }
-  else if (typeof exports === 'object') {
-    // Node/CommonJS
-    module.exports = factory(require('jquery'));
-  }
-  else {
-    // Browser globals
-    factory(jQuery);
-  }
-})(function($) {
-  var spinningTimer;
-  var Spinner;
-  var Spinning = function($element, options) {
-    this.$el = $element;
-    this.options = $.extend({}, Spinning.rules.defaults, Spinning.rules[options.rule] || {}, options);
-    this.min = Number(this.options.min) || 0;
-    this.max = Number(this.options.max) || 0;
-
-    this.$el.on({
-      'focus.spinner': $.proxy(function(e) {
-        e.preventDefault();
-        $(document).trigger('mouseup.spinner');
-        this.oldValue = this.value();
-      }, this),
-      'change.spinner': $.proxy(function(e) {
-        e.preventDefault();
-        this.value(this.$el.val());
-      }, this),
-      'keydown.spinner': $.proxy(function(e) {
-        var dir = {
-          38: 'up',
-          40: 'down'
-        }[e.which];
-
-        if (dir) {
-          e.preventDefault();
-          this.spin(dir);
-        }
-      }, this)
-    });
-
-    //init input value
-    this.oldValue = this.value();
-    this.value(this.$el.val());
-    return this;
-  };
-
-  Spinning.rules = {
-    defaults: { min: null, max: null, step: 1, precision: 0 },
-    currency: { min: 0.00, max: null, step: 0.01, precision: 2 },
-    quantity: { min: 1, max: 999, step: 1, precision: 0 },
-    percent:  { min: 1, max: 100, step: 1, precision: 0 },
-    month:    { min: 1, max: 12, step: 1, precision: 0 },
-    day:      { min: 1, max: 31, step: 1, precision: 0 },
-    hour:     { min: 0, max: 23, step: 1, precision: 0 },
-    minute:   { min: 1, max: 59, step: 1, precision: 0 },
-    second:   { min: 1, max: 59, step: 1, precision: 0 }
-  };
-
-  Spinning.prototype = {
-    spin: function(dir) {
-      if (this.$el.prop('disabled')) {
-        return;
-      }
-
-      this.oldValue = this.value();
-      var step = $.isFunction(this.options.step) ? this.options.step.call(this, dir) : this.options.step;
-      var multipler = dir === 'up' ? 1 : -1;
-
-      this.value(this.oldValue + Number(step) * multipler);
-    },
-
-    value: function(v) {
-      if (v === null || v === undefined) {
-        return this.numeric(this.$el.val());
-      }
-      v = this.numeric(v);
-
-      var valid = this.validate(v);
-      if (valid !== 0) {
-        v = (valid === -1) ? this.min : this.max;
-      }
-     
-      this.$el.val(v.toFixed(this.options.precision));
-/***************If condition commneted to fix the issue COSMATT-666**************/
-      //if (this.oldValue !== this.value()) {
-        // changing.spinner
-        this.$el.trigger('changing.spinner', [this.value(), this.oldValue]);
-
-        // lazy changed.spinner
-        clearTimeout(spinningTimer);
-        spinningTimer = setTimeout($.proxy(function() {
-          this.$el.trigger('changed.spinner', [this.value(), this.oldValue]);
-        }, this), Spinner.delay);
-      //}
-    },
-
-    numeric: function(v) {
-      v = this.options.precision > 0 ? parseFloat(v, 10) : parseInt(v, 10);
-
-      // If the variable is a number
-      if (isFinite(v)) {
-        return v;
-      }
-
-      return v || this.options.min || 0;
-    },
-
-    validate: function(val) {
-      if (this.options.min !== null && val < this.min) {
-        return -1;
-      }
-
-      if (this.options.max !== null && val > this.max) {
-        return 1;
-      }
-
-      return 0;
-    }
-  };
-
-  Spinner = function(element, options) {
-    this.$el = $(element);
-    this.$spinning = this.$el.find('[data-spin="spinner"]');
-
-    if (this.$spinning.length === 0) {
-      this.$spinning = this.$el.find(':input[type="text"]');
-    }
-
-    options = $.extend({}, options, this.$spinning.data());
-
-    this.spinning = new Spinning(this.$spinning, options);
-
-    this.$el
-      .on('click.spinner', '[data-spin="up"], [data-spin="down"]', $.proxy(this, 'spin'))
-      .on('mousedown.spinner', '[data-spin="up"], [data-spin="down"]', $.proxy(this, 'spin'));
-
-    $(document).on('mouseup.spinner', $.proxy(function() {
-      clearTimeout(this.spinTimeout);
-      clearInterval(this.spinInterval);
-    }, this));
-
-    if (options.delay) {
-      this.delay(options.delay);
-    }
-
-    if (options.changed) {
-      this.changed(options.changed);
-    }
-
-    if (options.changing) {
-      this.changing(options.changing);
-    }
-  };
-
-  Spinner.delay = 500;
-
-  Spinner.prototype = {
-    constructor: Spinner,
-
-    spin: function(e) {
-      var dir = $(e.currentTarget).data('spin');
-
-      switch (e.type) {
-        case 'click':
-          e.preventDefault();
-          this.spinning.spin(dir);
-          break;
-        case 'mousedown':
-          if (e.which === 1) {
-            this.spinTimeout = setTimeout($.proxy(this, 'beginSpin', dir), 300);
-          }
-          break;
-      }
-    },
-
-    delay: function(ms) {
-      var delay = Number(ms);
-
-      if (delay >= 0) {
-        this.constructor.delay = delay + 100;
-      }
-    },
-
-    value: function() {
-      return this.spinning.value();
-    },
-
-    changed: function(fn) {
-      this.bindHandler('changed.spinner', fn);
-    },
-
-    changing: function(fn) {
-      this.bindHandler('changing.spinner', fn);
-    },
-
-    bindHandler: function(t, fn) {
-      if ($.isFunction(fn)) {
-        this.$spinning.on(t, fn);
-      }
-      else {
-        this.$spinning.off(t);
-      }
-    },
-
-    beginSpin: function(dir) {
-      this.spinInterval = setInterval($.proxy(this.spinning, 'spin', dir), 100);
-    }
-  };
-
-  var old = $.fn.spinner;
-
-  $.fn.spinner = function(options, value) {
-    return this.each(function() {
-      var data = $.data(this, 'spinner');
-
-      if (!data) {
-        data = new Spinner(this, options);
-
-        $.data(this, 'spinner', data);
-      }
-      if (options === 'delay' || options === 'changed' || options === 'changing') {
-        data[options](value);
-      }
-      else if (options === 'step' && value) {
-        data.spinning.step = value;
-      }
-      else if (options === 'spin' && value) {
-        data.spinning.spin(value);
-      }
-    });
-  };
-
-  $.fn.spinner.Constructor = Spinner;
-  $.fn.spinner.noConflict = function() {
-    $.fn.spinner = old;
-    return this;
-  };
-
-  $(function() {
-    $('[data-trigger="spinner"]').spinner();
-  });
-
-  return $.fn.spinner;
-});
-
 'use strict';
 
 (function ($) {
@@ -266,8 +9,10 @@
         var defaults = {
             showApplicationPoints: false,
             motorSelectedIndex: 3,
-            rmsPoints: [190, 44],
-            peakPoints: [400, 60],
+             rmsPoints: [1200, 5.9],
+              peakPoints: [1200, 9.4],
+              peakAcceData: 1478,
+              rmsAcceData:1097,      
             quadrant: 1,
             sliderLimit: {
                 peakMaxSpeed: 800,
@@ -286,6 +31,7 @@
             showEnviorForm: true,
             showTransmissionForm: true,
             uniqeId: '1',
+            xaxisMaxVale : 120000,
             firstTimeCall: '0',
             motorData: [{
             "motorPartNo": "CPB-1-01",
@@ -441,12 +187,28 @@
             "temp": 40,
             "altitude": 1,
             "motorInertia":0.0029
-          }]
+          }],
+          "numberFormatterOptions": {
+            "significantDigits": 3,
+            "maxPositiveExponent": 6,
+            "minNegativeExponent": -4,
+          }
+   
         };
 
 
 
         var settings = $.extend({}, defaults, options);
+        var numberFormatter = new Cosmatt.NumberFormatter(settings.numberFormatterOptions);
+        
+        var tickFormatter = function (value, axis) {
+                if(value.toString().trim() === '') {
+                return value;
+                }
+                return numberFormatter.format(value);
+        }
+        
+        
 
         var tsPlot;
 
@@ -474,8 +236,7 @@
                 var $servoMotorArea = $('<div class="col-xs-6 col-6" id="servoMotorArea"></div>');
                 $containerEle.append($servoMotorArea);
 
-                var $titleSection = $('<div class="titleSection"></div>');
-                $servoMotorArea.append($titleSection);
+                
 
                 generateServoMotorArea($servoMotorArea);
             }
@@ -572,39 +333,39 @@
             /*var $solutionDivider = $('<div class="col-sm-11 solutionDivider"></div>');
             $motorDataContainer.append($solutionDivider);*/
 
-            var $solutionInfoTitle = $('<div class="col-xs-12 col-12 solutionInfoTitle"><div id="solutionTitle"></div></div>');
+            var $solutionInfoTitle = $('<div class="col-xs-12 col-12 solutionInfoTitle">Selected Motor: <div id="solutionTitle"></div>&nbsp;<div id="motorName"></div> <div class="statusContainer"><div class="solutionStatus motorPass" id="statusValueContainer">Pass</div></div></div>');
             $motorDataContainer.append($solutionInfoTitle);
 
-            $solutionInfoTitle.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+           // $solutionInfoTitle.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
 
             var $solutionInfoRowOne = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowOne);
 
-            var $driveInfo = $('<div class="col-xs-6 col-6 maxSpeed"><span class="driveTitle">Maximum Speed:</span><span class="driveName" id="driveNameId">' + settings.motorData[settings.motorSelectedIndex].maxSpeed + '</span></div>');
+            var $driveInfo = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="maxSpeedTitle">Maximum Speed:&nbsp;</span><span class="maxSpeedValue" id="driveNameId">' + settings.motorData[settings.motorSelectedIndex].maxSpeed + '</span><span class="unitStyle">&nbsp;rpm</span></div>');
             $solutionInfoRowOne.append($driveInfo);
 
-            var $motorInfo = $('<div class="col-xs-6 col-6"><span class="motorTitle">Motor:</span><span class="motorName" id="motorNameId">' + settings.motorData[settings.motorSelectedIndex].motorPartNo + '</span></div>');
+            var $motorInfo = $('<div class="col-xs-6 col-6 padding-left-right-zero"><span class="inertiaTitle">Inertia:&nbsp;</span><span class="inertiaValue" id="voltageInfoId">' + settings.motorData[settings.motorSelectedIndex].motorInertia + '</span><div class="display-inline unitStyle">&nbsp;kg-m<sup>2</sup></div></div>');
             $solutionInfoRowOne.append($motorInfo);
 
             var $solutionInfoRowthree = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowthree);
 
-            var $peakStallTorque = $('<div class="col-xs-6 col-6"><span class="voltageTitle">Peak Stall Torque:</span><span class="voltageName" id="peakStallTorque">' + settings.motorData[settings.motorSelectedIndex].peakStallTorque + ' V</span></div>');
+            var $peakStallTorque = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="pkStallTorqueTitle">Peak Stall Torque:&nbsp;</span><span class="peakStaTorqueVal" id="peakStallTorque">' + settings.motorData[settings.motorSelectedIndex].peakStallTorque + '</span><span class="unitStyle">&nbsp;N-m</span></div>');
             $solutionInfoRowthree.append($peakStallTorque);
 
-            var $contStallTorque = $('<div class="col-xs-6 col-6"><span class="voltageTitle">Continuous Stall Torque:</span><span class="voltageName" id="continuousStallTorque">' + settings.motorData[settings.motorSelectedIndex].continuousStallTorque + ' V</span></div>');
+            var $contStallTorque = $('<div class="col-xs-6 col-6 padding-left-right-zero"><div class="contStallTorqueTitle">Continuous Stall Torque:&nbsp;</div><div class="continuousStaTorqueVal" id="continuousStallTorque">' + settings.motorData[settings.motorSelectedIndex].continuousStallTorque + '</div><div class="unitStyle">&nbsp;N-m</div></div>');
             $solutionInfoRowthree.append($contStallTorque);
 
 
-            var $solutionInfoRowTwo = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
+           /* var $solutionInfoRowTwo = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowTwo);
 
-            var $voltageInfo = $('<div class="col-xs-6 col-6"><span class="voltageTitle">Inertia:</span><span class="voltageName" id="voltageInfoId">' + settings.motorData[settings.motorSelectedIndex].motorInertia + '</span><div class="display-inline">kg-m<sup>2</sup></div></div>');
+            var $voltageInfo = $('<div class="col-xs-6 col-6"></div>');
             $solutionInfoRowTwo.append($voltageInfo);
-
-            var $solutionStatus = $('<div class="col-xs-6 col-6"><span class="solutionStatusTitle">Solution Status:</span><span class="solutionStatus motorPass" id="statusValueContainer">Pass</span></div>');
-            $solutionInfoRowTwo.append($solutionStatus);
+*/
+           /* var $solutionStatus = $('<div class="col-xs-6 col-6"><span class="solutionStatusTitle">Solution Status:</span><span class="solutionStatus motorPass" id="statusValueContainer">Pass</span></div>');
+            $solutionInfoRowTwo.append($solutionStatus);*/
 
             $motorPanelHeading.find('#PaginationDiv').Folio({
                 totalPages: settings.motorData.length,
@@ -618,7 +379,7 @@
 
                 }
             })
-            checkContainerWidth();
+          //  checkContainerWidth();
 
            
 
@@ -627,14 +388,17 @@
          function updateMessage(motorIndex) {
 
                 var motorIndex = (motorIndex - 1);
-
+                
+                
                 //console.log(settings.motorData[motorIndex].drivePartNo);
-                $container.find('#driveNameId').text(settings.motorData[motorIndex].maxSpeed + ' rpm');
-                $container.find('#motorNameId').text(settings.motorData[motorIndex].motorPartNo);
-                $container.find('#voltageInfoId').text(settings.motorData[motorIndex].motorInertia);
-                $container.find('#peakStallTorque').text(settings.motorData[motorIndex].peakStallTorque + ' N-m');
-                $container.find('#continuousStallTorque').text(settings.motorData[motorIndex].continuousStallTorque + ' N-m');
-                $container.find('#solutionTitle').text('Selected Soultion: # ' + (motorIndex + 1));
+                $container.find('#driveNameId').text(numberFormatter.format(settings.motorData[motorIndex].maxSpeed));
+                $container.find('#motorNameId').text('('+settings.motorData[motorIndex].motorPartNo + ')');
+                $container.find('#voltageInfoId').text(numberFormatter.format(settings.motorData[motorIndex].motorInertia));
+                $container.find('#peakStallTorque').text(numberFormatter.format(settings.motorData[motorIndex].peakStallTorque));
+                $container.find('#continuousStallTorque').text(numberFormatter.format(settings.motorData[motorIndex].continuousStallTorque));
+                $container.find('#solutionTitle').text('#'+(motorIndex + 1));
+                $container.find('#motorName').text('('+settings.motorData[motorIndex].motorPartNo + ')');
+
 
 
                 settings.motorSelectedIndex = motorIndex;
@@ -701,6 +465,7 @@
 
             var $containerWidth = $container.find('.tsCruveContainer');
             // console.log("$containerWidth.width()",$containerWidth.width())
+            
             if ($containerWidth.width() <= 840) {
                 $containerWidth.find('#servoMotorArea').addClass('resizeWidth');
                 $containerWidth.find('#servoMotorTSCurve').addClass('resizeWidth');
@@ -733,8 +498,10 @@
 
                     break;
                 case "PeakSpeed":
+               
                     settings.rmsMotorData[0] = settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
                     tsPlotSeries[1].data[0][0] = tsPlotSeries[3].data[0][0] = settings.rmsMotorData[0];
+
                     $container.find('.peakSpeedMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[0]);
 
                     break;
@@ -766,13 +533,11 @@
                     tsPlotSeries[1].data[0][1] = settings.peakMotorData[1] = ((settings.peakPoints[1] / settings.transmissionRaioVal) + (settings.peakAcceMotor * settings.motorInertia));
 
                     tsPlotSeries[3].data[0][1] = settings.rmsMotorData[1] = ((settings.rmsPoints[1] / settings.transmissionRaioVal) + (settings.rmsAcceMotor * settings.motorInertia));
-
-                    /*if (tsPlotSeries[1].data[0][0] > settings.sliderLimit.peakMaxSpeed) {
-                      $container.find('.peakSpeedMotorSide').attr('data-max', parseInt(tsPlotSeries[1].data[0][0]));
-                    }
-                    else{
-                      $container.find('.peakSpeedMotorSide').attr('data-max', settings.sliderLimit.peakMaxSpeed); 
+                    
+                    /*if(tsPlotSeries[1].data[0][0] > settings.xaxisMaxVale){                     
+                        tsPlot.getOptions().grid.markings[2].xaxis.to = '#fff';                     
                     }*/
+                  
 
                     if ($container.find('.cosmatt-unitComboBox').length > 0) {
 
@@ -1010,7 +775,7 @@
         };
         // generates TS points slider accordion body
         var generateTSPointsConfigPanel = function ($containerEle) {
-            var $tsPointsPanelBody = $('<div class="panel-body"></div>')
+             var $tsPointsPanelBody = $('<div class="panel-body"></div>')
             $containerEle.append($tsPointsPanelBody);
 
             var $tsPointsPanelContainer = $('<div id="tsPointsPanelContainer"></div>');
@@ -1019,32 +784,27 @@
             var $operatingPointTitle = $('<div class="row" id="sliderContainer"></div>');
             $tsPointsPanelContainer.append($operatingPointTitle);
 
-            var $operatingPointLevel = $('<div class="col-xs-2 col-2 title"></div>');
+            var $operatingPointLevel = $('<div class="col-xs-3 col-3 title"></div>');
             $operatingPointTitle.append($operatingPointLevel);
 
-            var $operatingPointTitle1 = $('<div class="col-xs-5 col-5"><div class="titleTextLoad ">Load Side</div></div>');
+            var $operatingPointTitle1 = $('<div class="col-xs-5 col-5"><div class="titleTextLoad ">Load Side</div><div class="loadSideImg"></div></div>');
             $operatingPointTitle.append($operatingPointTitle1);
 
-            var $operatingPointTitle2 = $('<div class="col-xs-5 col-5"><div class="titleTextMotor">Motor Side</div></div>');
+            var $operatingPointTitle2 = $('<div class="col-xs-4 col-4"><div class="titleTextMotor">Motor Side</div><div class="motorSideImg"></div></div>');
             $operatingPointTitle.append($operatingPointTitle2);
 
 
-            var $peakTorqueSliderContainer = $('<div id="sliderContainer" class="row"></div>');
+            var $peakTorqueSliderContainer = $('<div id="sliderContainer" class="row greyClass"></div>');
             $tsPointsPanelContainer.append($peakTorqueSliderContainer);
 
-            var $peakTorqueTitle = $('<div class="col-xs-2 col-2 title"><span id="peakTorqueTitle" title="Peak Torque">Peak Torque: </span></div>');
+            var $peakTorqueTitle = $('<div class="col-xs-3 col-3 title">Peak Torque:</div>');
             $peakTorqueSliderContainer.append($peakTorqueTitle);
 
-            /*var $peakTorqueSlider = $('<div class="col-xs-5 col-5  "><input id="peakTorqueSlider" data-slider-value="' + settings.peakPoints[1] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
-            $peakTorqueSliderContainer.append($peakTorqueSlider);         
-          
-           var $peakTorqueInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="peakTorqueSpinner"><input id="peakTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.peakPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>')
-           $peakTorqueSliderContainer.append($peakTorqueInput);*/
-
+            
             var $peakTorqueDataSide = $('<div class="col-xs-5 col-5  peakTorqueDataSide"></div>');
             $peakTorqueSliderContainer.append($peakTorqueDataSide);
 
-            var $peakTorqueMotorSide = $('<div class="col-xs-5 col-5  peakTorqueMotorSide"> </div>')
+            var $peakTorqueMotorSide = $('<div class="col-xs-4 col-4  peakTorqueMotorSide"> </div>')
             $peakTorqueSliderContainer.append($peakTorqueMotorSide);
 
 
@@ -1053,11 +813,12 @@
                 "unit": 'newtonmeter',
                 "mode": 'spin',
                 "step": '.1',
+                "dataRule":"currency",
                 "min": 0,
                 "value": settings.peakPoints[1],
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
@@ -1074,18 +835,13 @@
                 }
             });
 
-            $peakTorqueMotorSide.unitsComboBox({
+            $peakTorqueMotorSide.unitsLabelControl({
                 "unitType": "TORQUE",
-                "unit": 'newtonmeter',
-                "mode": 'spin',
-                "value": settings.peakMotorData[1],
-                "enable": { "textbox": "false", "comboBox": "true" },
+                "unit": 'newtonmeter',               
+                "value": settings.peakMotorData[1],                
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
-                },
-                callBackFn: function () {
-
+                    "comboBox": "50%"
                 }
             });
 
@@ -1175,7 +931,7 @@
             var $rmsTorqueSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $tsPointsPanelContainer.append($rmsTorqueSliderContainer);
 
-            var $rmsTorqueTitle = $('<div class="col-xs-2 col-2 title"><span id="rmsTorqueTitle" title="RMS Torque">RMS Torque: </sapn></div>');
+            var $rmsTorqueTitle = $('<div class="col-xs-3 col-3 title"><span id="rmsTorqueTitle" title="RMS Torque">RMS Torque: </sapn></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueTitle);
 
 
@@ -1189,7 +945,7 @@
             var $rmsTorqueLoadSide = $('<div class="col-xs-5 col-5  rmsTorqueLoadSide"></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueLoadSide);
 
-            var $rmsTorqueMotorSide = $('<div class="col-xs-5 col-5  rmsTorqueMotorSide"> </div>');
+            var $rmsTorqueMotorSide = $('<div class="col-xs-4 col-4  rmsTorqueMotorSide"> </div>');
             $rmsTorqueSliderContainer.append($rmsTorqueMotorSide);
 
 
@@ -1198,11 +954,12 @@
                 "unit": 'newtonmeter',
                 "mode": 'spin',
                 "step": '.1',
+                "dataRule":"currency",
                 "min": 0,
                 "value": settings.rmsPoints[1],
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
@@ -1220,19 +977,13 @@
             });
 
 
-            $rmsTorqueMotorSide.unitsComboBox({
+            $rmsTorqueMotorSide.unitsLabelControl({
                 "unitType": "TORQUE",
                 "unit": 'newtonmeter',
-
-                "mode": 'spin',
-                "value": settings.rmsMotorData[1],
-                "enable": { "textbox": "false", "comboBox": "true" },
+                "value": settings.rmsMotorData[1],                
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
-                },
-                callBackFn: function () {
-
+                    "comboBox": "50%"
                 }
             });
             /*var rmsTorqueSlider = $rmsTorqueSlider.find('#rmsTorqueSlider').slider({
@@ -1317,10 +1068,10 @@
                 $container.find('#rmsTorqueValue').attr("disabled", true);
             }
 
-            var $peakSpeedSliderContainer = $('<div id="sliderContainer" class="row"></div>');
+            var $peakSpeedSliderContainer = $('<div id="sliderContainer" class="row greyClass"></div>');
             $tsPointsPanelContainer.append($peakSpeedSliderContainer);
 
-            var $peakSpeedTitle = $('<div class="col-xs-2 col-2 title"><span id="peakSpeedTitle" title="Peak Speed">Peak Speed: </sapn></div>');
+            var $peakSpeedTitle = $('<div class="col-xs-3 col-3 title"><span id="peakSpeedTitle" title="Peak Speed">Peak Speed: </sapn></div>');
             $peakSpeedSliderContainer.append($peakSpeedTitle);
 
             /*var $peakSpeedSlider = $('<div class="col-xs-5 col-5  "><input id="peakSpeedSlider" data-slider-value="' + settings.peakPoints[0] + '" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
@@ -1332,47 +1083,35 @@
             var $peakSpeedLoadSide = $('<div class="col-xs-5 col-5  peakSpeedLoadSide"></div>');
             $peakSpeedSliderContainer.append($peakSpeedLoadSide);
 
-            var $peakSpeedMotorSide = $('<div class="col-xs-5 col-5  peakSpeedMotorSide"></div>')
+            var $peakSpeedMotorSide = $('<div class="col-xs-4 col-4  peakSpeedMotorSide"></div>')
             $peakSpeedSliderContainer.append($peakSpeedMotorSide);
 
             $peakSpeedLoadSide.unitsComboBox({
                 "unitType": "ANGULARVELOCITY",
                 "unit": 'revolutionsperminute',
-                "mode": 'spin',
+                "mode":"spin",
+                "step": '1',
+                "dataRule":"currency",
                 "min": 0,
                 "value": settings.peakPoints[0],
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
-                        settings.peakPoints[0] = this.SIValue;
+                        settings.peakPoints[0] = this.value;
                         updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
                     }
-
-                    /*if(this.value){    
-                        if(this.value >= settings.sliderLimit.peakMaxSpeed){
-                            $container.find('.peakSpeedLoadSide').data('unitsComboBox').setTextBoxValue(settings.sliderLimit.peakMaxSpeed);
-                        }                   
-                        else if(this.value <= 0){
-    
-                            $container.find('.peakSpeedLoadSide').data('unitsComboBox').setTextBoxValue("0");                        
-                        }
-                          settings.peakPoints[0] = this.value;  
-                          updateMotorOperatingPoints('PeakSpeed',settings.transmissionRaioVal);  
-                     }*/
                 }
             });
-            $peakSpeedMotorSide.unitsComboBox({
+            $peakSpeedMotorSide.unitsLabelControl({
                 "unitType": "ANGULARVELOCITY",
-                "unit": 'revolutionsperminute',
-                "mode": 'spin',
-                "value": settings.peakMotorData[0],
-                "enable": { "textbox": "false", "comboBox": "true" },
+                "unit": 'revolutionsperminute',               
+                "value": settings.peakMotorData[0],               
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
 
@@ -1467,25 +1206,27 @@
             var $peakAccContainer = $('<div id="sliderContainer" class="row"></div>');
             $tsPointsPanelContainer.append($peakAccContainer);
 
-            var $peakAccTitle = $('<div class="col-xs-2 col-2 title"><div title="Peak Acceleration" class="peakAccele">Peak Acceleration: </div></div>');
+            var $peakAccTitle = $('<div class="col-xs-3 col-3 title"><div title="Peak Acceleration" class="peakAccele">Peak Acceleration: </div></div>');
             $peakAccContainer.append($peakAccTitle);
 
             var $peakAccelerationLoadSide = $('<div class="col-xs-5 col-5  peakAccelerationLoadSide"></div>');
             $peakAccContainer.append($peakAccelerationLoadSide);
 
-            var $peakAccelerationMotorSide = $('<div class="col-xs-5 col-5  peakAccelerationMotorSide"></div>');
+            var $peakAccelerationMotorSide = $('<div class="col-xs-4 col-4  peakAccelerationMotorSide"></div>');
             $peakAccContainer.append($peakAccelerationMotorSide);
 
 
             $peakAccelerationLoadSide.unitsComboBox({
                 "unitType": "ANGULARACCELERATION",
-                "unit": 'revolutions',
+                "unit": 'radianpersecondsquare',
                 "mode": 'spin',
+                "step": '1',
+                "dataRule":"currency",
                 "value": settings.peakAcceData,
                 "min": 0,
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
@@ -1502,15 +1243,13 @@
 
                 }
             });
-            $peakAccelerationMotorSide.unitsComboBox({
+            $peakAccelerationMotorSide.unitsLabelControl({
                 "unitType": "ANGULARACCELERATION",
-                "unit": 'revolutions',
-                "mode": 'spin',
-                "value": settings.peakAcceMotor,
-                "enable": { "textbox": "false", "comboBox": "true" },
+                "unit": 'radianpersecondsquare',                
+                "value": settings.peakAcceMotor,                
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
 
@@ -1590,17 +1329,17 @@
                 
                 
             });*/
-               var $rmsAccContainer = $('<div id="sliderContainer" class="row"></div>');
+            var $rmsAccContainer = $('<div id="sliderContainer" class="row greyClass"></div>');
             $tsPointsPanelContainer.append($rmsAccContainer);
 
-            var $rmsSpeedTitle = $('<div class="col-xs-2 col-2 title"><div id="rmsSpeedTitle" title="RMS Acceleration" class="rmsAccele">RMS Acceleration: </div></div>');
+            var $rmsSpeedTitle = $('<div class="col-xs-3 col-3 title"><div id="rmsSpeedTitle" title="RMS Acceleration" class="rmsAccele">RMS Acceleration: </div></div>');
             $rmsAccContainer.append($rmsSpeedTitle);
 
 
             var $rmsAccelerationLoadSide = $('<div class="col-xs-5 col-5  rmsAccelerationLoadSide"></div>');
             $rmsAccContainer.append($rmsAccelerationLoadSide);
 
-            var $rmsAccelerationMotorSide = $('<div class="col-xs-5 col-5  rmsAccelerationMotorSide"></div>');
+            var $rmsAccelerationMotorSide = $('<div class="col-xs-4 col-4  rmsAccelerationMotorSide"></div>');
             $rmsAccContainer.append($rmsAccelerationMotorSide);
 
 
@@ -1608,11 +1347,13 @@
                 "unitType": "ANGULARACCELERATION",
                 "unit": 'radianpersecondsquare',
                 "mode": 'spin',
+                "step": '1',
+                "dataRule":"currency",
                 "min": 0,
                 "value": settings.rmsAcceData,
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
@@ -1640,15 +1381,13 @@
                     }*/
                 }
             });
-            $rmsAccelerationMotorSide.unitsComboBox({
+            $rmsAccelerationMotorSide.unitsLabelControl({
                 "unitType": "ANGULARACCELERATION",
                 "unit": 'radianpersecondsquare',
-                "mode": 'spin',
-                "value": settings.rmsAcceMotor,
-                "enable": { "textbox": "false", "comboBox": "true" },
+                "value": settings.rmsAcceMotor,                
                 "comboBoxWidthRatio": {
                     "textBox": "50%",
-                    "comboBox": "42%"
+                    "comboBox": "50%"
                 },
                 callBackFn: function () {
 
@@ -1723,7 +1462,7 @@
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="tempValueSpinner"><input id="tempValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + sliderMax + '" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].temp + '" data-rule="percent"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label style="padding-top: 3px" class="value">&nbsp;&nbsp;&#176;C</label></div>');
+            var $tempInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"></label></div>');
             $tempSliderContainer.append($tempInput);
             $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
@@ -1763,6 +1502,29 @@
                 $tempSliderContainer.find('#tempSlider').slider("disable");
             }
 
+
+            $tempInput.unitsComboBox({
+                "unitType": "TEMPERATURE",
+                "unit": 'celsius',
+                "mode": 'spin',
+                "step": '1',
+                "dataRule":"currency",
+                "min": 0,
+                "value": settings.motorData[settings.motorSelectedIndex].temp,
+                "comboBoxWidthRatio": {
+                     "textBox": "45%",
+                     "comboBox": "35%"
+                },
+                callBackFn: function () {
+                    if (this.type != undefined && this.type != 'dropdown') {
+
+                       $container.find('#tempSlider').slider('setValue', parseInt(this.value));
+                        updatePlotDataOnTempChange("peakPlot", parseInt(this.value));
+                        updatePlotDataOnTempChange("rmsPlot", parseInt(this.value));
+                    }
+
+                }
+            });
             /*$container.find('#tempValue').on('change',function(e){
                     $container.find('#tempSlider').slider('setValue', parseInt(e.target.value));
                     updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
@@ -1770,13 +1532,13 @@
 
                   
             });*/
-            $container.find('#tempValueSpinner').spinner('changed', function (e, newVal, oldVal) {
+            /*$container.find('#tempValueSpinner').spinner('changed', function (e, newVal, oldVal) {
 
                 $container.find('#tempSlider').slider('setValue', parseInt(newVal));
                 updatePlotDataOnTempChange("peakPlot", parseInt(newVal));
                 updatePlotDataOnTempChange("rmsPlot", parseInt(newVal));
 
-            });
+            });*/
 
             if (settings.disableControls && settings.disableControls.tempTextBox) {
                 $container.find('#tempValue').attr("disabled", true);
@@ -1968,7 +1730,7 @@
             $altitudeSliderContainer.append($altitudeInput);*/
             var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
 
-            var $altitudeInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="altitudeSpinner"><input id="altitudeValue" type="text" class="form-control text-center widget-textbox-height" data-max="' + sliderMax + '" data-min="0" data-step="1"  value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label style="padding-top: 10px" class="value"></label>&nbsp;&nbsp;m</div>');
+            var $altitudeInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> </div>');
             $altitudeSliderContainer.append($altitudeInput);
 
             //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
@@ -2025,6 +1787,61 @@
             if (settings.disableControls && settings.disableControls.altitudeSlider) {
                 $altitudeSlider.find('#altitudeSlider').slider("disable");
             }
+
+            $altitudeInput.unitsComboBox({
+
+                "unitType": "ALTITUDE",
+                "unit": 'meter',
+                "mode": 'spin',
+                "step": '1',
+                "dataRule":"currency",
+                "min": 0,
+                "value": settings.motorData[settings.motorSelectedIndex].altitude,
+                "comboBoxWidthRatio": {
+                    "textBox": "45%",
+                     "comboBox": "35%"
+
+                },
+                callBackFn: function () {
+                    if (this.type != undefined && this.type != 'dropdown') {
+                        var currentTextBoxVal = parseInt(this.value);
+
+                    var tsPlotSeries = tsPlot.getData();
+                    var rmsPlotData = tsPlotSeries[2].data;
+                    $container.find('#altitudeSlider').slider('setValue', currentTextBoxVal);
+                    if (currentTextBoxVal > 1500) {
+
+                        var altitConstant = [1 - (currentTextBoxVal - 1500) / 10000];
+
+                        rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.defaultContinuousStallTorque * altitConstant).toFixed(3);
+
+                        rmsPlotData[1][1] = (settings.defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
+
+                        tsPlotSeries[2].data = rmsPlotData;
+                        settings.motorData[settings.motorSelectedIndex].continuousStallTorque = rmsPlotData[0][1];
+                        settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed = rmsPlotData[1][1];
+
+                    }
+                    else {
+
+                        var altitConstant = 1;
+
+                        rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.defaultContinuousStallTorque * altitConstant).toFixed(3);
+
+                        rmsPlotData[1][1] = (settings.defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
+
+                        tsPlotSeries[2].data = rmsPlotData;
+                        settings.motorData[settings.motorSelectedIndex].continuousStallTorque = rmsPlotData[0][1];
+                        settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed = rmsPlotData[1][1];
+                    }
+                    updateTSGraph(tsPlotSeries);
+                    updateMotorStatus();
+                          
+                        }
+
+                }
+            });
+
             $container.find('#altitudeSpinner').spinner('changed', function (e, newVal, oldVal) {
 
                 var currentTextBoxVal = parseInt(newVal);
@@ -2141,15 +1958,16 @@
             var $trRatioSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $transmissionRatioPanelContainer.append($trRatioSliderContainer);
 
-            var $trRatioTitle = $('<div class="col-xs-4 col-4 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
+            var $trRatioTitle = $('<div class="col-xs-7 col-7 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
             $trRatioSliderContainer.append($trRatioTitle);
 
             /*var $trRatioSlider = $('<div class="col-xs-4 col-4  " ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $trRatioSliderContainer.append($trRatioSlider);*/
 
-            var $trRatioInput = $('<div class="col-xs-6 col-6 margin-bottom"><div class="tansmComboBox"> </div><lable class="value">&nbsp;: 1</label></div>');
+            var $trRatioInput = $('<div class="col-xs-5 col-5 trRatioValue"></div>');
             $trRatioSliderContainer.append($trRatioInput);
 
+            
             /*var $trRatioInput = $('<div class="col-sm-5  "><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
             $trRatioSliderContainer.append($trRatioInput);*/
 
@@ -2169,24 +1987,45 @@
                 updateMotorOperatingPoints('TransmissionRatio', slideEvt.value.newValue);
                 $container.find('#trRatioValue').val(slideEvt.value.newValue);
             });*/
-            $trRatioInput.find('.tansmComboBox').unitsComboBox({
+            $trRatioInput.unitsComboBox({
                 "unitType": "PERCENTAGE",
                 "unit": 'percentage',
                 "mode": 'spin',
-                "value": settings.transmissionRaioVal,
-                "min":1,
+                "step": '1',
+                "dataRule":"quantity",                     
+                "value": settings.transmissionRaioVal,                             
                 "showTextBoxOnly":"true", 
                 "comboBoxWidthRatio": {
-                    "textBox": "100%",
+                    "textBox": "50%",
                     "comboBox": "0"
                 },
                 callBackFn: function () {
-                    if (this.type != undefined && this.type != 'dropdown') {
-                        
+                    debugger; 
+                    if (this.type != undefined && this.type != 'dropdown') {     
+                                          
+                         if (this.value > settings.sliderLimit.maxTrRatio) {
+                                $container.find('.trRatioValue').data('unitsComboBox').setTextBoxValue(settings.transmissionRaioVal);
+                                setAlertMessage("Transmission ratio value can not be greater than 100.");
+                                return false;
+                        }
+
+                        if (this.value <= '0') {
+                                $container.find('.trRatioValue').data('unitsComboBox').setTextBoxValue(settings.transmissionRaioVal);
+                                setAlertMessage("Transmission ratio value can not be less than 1.");
+                                return false;
+                        }
+                        setAlertMessage("");     
+
+                        settings.transmissionRaioVal = this.value;
+                        $container.find('.transmissionRaioVal').html("&nbsp;:&nbsp;"+ settings.transmissionRaioVal);                
                         updateMotorOperatingPoints('TransmissionRatio', this.value);
                     }
                 }
             });
+
+            var $traioLabel = $('<div class="transmissionRaioVal">&nbsp;: 1</div>');
+            $trRatioInput.append($traioLabel);
+
             if (settings.disableControls && settings.disableControls.transmRatioSlider) {
                 $trRatioSlider.find('#trRatioSlider').slider("disable");
             }
@@ -2211,7 +2050,26 @@
                 $container.find('#trRatioValue').attr("disabled", true);
             }
 
+            $transmissionRatioPanelContainer.append('<div id="alertMessageContainer" class="alert alert-warning"><strong>Warning:-&nbsp;&nbsp;</strong><span></span></div>');
+
+            var setAlertMessage = function (alertText) {
+                if (alertText === "") {
+                    $transmissionRatioPanelContainer.find('#alertMessageContainer').hide();
+                    return;
+                }
+
+                $transmissionRatioPanelContainer.find('#alertMessageContainer span').text(alertText);
+
+                $transmissionRatioPanelContainer.find('#alertMessageContainer').show();
+
+                setTimeout(function(){
+                     $transmissionRatioPanelContainer.find('#alertMessageContainer').fadeOut("slow");
+                },5000)
+            };
+
         };
+
+
 
         var generateSlider = function ($containerEle, params) {
             $containerEle.slider(params);
@@ -2235,7 +2093,7 @@
                 generatePlotModeToggleSwitch($curveConfigContainer);
             }*/
 
-            updateMessage(settings.motorSelectedIndex);
+            updateMessage(settings.motorSelectedIndex + 1);
             calculateTSCurevePoints();
         };
 
@@ -2318,30 +2176,38 @@
                 },
                 xaxis: {
                     axisLabel: "Speed (rpm)",
+                    tickFormatter: tickFormatter
+                    
 
                 },
                 yaxis: {
                     axisLabel: "Torque (N-m)",
+                    tickFormatter: tickFormatter
+                    
                 },
                 grid: {
                     hoverable: true,
                     clickable: true,
                     borderWidth: 1,
-                    borderColor: '#D9D9D9',
+                    borderColor: '#333',
+                     borderWidth: {
+                        top: 0,
+                        right: 0,
+                        bottom: 1,
+                        left: 1
+                    },
                     margin: 0,
                     markings: [{
                         yaxis: {
                             from: 0,
-                            to: 0
+                            to: 0,
+                            tickFormatter: tickFormatter
                         },
                         color: "#333"
-                    }, {
-                        xaxis: {
-                            from: 0,
-                            to: 0
-                        },
-                        color: "#333"
-                    }],
+                    }, 
+                    {xaxis: { from: 0, to: 0 },color: "#333"},
+                    {xaxis: { from: 0, to: settings.xaxisMaxVale,tickFormatter: tickFormatter},color: "#fff",}
+                    ],
                 },
                 tooltip: true,
                 tooltipOpts: {
@@ -2867,7 +2733,7 @@
 
         var modifyTSPlot = function () {
 
-            if (settings.quadrant == 4) {
+           if (settings.quadrant == 4) {
                 tsPlot.getOptions().grid.markings[0].color = "#bdbdbd";
                 tsPlot.getOptions().grid.markings[1].color = "#bdbdbd"
             } else {
@@ -2885,6 +2751,7 @@
                 tsPlot = $.plot($container.find(".tsPlotArea"), data, options);
                 modifyTSPlot();
                 attachResizeToPlots();
+                checkContainerWidth();
             }, 0);
 
 
@@ -2895,13 +2762,14 @@
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()",ele.width())
-                if (ele.width() <= 780) {
+                
+                if (ele.width() <= 940) {
                     ele.find('#servoMotorArea').addClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').addClass('resizeWidth');
                     ele.find('.tsPlotArea').css('min-height', ele.find('.tsPlotArea').width());
                     ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
-                else if (ele.width() > 780 && ele.width() < 1280) {
+                else if (ele.width() > 940 && ele.width() < 1280) {
 
                     ele.find('#servoMotorArea').removeClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').removeClass('resizeWidth');
