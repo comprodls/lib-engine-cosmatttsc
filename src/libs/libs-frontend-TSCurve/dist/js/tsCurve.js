@@ -406,10 +406,10 @@
                 settings.motorInertia = settings.motorData[motorIndex].motorInertia;
 
                 $container.find('#tempSlider').slider('setValue', settings.motorData[settings.motorSelectedIndex].temp);
-                $container.find("#tempValue").val(settings.motorData[settings.motorSelectedIndex].temp);
+                $container.find(".amount_TEMPERATURE").val(settings.motorData[settings.motorSelectedIndex].temp);
 
                 $container.find('#altitudeSlider').slider('setValue', settings.motorData[settings.motorSelectedIndex].altitude);
-                $container.find("#altitudeValue").val(settings.motorData[settings.motorSelectedIndex].altitude);
+                $container.find(".amount_ALTITUDE").val(settings.motorData[settings.motorSelectedIndex].altitude);
 
                 //settings.defalutMotorContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
 
@@ -438,20 +438,21 @@
                 settings.rmsMotorData[1] = ((parseFloat(settings.rmsPoints[1]) / settings.transmissionRaioVal) + (settings.rmsAcceMotor * settings.motorInertia));
 
                 if ($container.find('.cosmatt-unitComboBox').length > 0) {
+                    debugger;
 
-                    if ($container.find('.peakTorqueMotorSide').find('.cosmatt-unitComboBox')) {
+                    if ($container.find('.peakTorqueMotorSide').find('.cosmatt-unitComboBox').length > 0) {
                         $container.find('.peakTorqueMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[1]);
                     }
-                    if ($container.find('.rmsTorqueMotorSide').find('.cosmatt-unitComboBox')) {
+                    if ($container.find('.rmsTorqueMotorSide').find('.cosmatt-unitComboBox').length > 0) {
                         $container.find('.rmsTorqueMotorSide').data('unitsComboBox').setTextBoxValue(settings.rmsMotorData[1]);
                     }
-                    if ($container.find('.peakSpeedMotorSide').find('.cosmatt-unitComboBox')) {
+                    if ($container.find('.peakSpeedMotorSide').find('.cosmatt-unitComboBox').length > 0) {
                         $container.find('.peakSpeedMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[0]);
                     }
-                    if ($container.find('.rmsAccelerationMotorSide').find('.cosmatt-unitComboBox')) {
+                    if ($container.find('.rmsAccelerationMotorSide').find('.cosmatt-unitComboBox').length > 0) {
                         $container.find('.rmsAccelerationMotorSide').data('unitsComboBox').setTextBoxValue(settings.rmsAcceMotor);
                     }
-                    if ($container.find('.peakAccelerationMotorSide').find('.cosmatt-unitComboBox')) {
+                    if ($container.find('.peakAccelerationMotorSide').find('.cosmatt-unitComboBox').length > 0) {
                         $container.find('.peakAccelerationMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakAcceMotor);
                     }
                 }
@@ -1455,16 +1456,15 @@
             var $tempTitle = $('<div class="col-xs-3 col-3 title"><span id="tempTitle">Temperature: </span></div>');
             $tempSliderContainer.append($tempTitle);
 
-            var $tempSlider = $('<div class="col-xs-4 col-4  "><input id="tempSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $tempSlider = $('<div class="col-xs-3 col-3  "><input id="tempSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $tempSliderContainer.append($tempSlider);
 
             /*var $tempInput = $('<div class="col-sm-5  "><input type="number" id="tempValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].temp + '" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;&deg;C</label></div>');
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"></label></div>');
-            $tempSliderContainer.append($tempInput);
-            $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            var $tempInput = $('<div class="col-xs-6 col-6   display-flex margin-bottom"></label></div>');
+            $tempSliderContainer.append($tempInput);           
 
             //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
             //$tempSliderContainer.append($tempValue);
@@ -1486,7 +1486,7 @@
                 step: 1,
             }).on('change', function (slideEvt) {
 
-                $container.find("#tempValue").val(slideEvt.value.newValue);
+                $container.find(".amount_TEMPERATURE").val(slideEvt.value.newValue);
 
                 var deltaTemp = (slideEvt.value.newValue - slideEvt.value.oldValue);
 
@@ -1525,6 +1525,7 @@
 
                 }
             });
+            $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
             /*$container.find('#tempValue').on('change',function(e){
                     $container.find('#tempSlider').slider('setValue', parseInt(e.target.value));
                     updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
@@ -1541,7 +1542,7 @@
             });*/
 
             if (settings.disableControls && settings.disableControls.tempTextBox) {
-                $container.find('#tempValue').attr("disabled", true);
+                $container.find('.amount_TEMPERATURE').attr("disabled", true);
             }
 
             var updatePlotDataOnTempChange = function (plotType, currentTemp) {
@@ -1723,14 +1724,14 @@
             var $altitudeTitle = $('<div class="col-xs-3 col-3 title"><span id="altitudeTitle">Altitude: </span></div>');
             $altitudeSliderContainer.append($altitudeTitle);
 
-            var $altitudeSlider = $('<div class="col-xs-4 col-4  "><input id="altitudeSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
+            var $altitudeSlider = $('<div class="col-xs-3 col-3  "><input id="altitudeSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $altitudeSliderContainer.append($altitudeSlider);
 
             /*var $altitudeInput = $('<div class="col-sm-5  "><input type="number" id="altitudeValue" name="quantity" min="0" value="' + settings.motorData[settings.motorSelectedIndex].altitude + '" class="widgetNumberInput form-control bfh-number"><label class="value">&nbsp;&nbsp;m</label></div>');
             $altitudeSliderContainer.append($altitudeInput);*/
             var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
 
-            var $altitudeInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> </div>');
+            var $altitudeInput = $('<div class="col-xs-6 col-6   display-flex margin-bottom"> </div>');
             $altitudeSliderContainer.append($altitudeInput);
 
             //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
@@ -1750,7 +1751,7 @@
                 step: 1,
             }).on('change', function (slideEvt) {
 
-                $container.find("#altitudeValue").val(slideEvt.value.newValue);
+                $container.find(".amount_ALTITUDE").val(slideEvt.value.newValue);
 
                 var tsPlotSeries = tsPlot.getData();
                 var rmsPlotData = tsPlotSeries[2].data;
@@ -1920,7 +1921,7 @@
 
 
             if (settings.disableControls && settings.disableControls.transmRatioTextBox) {
-                $container.find('#altitudeValue').attr("disabled", true);
+                $container.find('.amount_ALTITUDE').attr("disabled", true);
             }
 
 
@@ -2830,11 +2831,11 @@
                         "unit": "rad/sec"
                     },
                     "temperature": {
-                        "value": $container.find("#tempValue").val(),
+                        "value": $container.find(".amount_TEMPERATURE").val(),
                         "unit": "C"
                     },
                     "altitude": {
-                        "value": $container.find('#altitudeValue').val(),
+                        "value": $container.find('.amount_ALTITUDE').val(),
                         "unit": "m"
                     },
                     "transmissionRatio": {
@@ -2875,12 +2876,12 @@
             }
             if (params.temperature) {
                 $container.find('#tempSlider').slider('setValue', params.temperature.value);
-                $container.find("#tempValue").val(params.temperature.value);
+                $container.find(".amount_TEMPERATURE").val(params.temperature.value);
                 updateApplicationRequPoints("Temperature");
             }
             if (params.altitude) {
                 $container.find('#altitudeSlider').slider('setValue', params.altitude.value);
-                $container.find("#altitudeValue").val(params.altitude.value);
+                $container.find(".amount_ALTITUDE").val(params.altitude.value);
                 updateApplicationRequPoints("Altitude");
             }
             if (params.transmissionRatio) {
@@ -2921,7 +2922,7 @@
             if (params.temperature) {
 
                 cssClass = params.temperature.status ? 'correct' : 'incorrect';
-                $container.find('#tempValue').addClass(cssClass);
+                $container.find('.amount_TEMPERATURE').addClass(cssClass);
                 cssClass = params.temperature.status ? 'fa-check correct' : 'fa-times incorrect';
                 $container.find('#envFactorsPanelContainer').find('.response-status').css({
                   'display': 'flex',
@@ -2931,11 +2932,11 @@
                 var correctAns = params.temperature.status ? '' : '(' + params.temperature.correctAnswer + '&#176;C' + ')';
                 $container.find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').append(correctAns);
                 $container.find('#envFactorsPanelContainer').find('#tempSlider').slider("disable");
-                $container.find('#envFactorsPanelContainer').find('#tempValue').attr("disabled", true);
+                $container.find('#envFactorsPanelContainer').find('.amount_TEMPERATURE').attr("disabled", true);
             }
             if (params.altitude) {
                 cssClass = params.altitude.status ? 'correct' : 'incorrect';
-                $container.find('#altitudeValue').addClass(cssClass)
+                $container.find('.amount_ALTITUDE').addClass(cssClass)
                 // disable slider and input
             }
             if (params.transmissionRatio) {
