@@ -1470,12 +1470,10 @@ COSMATT.UNITCONVERTER = (function() {
         console.log("input has focus, don't format")
         return;
       }
-      if (value.toString().trim() !== '') {
-        if(numberFormatter) {
-          value = numberFormatter.format(value);
-        }
-        $element.find(".amount_" + plugin.settings.unitType).val(value);
+      if(numberFormatter) {
+        value = numberFormatter.format(value, true);
       }
+      $element.find(".amount_" + plugin.settings.unitType).val(value);
     };
     /* private method
      *  createComboBox functions is responsible to create dopdown,textbox and attache event handler 
@@ -1500,10 +1498,12 @@ COSMATT.UNITCONVERTER = (function() {
           var $spinControlWrap = $('<div class="input-group spinner unitComboBoxGrp" data-trigger="spinner"></div>');
           $textboxContainer.append($spinControlWrap);
 
-          var $inputBox = $('<input type="text" class="form-control text-left amount_' + plugin.settings.unitType + '" value="" data-rule="'+plugin.settings.dataRule+'"></div>');
-          $spinControlWrap.append($inputBox);
+         
          
           if (plugin.settings.mode == 'spin') {  
+
+             var $inputBox = $('<input type="text" class="form-control text-left spin-control amount_' + plugin.settings.unitType + '" value="" data-rule="'+plugin.settings.dataRule+'"></div>');
+             $spinControlWrap.append($inputBox);
 
             $inputBox.attr('data-step', plugin.settings.step);
             var $inputGroup = $('<div class="input-group-addon"></div>');
@@ -1515,6 +1515,10 @@ COSMATT.UNITCONVERTER = (function() {
             var $spinDown = $(' <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>');
             $inputGroup.append($spinDown);
 
+          }
+          else{
+            var $inputBox = $('<input type="text" class="form-control text-left input-control amount_' + plugin.settings.unitType + '" value="" data-rule="'+plugin.settings.dataRule+'"></div>');
+            $spinControlWrap.append($inputBox);
           }         
          
           plugin.setTextBoxValue(plugin.settings.value);
@@ -1752,16 +1756,17 @@ COSMATT.UNITCONVERTER = (function() {
     var textBoxEventHandler = function () {
 
      $element.find(".unitTextBox input").on('focus', function () {
+     
         $(this).val(plugin.settings.value)
       });
       $element.find(".unitTextBox input").on('blur', function () {
+       
         plugin.setTextBoxValue(plugin.settings.value);
       });   
-
-     $element.find(".unitComboBoxGrp").spinner('changing',function(e, newVal, oldVal){  
-       
+      $element.find(".unitTextBox input.input-control").on('input', function () {
+         
         var self = this;
-        plugin.settings.value = newVal;
+        plugin.settings.value = $(self).val();
         var $pluginObj = $element
         var callbackData = {};
 
@@ -1773,8 +1778,8 @@ COSMATT.UNITCONVERTER = (function() {
           //plugin.setTextBoxValue($(self).val());
 
           if (parseInt(plugin.settings.value) <= parseInt($(self).attr('max')) && parseInt(plugin.settings.value) >= parseInt($(self).attr('min'))) {
-            
-            if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function
+            if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function    
+
               callbackData.value = plugin.settings.value;
               callbackData.unit = plugin.settings.unit;
               callbackData.type = "textbox";
@@ -1784,7 +1789,41 @@ COSMATT.UNITCONVERTER = (function() {
             }
           }
         }), 800);
+
+
       });
+      if(plugin.settings.mode == 'spin'){
+          $element.find(".unitComboBoxGrp").spinner('changing',function(e, newVal, oldVal){  
+        
+         
+          var self = this;
+          plugin.settings.value = newVal;
+          var $pluginObj = $element
+          var callbackData = {};
+
+          if (timerId > 0) {
+            clearTimeout(timerId);
+          }
+
+          timerId = setTimeout((function () {
+            //plugin.setTextBoxValue($(self).val());
+
+            if (parseInt(plugin.settings.value) <= parseInt($(self).attr('max')) && parseInt(plugin.settings.value) >= parseInt($(self).attr('min'))) {
+              
+              if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function
+                callbackData.value = plugin.settings.value;
+                callbackData.unit = plugin.settings.unit;
+                callbackData.type = "textbox";
+                callbackData.SIValue = plugin.getSIValue();
+
+                plugin.settings.callBackFn.call(callbackData); // brings the scope to the callback
+              }
+            }
+          }), 800);
+        });
+
+      }
+
 
     };
     var textBoxEventHandler_2 = function () {

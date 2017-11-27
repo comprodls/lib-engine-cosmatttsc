@@ -438,8 +438,7 @@
                 settings.rmsMotorData[1] = ((parseFloat(settings.rmsPoints[1]) / settings.transmissionRaioVal) + (settings.rmsAcceMotor * settings.motorInertia));
 
                 if ($container.find('.cosmatt-unitComboBox').length > 0) {
-                    debugger;
-
+                  
                     if ($container.find('.peakTorqueMotorSide').find('.cosmatt-unitComboBox').length > 0) {
                         $container.find('.peakTorqueMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[1]);
                     }
@@ -467,7 +466,7 @@
             var $containerWidth = $container.find('.tsCruveContainer');
             // console.log("$containerWidth.width()",$containerWidth.width())
             
-            if ($containerWidth.width() <= 840) {
+            if ($containerWidth.width() <= 940) {
                 $containerWidth.find('#servoMotorArea').addClass('resizeWidth');
                 $containerWidth.find('#servoMotorTSCurve').addClass('resizeWidth');
             }
@@ -791,7 +790,7 @@
             var $operatingPointTitle1 = $('<div class="col-xs-5 col-5"><div class="titleTextLoad ">Load Side</div><div class="loadSideImg"></div></div>');
             $operatingPointTitle.append($operatingPointTitle1);
 
-            var $operatingPointTitle2 = $('<div class="col-xs-4 col-4"><div class="titleTextMotor">Motor Side</div><div class="motorSideImg"></div></div>');
+            var $operatingPointTitle2 = $('<div class="col-xs-4 col-4 padding-right-zero"><div class="titleTextMotor">Motor Side</div><div class="motorSideImg"></div></div>');
             $operatingPointTitle.append($operatingPointTitle2);
 
 
@@ -822,6 +821,11 @@
                     "comboBox": "50%"
                 },
                 callBackFn: function () {
+                    
+                    if(this.type == 'dropdown'){
+                        $container.find('.peakTorqueMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
+                    }
+                    
                     if (this.type != undefined && this.type != 'dropdown') {
 
                         if (this.value < settings.rmsPoints[1]) {
@@ -973,6 +977,9 @@
                         settings.rmsPoints[1] = this.SIValue;
                         updateMotorOperatingPoints('RmsTorque', settings.transmissionRaioVal);
                     }
+                    if(this.type == 'dropdown'){
+                        $container.find('.rmsTorqueMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
+                    }
 
                 }
             });
@@ -1103,6 +1110,9 @@
                     if (this.type != undefined && this.type != 'dropdown') {
                         settings.peakPoints[0] = this.value;
                         updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
+                    }
+                    if(this.type == 'dropdown'){
+                        $container.find('.peakSpeedMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
                     }
                 }
             });
@@ -1241,6 +1251,9 @@
                         settings.peakAcceData = this.SIValue;
                         updateMotorOperatingPoints('PeakAcceleration', settings.transmissionRaioVal);
                     }
+                    if(this.type == 'dropdown'){
+                        $container.find('.peakAccelerationMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
+                    }
 
                 }
             });
@@ -1369,17 +1382,9 @@
                         updateMotorOperatingPoints('RmsAcceleration', settings.transmissionRaioVal);
                     }
 
-                    /*if(this.value){    
-                      if(this.value >= settings.sliderLimit.rmsAccMax){
-                          $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue(settings.sliderLimit.rmsAccMax);
-                      }                   
-                      else if(this.value <= 0){
-  
-                          $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setTextBoxValue("0");                        
-                      }
-                        settings.rmsAcceData = this.value;
-                        updateMotorOperatingPoints('RmsAcceleration',settings.transmissionRaioVal); 
-                    }*/
+                    if(this.type == 'dropdown'){
+                        $container.find('.rmsAccelerationMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
+                    }
                 }
             });
             $rmsAccelerationMotorSide.unitsLabelControl({
@@ -1959,13 +1964,13 @@
             var $trRatioSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $transmissionRatioPanelContainer.append($trRatioSliderContainer);
 
-            var $trRatioTitle = $('<div class="col-xs-7 col-7 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
+            var $trRatioTitle = $('<div class="col-xs-6 col-6 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
             $trRatioSliderContainer.append($trRatioTitle);
 
             /*var $trRatioSlider = $('<div class="col-xs-4 col-4  " ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $trRatioSliderContainer.append($trRatioSlider);*/
 
-            var $trRatioInput = $('<div class="col-xs-5 col-5 trRatioValue"></div>');
+            var $trRatioInput = $('<div class="col-xs-6 col-6 trRatioValue"></div>');
             $trRatioSliderContainer.append($trRatioInput);
 
             
@@ -1997,11 +2002,11 @@
                 "value": settings.transmissionRaioVal,                             
                 "showTextBoxOnly":"true", 
                 "comboBoxWidthRatio": {
-                    "textBox": "50%",
+                    "textBox": "35%",
                     "comboBox": "0"
                 },
                 callBackFn: function () {
-                    debugger; 
+                   
                     if (this.type != undefined && this.type != 'dropdown') {     
                                           
                          if (this.value > settings.sliderLimit.maxTrRatio) {

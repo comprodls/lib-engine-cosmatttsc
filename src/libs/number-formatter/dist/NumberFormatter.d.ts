@@ -3,7 +3,6 @@ export declare class NumberFormatter {
     private superscripts;
     private options;
     constructor(settings: INumberFormatterOptions);
-    format(originalInput: any): string;
+    format(originalInput: any, isEditable?: boolean): string;
     toSuperscript(exponent: string): string;
-    removeTrailingZeroesAfterDecimal(input: string): string;
 }
