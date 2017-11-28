@@ -1468,7 +1468,7 @@
             $tempSliderContainer.append($tempInput);*/
             var sliderMax = settings.sliderLimit.maxTemp || defaults.sliderLimit.maxTemp;
 
-            var $tempInput = $('<div class="col-xs-6 col-6   display-flex margin-bottom"></label></div>');
+            var $tempInput = $('<div class="col-xs-6 col-6  temp-unit-dropdown display-flex margin-bottom"></label></div>');
             $tempSliderContainer.append($tempInput);           
 
             //var $tempValue = $('<div class="col-sm-3"><label class="value" id="tempValue">' + settings.motorData[settings.motorSelectedIndex].temp + '</label><label class="value">&deg;C</label></div>');
@@ -1491,14 +1491,13 @@
                 step: 1,
             }).on('change', function (slideEvt) {
 
-                $container.find(".amount_TEMPERATURE").val(slideEvt.value.newValue);
-
+                $(".temp-unit-dropdown").data('unitsComboBox').setTextBoxValue(slideEvt.value.newValue);
+                settings.motorData[settings.motorSelectedIndex].temp =  slideEvt.value.newValue;
                 var deltaTemp = (slideEvt.value.newValue - slideEvt.value.oldValue);
 
                 if (deltaTemp !== 0) {
                     updatePlotDataOnTempChange("peakPlot", slideEvt.value.newValue);
                     updatePlotDataOnTempChange("rmsPlot", slideEvt.value.newValue);
-
                 }
 
             });
@@ -1521,8 +1520,9 @@
                      "comboBox": "35%"
                 },
                 callBackFn: function () {
+                    
                     if (this.type != undefined && this.type != 'dropdown') {
-
+                       settings.motorData[settings.motorSelectedIndex].temp =  this.value;  
                        $container.find('#tempSlider').slider('setValue', parseInt(this.value));
                         updatePlotDataOnTempChange("peakPlot", parseInt(this.value));
                         updatePlotDataOnTempChange("rmsPlot", parseInt(this.value));
@@ -1736,14 +1736,8 @@
             $altitudeSliderContainer.append($altitudeInput);*/
             var sliderMax = settings.sliderLimit.maxAltitude || defaults.sliderLimit.maxAltitude;
 
-            var $altitudeInput = $('<div class="col-xs-6 col-6   display-flex margin-bottom"> </div>');
+            var $altitudeInput = $('<div class="col-xs-6 col-6 altitude-unit-combobox display-flex margin-bottom"> </div>');
             $altitudeSliderContainer.append($altitudeInput);
-
-            //var $altitudeValue = $('<div class="col-sm-3"><label class="value" id="altitudeValue">' + settings.motorData[settings.motorSelectedIndex].altitude + '</label><label class="value">  m</label></div>');
-            //$altitudeSliderContainer.append($altitudeValue);
-
-
-
 
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
 
@@ -1756,8 +1750,7 @@
                 step: 1,
             }).on('change', function (slideEvt) {
 
-                $container.find(".amount_ALTITUDE").val(slideEvt.value.newValue);
-
+                $(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(slideEvt.value.newValue);
                 var tsPlotSeries = tsPlot.getData();
                 var rmsPlotData = tsPlotSeries[2].data;
 
@@ -2817,6 +2810,7 @@
         };
 
         var assessmentNotifier = function () {
+
             if (settings.assessmentMode && settings.assessmentCallback) {
                 settings.assessmentCallback({
                     "peakTorque": {
