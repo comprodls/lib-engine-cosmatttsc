@@ -114,3 +114,6 @@
   padding-right: 4px;
 }
 
+.cosmatt-unitComboBox .btn-group>.btn:first-child:hover{
+  background-color: #fff !important;
+}
