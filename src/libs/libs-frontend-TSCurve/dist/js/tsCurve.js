@@ -326,7 +326,10 @@
 
 
             var $solutionInfoTitle = $('<div class="col-xs-12 col-12 solutionInfoTitle">Selected Motor: <div id="solutionTitle"></div>&nbsp;<div id="motorName"></div> <div class="statusContainer"><div class="solutionStatus motorPass" id="statusValueContainer">Pass</div></div></div>');
-            $motorDataContainer.append($solutionInfoTitle);         
+            $motorDataContainer.append($solutionInfoTitle); 
+
+            var $selectedMotorStatus = $('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>'); 
+            $solutionInfoTitle.append($selectedMotorStatus);        
 
 
             var $solutionInfoRowOne = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');

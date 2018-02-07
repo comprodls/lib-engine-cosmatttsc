@@ -102,7 +102,8 @@ var unitData = {"unitType": {
                     "symbol": "rad/sec",
                     "name": "radian/second",
                     "conversionFactor": 1,
-                    "id": "radianpersecond"
+                    "id": "radianpersecond",
+                    "isSI": true
                 }, {
                     "symbol": "deg/sec",
                     "name": "degree/second",
@@ -119,8 +120,7 @@ var unitData = {"unitType": {
                     "conversionFactor": 9.54929658551372,
                     "id": "revolutionsperminute",
                     "isMetric": true,
-                    "isImperial": true,
-                    "isSI": true
+                    "isImperial": true
                 }]
             },
             "ACCELERATION": {
