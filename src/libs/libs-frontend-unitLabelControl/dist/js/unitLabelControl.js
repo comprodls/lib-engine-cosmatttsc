@@ -102,8 +102,7 @@ var unitData = {"unitType": {
                     "symbol": "rad/sec",
                     "name": "radian/second",
                     "conversionFactor": 1,
-                    "id": "radianpersecond",
-                    "isSI": true
+                    "id": "radianpersecond"
                 }, {
                     "symbol": "deg/sec",
                     "name": "degree/second",
@@ -120,7 +119,8 @@ var unitData = {"unitType": {
                     "conversionFactor": 9.54929658551372,
                     "id": "revolutionsperminute",
                     "isMetric": true,
-                    "isImperial": true
+                    "isImperial": true,
+                    "isSI": true
                 }]
             },
             "ACCELERATION": {
@@ -1348,6 +1348,11 @@ COSMATT.UNITCONVERTER = (function() {
       // function is called to intialze dom element
       createComboBox(plugin.settings.unitType);      
     }
+    plugin.setSIValue = function (value) {
+      var SIUnit = COSMATT.UNITCONVERTER.getSIUnit(plugin.settings.unitType);
+      var currentValue = COSMATT.UNITCONVERTER.getUnitConvertedValue(plugin.settings.unitType,value,SIUnit.id,plugin.settings.unit);     
+      plugin.setTextBoxValue(currentValue);
+    }
     /** public function return SI value for provided unit type **/
     plugin.getSIValue = function () {
 
@@ -1427,7 +1432,7 @@ COSMATT.UNITCONVERTER = (function() {
       
       if (value.toString().trim() !== '') {
         if(numberFormatter) {
-          value = numberFormatter.format(value);
+          value = numberFormatter.format(value, true);
         }
         $element.find(".amount_" + plugin.settings.unitType).text(value);
       }

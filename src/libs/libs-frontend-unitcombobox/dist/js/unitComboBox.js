@@ -101,9 +101,10 @@ var unitData = {"unitType": {
                 "unit": [{
                     "symbol": "rad/sec",
                     "name": "radian/second",
-                    "conversionFactor": 1,
-                    "id": "radianpersecond",
-                    "isSI": true
+                    "conversionFactor": 1,                    
+                    "isSI": true,
+                    "id": "radianpersecond"
+                    
                 }, {
                     "symbol": "deg/sec",
                     "name": "degree/second",
@@ -288,35 +289,35 @@ var unitData = {"unitType": {
                 "unit": [{
                     "symbol": "kg-m&sup2;",
                     "name": "kilogram-meter²",
-                    "conversionFactor": 0.0000182997852,
+                    "conversionFactor": 0.00001828997852042,
                     "id": "kilogrammetersquare",
                     "isSI": true,
                     "isMetric": true
                 }, {
                     "symbol": "kg-cm&sup2;",
                     "name": "kilogram-centimeter²",
-                    "conversionFactor": 0.182997852,
+                    "conversionFactor": 0.1828997852042,
                     "id": "kilogramcentimetersquare"
                 }, {
                     "symbol": "Nm-s&sup2;",
                     "name": "newton-meter-second²",
-                    "conversionFactor": 0.0000182997852,
+                    "conversionFactor": 0.00001828997852042,
                     "id": "newtonmetersecondsquare"
                 }, {
                     "symbol": "oz-in-s&sup2;",
-                    "name": "pound-inch-second²",
-                    "conversionFactor": 0.00259008,
-                    "id": "poundinchsecondsquare"
+                    "name": "ounce-inch-second²",
+                    "conversionFactor": 0.002590079179883,
+                    "id": "ounceinchsecondsquare"
                 }, {
                     "symbol": "lb-in-s&sup2;",
                     "name": "pound-inch-second²",
-                    "conversionFactor": 0.00016188,
+                    "conversionFactor": 0.0001618799487976,
                     "id": "poundinchsecondsquare",
                     "isImperial": true
                 }, {
                     "symbol": "lb-ft-s&sup2;",
                     "name": "pound-feet-second²",
-                    "conversionFactor": 0.00001349,
+                    "conversionFactor": 0.00001348999573283,
                     "id": "poundfeetsecondsquare"
                 }, {
                     "symbol": "oz-in&sup2;",
@@ -326,22 +327,22 @@ var unitData = {"unitType": {
                 }, {
                     "symbol": "lb-in&sup2;",
                     "name": "pound-inch²",
-                    "conversionFactor": 0.0625,
+                    "conversionFactor": 0.06250000061883,
                     "id": "INERTIA_8"
                 }, {
                     "symbol": "lb-ft&sup2;",
                     "name": "pound-feet²",
-                    "conversionFactor": 0.000434028,
+                    "conversionFactor": 0.0004340277820752,
                     "id": "poundfeetsquare"
                 }, {
                     "symbol": "gm-mm&sup2;",
                     "name": "gram-millimeter²",
-                    "conversionFactor": 18299.7852,
+                    "conversionFactor": 18289.97852042,
                     "id": "grammillimetersquare"
                 }, {
                     "symbol": "Kg-mm&sup2;",
                     "name": "kilogram-millimeter²",
-                    "conversionFactor": 18.2997852,
+                    "conversionFactor": 18.28997852042,
                     "id": "kilogrammillimetersquare"
                 }]
             },
@@ -595,7 +596,6 @@ var unitData = {"unitType": {
                     "name": "gram/centimeter³",
                     "conversionFactor": 27.6799047,
                     "id": "grampercentimetercube",
-                    "isSI": true,
                     "isMetric": true
                 }]
             },
@@ -1442,6 +1442,12 @@ COSMATT.UNITCONVERTER = (function() {
       plugin.settings.unit = $element.find('a.selected').data('id');
       plugin.setTextBoxValue(convertedVal);
     }
+    /** public function to set Value in SI unit **/
+    plugin.setSIValue = function (value) {
+      var SIUnit = COSMATT.UNITCONVERTER.getSIUnit(plugin.settings.unitType);
+      var currentValue = COSMATT.UNITCONVERTER.getUnitConvertedValue(plugin.settings.unitType,value,SIUnit.id,plugin.settings.unit);     
+      plugin.setTextBoxValue(currentValue);
+    }
     /** public function set TextboxValue **/
     plugin.setTextBoxValue = function (value) {
 
@@ -1495,12 +1501,15 @@ COSMATT.UNITCONVERTER = (function() {
           $unitWrapper.append($textboxContainer);
 
 
-          var $spinControlWrap = $('<div class="input-group spinner unitComboBoxGrp" data-trigger="spinner"></div>');
+          var $spinControlWrap = $('<div class="input-group unitComboBoxGrp"></div>');
           $textboxContainer.append($spinControlWrap);
 
          
-         
           if (plugin.settings.mode == 'spin') {  
+
+            $spinControlWrap.addClass("spinner");
+
+            $spinControlWrap.attr('data-trigger','spinner');
 
              var $inputBox = $('<input type="text" class="form-control text-left spin-control amount_' + plugin.settings.unitType + '" value="" data-rule="'+plugin.settings.dataRule+'"></div>');
              $spinControlWrap.append($inputBox);
@@ -1517,6 +1526,8 @@ COSMATT.UNITCONVERTER = (function() {
 
           }
           else{
+            $spinControlWrap.addClass("defaultTextBox");
+
             var $inputBox = $('<input type="text" class="form-control text-left input-control amount_' + plugin.settings.unitType + '" value="" data-rule="'+plugin.settings.dataRule+'"></div>');
             $spinControlWrap.append($inputBox);
           }         
@@ -1777,7 +1788,7 @@ COSMATT.UNITCONVERTER = (function() {
         timerId = setTimeout((function () {
           //plugin.setTextBoxValue($(self).val());
 
-          if (parseInt(plugin.settings.value) <= parseInt($(self).attr('max')) && parseInt(plugin.settings.value) >= parseInt($(self).attr('min'))) {
+         // if (parseInt(plugin.settings.value) <= parseInt($(self).attr('max')) && parseInt(plugin.settings.value) >= parseInt($(self).attr('min'))) {
             if (typeof plugin.settings.callBackFn == 'function') { // make sure the callback is a function    
 
               callbackData.value = plugin.settings.value;
@@ -1787,14 +1798,14 @@ COSMATT.UNITCONVERTER = (function() {
 
               plugin.settings.callBackFn.call(callbackData); // brings the scope to the callback
             }
-          }
+         // }
         }), 800);
 
 
       });
       if(plugin.settings.mode == 'spin'){
           $element.find(".unitComboBoxGrp").spinner('changing',function(e, newVal, oldVal){  
-        
+
          
           var self = this;
           plugin.settings.value = newVal;
