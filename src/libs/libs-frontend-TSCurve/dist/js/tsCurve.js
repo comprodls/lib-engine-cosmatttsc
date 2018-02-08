@@ -326,8 +326,7 @@
 
 
             var $solutionInfoTitle = $('<div class="col-xs-12 col-12 solutionInfoTitle">Selected Motor: <div id="solutionTitle"></div>&nbsp;<div id="motorName"></div> <div class="statusContainer"><div class="solutionStatus motorPass" id="statusValueContainer">Pass</div></div></div>');
-            $motorDataContainer.append($solutionInfoTitle); 
-
+            $motorDataContainer.append($solutionInfoTitle);         
             var $selectedMotorStatus = $('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>'); 
             $solutionInfoTitle.append($selectedMotorStatus);        
 
@@ -3021,13 +3020,16 @@
 
                 cssClass = params.motorSelectedIndex.status ? 'fa-check correct' : 'fa-times incorrect';
                 $container.find('.solutionInfoTitle').find('.response-status').css({
-                  'display': 'inline-flex',
+                  'display': 'inline',
                   'align-items': 'center'
                 }); 
                 $container.find('.solutionInfoTitle').find('.response-status').find('span.fa').addClass(cssClass);
-                var correctAns = params.motorSelectedIndex.status ? '' : '(# ' + params.motorSelectedIndex.correctAnswer + ')';
+                $container.find('#PaginationDiv .Folio').addClass('pointer-events-none'); 
+                $container.find('#PaginationDiv .Folio .FolioPages, #PaginationDiv .Folio span.FolioPage').addClass('gray-background');
+
+                 var correctAns = params.motorSelectedIndex.status ? '' : '(#' + (params.motorSelectedIndex.correctAnswer + 1) + ' : '+settings.motorData[params.motorSelectedIndex.correctAnswer].motorPartNo+')';
                 $container.find('.solutionInfoTitle').find('.response-status').find('.correct-answer').append(correctAns);
-                // disable slider and input
+             
             }
         };
 
