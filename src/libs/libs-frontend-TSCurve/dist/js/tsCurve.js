@@ -207,6 +207,9 @@
         var settings = $.extend({}, defaults, options);
         var numberFormatter = new Cosmatt.NumberFormatter(settings.numberFormatterOptions);
         settings.selectIndex = (settings.motorSelectedIndex - 1) ;
+       
+        var speedRpm = (60 / 6.28 ) * settings.peakPoints[0];
+        settings.peakPoints[0] = speedRpm;
         var tickFormatter = function (value, axis) {
                 if(value.toString().trim() === '') {
                 return value;
@@ -412,13 +415,9 @@
 
                 settings.peakAcceMotor = (settings.peakAcceData * settings.transmissionRaioVal);
 
-                if(settings.selectIndex == settings.motorSelectedIndex){
-                    var speedRpm = (60 / 6.28 ) * settings.peakPoints[0] ;
-                    settings.peakMotorData[0] = (speedRpm * settings.transmissionRaioVal);
-                }else{
-                    settings.selectIndex =settings.motorSelectedIndex;
-                    settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
-                }
+                
+
+                settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
                 
                 settings.peakMotorData[1] = ((parseFloat(settings.peakPoints[1]) / settings.transmissionRaioVal) + (settings.peakAcceMotor * settings.motorInertia));
 
@@ -1117,11 +1116,10 @@
                     "comboBox": "50%"
                 },
                 callBackFn: function () {
-                   
+                    $peakSpeedLoadSide.setSIValue(this.SIValue);
                     if (this.type != undefined && this.type != 'dropdown') {
-                        if(this.unit = "revolutionsperminute"){
-                            var speedRpm = (60 / 6.28 ) * this.SIValue;
-                            settings.peakPoints[0] = speedRpm;
+                        if(this.unit = "revolutionsperminute"){                          
+                            settings.peakPoints[0] = this.value;
                             updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
                         }
                         
@@ -1131,7 +1129,7 @@
                     }
                 }
             });
-            $peakSpeedLoadSide.setSIValue(settings.peakPoints[0]);
+            
             $peakSpeedMotorSide.unitsLabelControl({
                 "unitType": "ANGULARVELOCITY",
                 "unit": 'revolutionsperminute',               
