@@ -10635,6 +10635,8 @@ define('css!../css/cosmatttsc',[],function(){});
 
             });
 
+            $altitudeInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+
             /*$container.find('#altitudeValue').on('change',function(e){
                     var currentTextBoxVal = parseInt(e.target.value);
                     //updatePlotDataOnTempChange("peakPlot", parseInt(e.target.value));
@@ -11716,19 +11718,31 @@ define('css!../css/cosmatttsc',[],function(){});
                 cssClass = params.temperature.status ? 'correct' : 'incorrect';
                 $container.find('.amount_TEMPERATURE').addClass(cssClass);
                 cssClass = params.temperature.status ? 'fa-check correct' : 'fa-times incorrect';
-                $container.find('#envFactorsPanelContainer').find('.response-status').css({
+                $container.find('#envFactorsPanelContainer').find('.temp-unit-dropdown').find('.response-status').css({
                   'display': 'flex',
                   'align-items': 'center'
                 });
-                $container.find('#envFactorsPanelContainer').find('.response-status').find('span.fa').addClass(cssClass);
-                var correctAns = params.temperature.status ? '' : '(' + params.temperature.correctAnswer + '&#176;C' + ')';
-                $container.find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('#envFactorsPanelContainer').find('.temp-unit-dropdown').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.temperature.status ? '' : '(' + params.temperature.correctAnswer + ' &#176;C' + ')';
+                $container.find('#envFactorsPanelContainer').find('.temp-unit-dropdown').find('.response-status').find('.correct-answer').append(correctAns);
                 $container.find('#envFactorsPanelContainer').find('#tempSlider').slider("disable");
                 $container.find('#envFactorsPanelContainer').find('.amount_TEMPERATURE').attr("disabled", true);
             }
             if (params.altitude) {
+              
                 cssClass = params.altitude.status ? 'correct' : 'incorrect';
                 $container.find('.amount_ALTITUDE').addClass(cssClass)
+                cssClass = params.altitude.status ? 'fa-check correct' : 'fa-times incorrect';
+
+                $container.find('#envFactorsPanelContainer').find('.altitude-unit-combobox').find('.response-status').css({
+                  'display': 'flex',
+                  'align-items': 'center'
+                });
+                $container.find('#envFactorsPanelContainer').find('.altitude-unit-combobox').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.altitude.status ? '' : '(' + params.altitude.correctAnswer + ' m)';
+                $container.find('#envFactorsPanelContainer').find('.altitude-unit-combobox').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('#envFactorsPanelContainer').find('#altitudeSlider').slider("disable");
+                $container.find('#envFactorsPanelContainer').find('.amount_ALTITUDE').attr("disabled", true);
                 // disable slider and input
             }
             if (params.transmissionRatio) {
