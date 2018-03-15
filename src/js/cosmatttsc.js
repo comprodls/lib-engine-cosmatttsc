@@ -48,8 +48,10 @@ define([
     '../libs/libs-frontend-unitcombobox/dist/js/unitComboBox.js',
     '../libs/libs-frontend-unitLabelControl/dist/js/unitLabelControl.js',
    /* "../../node_modules/jquery.spinner/dist/js/jquery.spinner.min.js",*/
-    'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min.css',
-    'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
+   'css!../libs/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css',
+   'css!../libs/libs-frontend-TSCurve/dist/css/tsCurve.min.css',
+   'css!../css/cosmatttsc.css', //Custom styles of the engine (applied over bootstrap & front-end-core)
+   '../libs/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.js',
     '../libs/libs-frontend-TSCurve/dist/js/tsCurve.js'
   ], //Required by Rivets
   function(cosmatttscTemplateRef) {

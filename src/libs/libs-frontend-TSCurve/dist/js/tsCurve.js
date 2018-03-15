@@ -15,6 +15,7 @@
             rmsAcceData: 1097,
             quadrant: 1,
             transmissionRaioVal: 1,
+            openAppReqPanel: false,
             sliderLimit: {
                 peakMaxSpeed: 800,
                 peakMaxTorque: 100,
@@ -23,7 +24,7 @@
                 maxTemp: 125,
                 maxAltitude: 10000,
                 maxVoltage: 10,
-                maxTrRatio: 100
+                maxTrRatio: 1000
             },
             showQuadrantToggle: true,
             showMotorTsCurve: true,
@@ -32,8 +33,9 @@
             showEnviorForm: true,
             showTransmissionForm: true,
             uniqeId: '1',
-            xaxisMaxVale: 120000,
+            xaxisMaxVale: 12000000,
             sequenceIndex: '0',
+            transmTextChange: false,
             graphLineColor: {
                 "peakTSCurve": "#FF0808",
                 "contionusTSCurve": "#9ADC54"
@@ -337,19 +339,19 @@
             var $solutionInfoRowOne = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowOne);
 
-            var $driveInfo = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="maxSpeedTitle">Maximum Speed:&nbsp;</span><span class="maxSpeedValue" id="driveNameId">' + settings.motorData[settings.motorSelectedIndex].maxSpeed + '</span><span class="unitStyle">&nbsp;rpm</span></div>');
+            var $driveInfo = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="maxSpeedTitle">Maximum Speed:&nbsp;</span><span class="maxSpeedValue" id="driveNameId">' + settings.motorData[settings.motorSelectedIndex - 1].maxSpeed + '</span><span class="unitStyle">&nbsp;rpm</span></div>');
             $solutionInfoRowOne.append($driveInfo);
 
-            var $motorInfo = $('<div class="col-xs-6 col-6 padding-left-right-zero"><span class="inertiaTitle">Inertia:&nbsp;</span><span class="inertiaValue" id="voltageInfoId">' + settings.motorData[settings.motorSelectedIndex].motorInertia + '</span><div class="display-inline unitStyle">&nbsp;kg-m<sup>2</sup></div></div>');
+            var $motorInfo = $('<div class="col-xs-6 col-6 padding-left-right-zero"><span class="inertiaTitle">Inertia:&nbsp;</span><span class="inertiaValue" id="voltageInfoId">' + settings.motorData[settings.motorSelectedIndex -1].motorInertia + '</span><div class="display-inline unitStyle">&nbsp;kg-m<sup>2</sup></div></div>');
             $solutionInfoRowOne.append($motorInfo);
 
             var $solutionInfoRowthree = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowthree);
 
-            var $peakStallTorque = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="pkStallTorqueTitle">Peak Stall Torque:&nbsp;</span><span class="peakStaTorqueVal" id="peakStallTorque">' + settings.motorData[settings.motorSelectedIndex].peakStallTorque + '</span><span class="unitStyle">&nbsp;N-m</span></div>');
+            var $peakStallTorque = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="pkStallTorqueTitle">Peak Stall Torque:&nbsp;</span><span class="peakStaTorqueVal" id="peakStallTorque">' + settings.motorData[settings.motorSelectedIndex -1].peakStallTorque + '</span><span class="unitStyle">&nbsp;N-m</span></div>');
             $solutionInfoRowthree.append($peakStallTorque);
 
-            var $contStallTorque = $('<div class="col-xs-6 col-6 padding-left-right-zero"><div class="contStallTorqueTitle">Continuous Stall Torque:&nbsp;</div><div class="continuousStaTorqueVal" id="continuousStallTorque">' + settings.motorData[settings.motorSelectedIndex].continuousStallTorque + '</div><div class="unitStyle">&nbsp;N-m</div></div>');
+            var $contStallTorque = $('<div class="col-xs-6 col-6 padding-left-right-zero"><div class="contStallTorqueTitle">Continuous Stall Torque:&nbsp;</div><div class="continuousStaTorqueVal" id="continuousStallTorque">' + settings.motorData[settings.motorSelectedIndex -1].continuousStallTorque + '</div><div class="unitStyle">&nbsp;N-m</div></div>');
             $solutionInfoRowthree.append($contStallTorque);
 
 
@@ -581,8 +583,12 @@
 
             var $tsPointsPanelHeading = $('<div class="panel-heading" role="tab" id="headingTwo"> <h4 class="panel-title"> <a role="button"  data-toggle="collapse"  href="#collapseTwo' + settings.uniqeId + '" aria-controls="collapseTwo" aria-expanded="true"><span>Application Torque Speed Requirements </span><span class="accordion-plus-minus glyphicon pull-right glyphicon-chevron-down fa fa-chevron-down" aria-hidden="true" style="color: grey;"></span> </a> </h4> </div>');
             $tsPointsPanel.append($tsPointsPanelHeading);
+            var openAppPanelDefault = '';
+            if (settings.openAppReqPanel == true) {
+                openAppPanelDefault = 'show'
+            }
 
-            var $tsPointsPanelBodyContainer = $('<div id="collapseTwo' + settings.uniqeId + '" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo"></div>');
+            var $tsPointsPanelBodyContainer = $('<div id="collapseTwo' + settings.uniqeId + '" class="panel-collapse collapse in ' + openAppPanelDefault + '" role="tabpanel" aria-labelledby="headingTwo"></div>');
             $tsPointsPanel.append($tsPointsPanelBodyContainer);
 
             $tsPointsPanel.on('show.bs.collapse', function (e) {
@@ -1956,19 +1962,23 @@
             var $trRatioSliderContainer = $('<div id="sliderContainer" class="row"></div>');
             $transmissionRatioPanelContainer.append($trRatioSliderContainer);
 
-            var $trRatioTitle = $('<div class="col-xs-6 col-6 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
+            var $trRatioTitle = $('<div class="col-xs-3 col-3 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
             $trRatioSliderContainer.append($trRatioTitle);
 
             /*var $trRatioSlider = $('<div class="col-xs-4 col-4  " ><input id="trRatioSlider" data-slider-id="sizeSlider" type="text" data-slider-tooltip="hide"/></div>');
             $trRatioSliderContainer.append($trRatioSlider);*/
 
-            var $trRatioInput = $('<div class="col-xs-6 col-6 trRatioValue"></div>');
+            var $trRatioslider = $('<div class="col-xs-6 col-6 trRatioSlider"></div>');
+            $trRatioSliderContainer.append($trRatioslider);
+
+            var $transmContainer = $('<div class="transmContainer"><div class="transmInnerContainer"></div></div>');
+            $trRatioslider.append($transmContainer);
+
+            var $transmLabel = $('<div class="transmLabel"><ul><li class="firstLi">1:1</li><li class="secondLi">10:1</li><li class="thirdLi">100:1</li><li class="fourthLi">1000:1</li></ul></div>');
+            $trRatioslider.append($transmLabel);
+
+            var $trRatioInput = $('<div class="col-xs-3 col-3 trRatioValue"><input type="text" value="' + settings.transmissionRaioVal + '" class="transInputBox form-control text-left input-control" id="transInputBox"/> </div>');
             $trRatioSliderContainer.append($trRatioInput);
-
-
-            /*var $trRatioInput = $('<div class="col-sm-5  "><input type="number" id="trRatioValue" name="quantity" min="1" max="'+settings.sliderLimit.maxTrRatio+'" value="1" class="widgetNumberInput form-control bfh-number"><lable class="value">&nbsp;: 1</label></div>');
-            $trRatioSliderContainer.append($trRatioInput);*/
-
 
             settings.defaultRmsTorque = settings.rmsMotorData[1];
             settings.defaultRmsSpeed = settings.rmsMotorData[0];
@@ -1979,76 +1989,83 @@
             var transmissionTxtEnable = 'true';
             var transmissionComboBoxEnable = 'true';
 
+            var setTransmSliderPointer = function (value) {
+                settings.transmTextChange = true;
+                settings.sliderVal = Math.log(value) / Math.log('1.071519305');
+                $trRatioslider.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
+
+            };
+
             if (settings.disableControls && settings.disableControls.transmission) {
                 transmissionTxtEnable = 'false';
                 transmissionComboBoxEnable = 'false';
             }
-            $trRatioInput.unitsComboBox({
-                "unitType": "PERCENTAGE",
-                "unit": 'percentage',
-                "mode": 'spin',
-                "step": '1',
-                "dataRule": "quantity",
-                "value": settings.transmissionRaioVal,
-                "enable": { "textbox": transmissionTxtEnable, "comboBox": transmissionComboBoxEnable },
-                "showTextBoxOnly": "true",
-                "comboBoxWidthRatio": {
-                    "textBox": "38%",
-                    "comboBox": "0"
-                },
-                callBackFn: function () {
+            setTimeout(function () {
+                        generateTransmSlider('26', '26');
 
-                    if (this.type != undefined && this.type != 'dropdown') {
+             }, 0);
 
-                        if (this.value > settings.sliderLimit.maxTrRatio) {
-                            $container.find('.trRatioValue').data('unitsComboBox').setTextBoxValue(settings.transmissionRaioVal);
-                            setAlertMessage("Transmission ratio value can not be greater than 100.");
+
+
+
+            var timerId = 0;
+
+            var transmTextboxEventHandler = function () {
+                $container.find("input.transInputBox").on('input', function () {
+
+                    var self = this;
+                    if (timerId > 0) {
+                        clearTimeout(timerId);
+                    }
+
+                    timerId = setTimeout((function () {
+
+                        if (self.value > 1000) {
+                            $(self).val(settings.transmissionRaioVal);
+                            setAlertMessage("Transmission ratio value can not be greater than 1000.");
                             return false;
                         }
 
-                        if (this.value <= '0') {
-                            $container.find('.trRatioValue').data('unitsComboBox').setTextBoxValue(settings.transmissionRaioVal);
+                        if (self.value <= '0') {
+                            $(self).val(settings.transmissionRaioVal);
                             setAlertMessage("Transmission ratio value can not be less than 1.");
                             return false;
                         }
                         setAlertMessage("");
 
-                        settings.transmissionRaioVal = this.value;
-                        //$container.find('.transmissionRaioVal').html("&nbsp;:&nbsp;" + settings.transmissionRaioVal);
-                        updateMotorOperatingPoints('TransmissionRatio', this.value);
-                    }
-                }
-            });
+                        settings.transmissionRaioVal = $(self).val();
+                        setTransmSliderPointer($(self).val());
+                        updateMotorOperatingPoints('TransmissionRatio', $(self).val());
+
+                    }), 800);
+
+
+                });
+            }
+            transmTextboxEventHandler();
 
             var $traioLabel = $('<div class="transmissionRaioVal">&nbsp;: 1</div>');
-            $trRatioInput.find('.cosmatt-unitComboBox').append($traioLabel);
-            $trRatioInput.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $trRatioInput.append($traioLabel);
+
+            $trRatioInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
             if (settings.disableControls && settings.disableControls.transmRatioSlider) {
                 $trRatioSlider.find('#trRatioSlider').slider("disable");
             }
-
-            /*$container.find('#trRatioSpinner').spinner('changed', function (e, newVal, oldVal) {
-
-                if (newVal != oldVal) {
-
-                    updateMotorOperatingPoints('TransmissionRatio', newVal);
-                    $container.find('#trRatioSlider').slider('setValue', newVal);
-
-                }
-
-            });*/
-
-            /* $container.find('#trRatioValue').on('change',function(e){
- 
-                    applicationRequPointsOntextChan("TransmissionRatio",e.target.value);
-             });*/
 
             if (settings.disableControls && settings.disableControls.transmRatioTextBox) {
                 $container.find('#trRatioValue').attr("disabled", true);
             }
 
             $transmissionRatioPanelContainer.append('<div id="alertMessageContainer" class="alert alert-warning"><strong>Warning:-&nbsp;&nbsp;</strong><span></span></div>');
+            $(".mCSB_buttonRight, .mCSB_buttonLeft, .mCSB_draggerContainer, #mCSB_1_dragger_horizontal").click(function (e) {
+
+                settings.transmTextChange = false;
+
+            });
+            $("#mCSB_1_dragger_horizontal").mouseenter(function () {
+                settings.transmTextChange = false;
+            });
 
             var setAlertMessage = function (alertText) {
                 if (alertText === "") {
@@ -2068,6 +2085,56 @@
         };
 
 
+        var generateTransmSlider = function (scrollAmount, snapAmount) {
+
+            var timerId = 0;
+            $container.find(".transmContainer").mCustomScrollbar({
+                axis: "x",
+                theme: "rounded-dark",
+                scrollButtons: { enable: true, scrollAmount: scrollAmount, scrollType: "stepped" },
+                keyboard: { enable: false },
+                mouseWheel: { enable: false },
+                scrollInertia: 10,
+                snapAmount: snapAmount,
+                snapOffset: 0,
+                callbacks: {
+                    onScroll: function () {
+
+                        console.log('onScroll', this.mcs.leftPct);
+                        if (settings.transmTextChange == false) {
+                            calculteSliderLogVal(this.mcs.leftPct);
+                        }
+                    }
+                }
+            });
+
+            settings.transmTextChange = true;
+            settings.sliderVal = Math.log(settings.transmissionRaioVal) / Math.log('1.071519305');
+            $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
+
+
+            var calculteSliderLogVal = function (value) {
+
+                var logVal = Math.pow(1.07151930525057, (value));
+                logVal = logVal.toFixed(4);
+                if (logVal > 12) {
+                    logVal = Math.round(logVal);
+                }
+                settings.transmissionRaioVal = logVal;
+                $container.find('.transInputBox').val(logVal);
+                updateMotorOperatingPoints('TransmissionRatio', logVal);
+
+            };
+            $(".mCSB_buttonRight, .mCSB_buttonLeft, .mCSB_draggerContainer, #mCSB_1_dragger_horizontal").click(function (e) {
+
+                settings.transmTextChange = false;
+
+            });
+            $("#mCSB_1_dragger_horizontal").mouseenter(function () {
+                settings.transmTextChange = false;
+            });
+
+        };
 
         var generateSlider = function ($containerEle, params) {
             $containerEle.slider(params);
@@ -2186,7 +2253,7 @@
                 grid: {
                     hoverable: true,
                     clickable: true,
-                    borderWidth: 1,
+                    // borderWidth: 1, Removed duplicate property.
                     borderColor: '#333',
                     borderWidth: {
                         top: 0,
@@ -2780,7 +2847,43 @@
 
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
-                //console.log("ele.width()",ele.width())
+                console.log("ele.width()", ele.width())
+              
+                if (ele.find('#transmissionRatioPanelContainer').width() <= 502) {
+                    ele.find(".transmContainer").css('width', '210px');
+                    ele.find(".transmInnerContainer").css('width', '2310px');
+                    $container.find(".transmContainer").mCustomScrollbar("destroy");
+
+                    setTimeout(function () {
+                        generateTransmSlider('21', '21');
+
+                    }, 0);
+
+
+                    ele.find(".transmLabel").find('li.firstLi').css('left', '27px');
+                    ele.find(".transmLabel").find('li.secondLi').css('left', '74px');
+                    ele.find(".transmLabel").find('li.thirdLi').css('left', '123px');
+                    ele.find(".transmLabel").find('li.fourthLi').css('left', '170px');
+                }
+                else {
+
+                    ele.find(".transmContainer").css('width', '260px');
+                    ele.find(".transmInnerContainer").css('width', '2860px');
+                    $container.find(".transmContainer").mCustomScrollbar("destroy");
+
+                    setTimeout(function () {
+                        generateTransmSlider('26', '26');
+
+                    }, 0);
+
+
+
+                    ele.find(".transmLabel").find('li.firstLi').css('left', '28px');
+                    ele.find(".transmLabel").find('li.secondLi').css('left', '94px');
+                    ele.find(".transmLabel").find('li.thirdLi').css('left', '160px');
+                    ele.find(".transmLabel").find('li.fourthLi').css('left', '230px');
+
+                }
 
                 if (ele.width() <= 940) {
                     ele.find('#servoMotorArea').addClass('resizeWidth');
@@ -2891,30 +2994,30 @@
 
         var updateInputs = function (params) {
 
-            if (params.peakTorque) {                
+            if (params.peakTorque) {
                 $container.find('.peakTorqueDataSide').data('unitsComboBox').setSIValue(params.peakTorque.value);
-               // updateApplicationRequPoints("PeakTorque");
+                // updateApplicationRequPoints("PeakTorque");
             }
-            if (params.peakSpeed) {                
+            if (params.peakSpeed) {
                 $container.find('.peakSpeedLoadSide').data('unitsComboBox').setSIValue(params.peakSpeed.value);
                 //updateApplicationRequPoints("PeakSpeed");
             }
-            if (params.rmsTorque) {               
+            if (params.rmsTorque) {
                 $container.find('.rmsTorqueLoadSide').data('unitsComboBox').setSIValue(params.rmsTorque.value);
                 //updateApplicationRequPoints("RmsTorque");
             }
-            if (params.peakAcceData) {                
+            if (params.peakAcceData) {
                 $container.find('.peakAccelerationLoadSide').data('unitsComboBox').setSIValue(params.peakAcceData.value);
                 //updateApplicationRequPoints("peakAcceData");
             }
-            if (params.rmsAcceData) {                
-                $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setSIValue(params.rmsAcceData.value);                
+            if (params.rmsAcceData) {
+                $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setSIValue(params.rmsAcceData.value);
                 //updateApplicationRequPoints("RmsSpeed");
             }
             if (params.temperature) {
                 $container.find('#tempSlider').slider('setValue', params.temperature.value);
                 $container.find(".amount_TEMPERATURE").val(params.temperature.value);
-               // updateApplicationRequPoints("Temperature");
+                // updateApplicationRequPoints("Temperature");
             }
             if (params.altitude) {
                 $container.find('#altitudeSlider').slider('setValue', params.altitude.value);
@@ -2922,8 +3025,10 @@
                 //updateApplicationRequPoints("Altitude");
             }
             if (params.transmissionRatio) {
-                 $container.find('.trRatioValue').data('unitsComboBox').setTextBoxValue(settings.transmissionRaioVal);
-                //updateApplicationRequPoints("TransmissionRatio");
+                settings.sliderVal = Math.log(params.transmissionRatio.value) / Math.log('1.071519305');
+                 $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
+                 $container.find('.transInputBox').val(params.transmissionRatio.value);
+                 updateMotorOperatingPoints('TransmissionRatio', params.transmissionRatio.value);
             }
             if (params.motorSelectedIndex) {
                 $container.find('#solutionSliderId').slider('setValue', parseInt(settings.motorSelectedIndex));
@@ -2933,7 +3038,7 @@
 
         var markAnswers = function (params) {
             var cssClass;
-          
+
 
             if (params.peakTorque) {
                 cssClass = params.peakTorque.status ? 'correct' : 'incorrect';
@@ -2944,7 +3049,7 @@
                     'align-items': 'center'
                 });
                 $container.find('.peakTorqueMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
-               
+
 
                 // disable slider and input
             }
@@ -2979,10 +3084,10 @@
                     'align-items': 'center'
                 });
                 $container.find('.peakAccelerationMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
-                
+
                 // disable slider and input
             }
-             if (params.rmsAcceData) {
+            if (params.rmsAcceData) {
                 cssClass = params.rmsAcceData.status ? 'correct' : 'incorrect';
                 $container.find('.rmsAccelerationLoadSide').find('input.amount_ANGULARACCELERATION').addClass(cssClass);
                 cssClass = params.rmsAcceData.status ? 'fa-check correct' : 'fa-times incorrect';
@@ -3027,12 +3132,15 @@
             }
             if (params.transmissionRatio) {
                 cssClass = params.transmissionRatio.status ? 'correct' : 'incorrect';
-                $container.find('#transmissionRatioPanelContainer').find('.amount_PERCENTAGE').addClass(cssClass);
+                $container.find('.transInputBox').addClass(cssClass);
                 cssClass = params.transmissionRatio.status ? 'fa-check correct' : 'fa-times incorrect';
                 $container.find('#transmissionRatioPanelContainer').find('.trRatioValue').find('.response-status').css({
                     'display': 'inline',
                     'align-items': 'center'
                 });
+                $container.find(".trRatioSlider").addClass('pointer-events-none');
+                $container.find('.transInputBox').css('width','40%');
+                $container.find('.transInputBox').attr('disabled','disabled');
                 $container.find('#transmissionRatioPanelContainer').find('.trRatioValue').find('.response-status').find('span.fa').addClass(cssClass);
 
                 var correctAns = params.transmissionRatio.status ? '' : '(' + params.transmissionRatio.correctAnswer + ' : 1)';
