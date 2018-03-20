@@ -2002,8 +2002,7 @@
             }
             setTimeout(function () {
                         generateTransmSlider('26', '26');
-
-             }, 0);
+             }, 50);
 
 
 
@@ -2098,9 +2097,8 @@
                 snapAmount: snapAmount,
                 snapOffset: 0,
                 callbacks: {
-                    onScroll: function () {
-
-                        console.log('onScroll', this.mcs.leftPct);
+                    whileScrolling : function () {
+                       // console.log('onScroll', this.mcs.leftPct);
                         if (settings.transmTextChange == false) {
                             calculteSliderLogVal(this.mcs.leftPct);
                         }
@@ -2109,14 +2107,14 @@
             });
 
             settings.transmTextChange = true;
-            settings.sliderVal = Math.log(settings.transmissionRaioVal) / Math.log('1.071519305');
+            settings.sliderVal = Math.log(settings.transmissionRaioVal) / Math.log('1.071519305');           
             $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
 
 
             var calculteSliderLogVal = function (value) {
 
                 var logVal = Math.pow(1.07151930525057, (value));
-                logVal = logVal.toFixed(4);
+                //logVal = logVal.toFixed(4);
                 if (logVal > 12) {
                     logVal = Math.round(logVal);
                 }
@@ -2847,23 +2845,22 @@
 
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
-                console.log("ele.width()", ele.width())
+                //console.log("ele.width()", ele.width())
               
                 if (ele.find('#transmissionRatioPanelContainer').width() <= 502) {
                     ele.find(".transmContainer").css('width', '210px');
                     ele.find(".transmInnerContainer").css('width', '2310px');
                     $container.find(".transmContainer").mCustomScrollbar("destroy");
 
-                    setTimeout(function () {
+                    setTimeout(function () {                     
                         generateTransmSlider('21', '21');
+                    }, 500);
 
-                    }, 0);
 
-
-                    ele.find(".transmLabel").find('li.firstLi').css('left', '27px');
-                    ele.find(".transmLabel").find('li.secondLi').css('left', '74px');
-                    ele.find(".transmLabel").find('li.thirdLi').css('left', '123px');
-                    ele.find(".transmLabel").find('li.fourthLi').css('left', '170px');
+                    ele.find(".transmLabel").find('li.firstLi').css('left', '35px');
+                    ele.find(".transmLabel").find('li.secondLi').css('left', '83px');
+                    ele.find(".transmLabel").find('li.thirdLi').css('left', '132px');
+                    ele.find(".transmLabel").find('li.fourthLi').css('left', '182px');
                 }
                 else {
 
@@ -2871,10 +2868,9 @@
                     ele.find(".transmInnerContainer").css('width', '2860px');
                     $container.find(".transmContainer").mCustomScrollbar("destroy");
 
-                    setTimeout(function () {
+                    setTimeout(function () {                       
                         generateTransmSlider('26', '26');
-
-                    }, 0);
+                    }, 500);
 
 
 

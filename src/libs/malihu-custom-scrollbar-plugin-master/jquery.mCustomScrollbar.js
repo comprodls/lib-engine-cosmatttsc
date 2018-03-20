@@ -404,6 +404,7 @@ and dependencies (minified).
 				
 				var options=$.extend(true,{},defaults,options),
 					selector=_selector.call(this); /* validate selector */
+					
 				
 				/* 
 				if live option is enabled, monitor for elements matching the current selector and 
@@ -1663,32 +1664,55 @@ and dependencies (minified).
 				namespace=pluginPfx+"_"+d.idx,
 				sel=".mCSB_"+d.idx+"_scrollbar",
 				btn=$(sel+">a");
+	
+			seq.mouseDownTimeOut = 0;
 			btn.bind("contextmenu."+namespace,function(e){
 				e.preventDefault(); //prevent right click
-			}).bind("mousedown."+namespace+" touchstart."+namespace+" pointerdown."+namespace+" MSPointerDown."+namespace+" mouseup."+namespace+" touchend."+namespace+" pointerup."+namespace+" MSPointerUp."+namespace+" mouseout."+namespace+" pointerout."+namespace+" MSPointerOut."+namespace+" click."+namespace,function(e){
+			}).bind("mousedown."+namespace+" touchstart."+namespace+" MSPointerDown."+namespace+" mouseup."+namespace+" touchend."+namespace+" MSPointerUp."+namespace+" mouseout."+namespace+"  MSPointerOut."+namespace+" click."+namespace,function(e){
 				e.preventDefault();
 				if(!_mouseBtnLeft(e)){return;} /* left mouse button only */
 				var btnClass=$(this).attr("class");
 				seq.type=o.scrollButtons.scrollType;
+		
+				var endTime;
 				switch(e.type){
 					case "mousedown": case "touchstart": case "pointerdown": case "MSPointerDown":
-						if(seq.type==="stepped"){return;}
+						//if(seq.type==="stepped"){return;}					
+
+						if(e.type == 'mousedown'){
+							seq.startTime = new Date().getTime();							
+						}
+						seq.mouseIsDown = true;
 						touchActive=true;
 						d.tweenRunning=false;
-						_seq("on",btnClass);
+						
+						clearTimeout(seq.mouseDownTimeOut);
+						seq.mouseDownTimeOut=setTimeout(function(){					
+							_seq("on",btnClass);
+						},150);
+
 						break;
 					case "mouseup": case "touchend": case "pointerup": case "MSPointerUp":
 					case "mouseout": case "pointerout": case "MSPointerOut":
-						if(seq.type==="stepped"){return;}
+						//if(seq.type==="stepped"){return;}
 						touchActive=false;
+						if(e.type == 'mouseup'){
+							endTime = new Date().getTime();
+					        if (endTime - seq.startTime < 250) {
+					            seq.mouseIsDown = false;					         
+					        } else if (endTime - seq.startTime >= 300) {
+					            seq.mouseIsDown = true;					           
+					        }			    
+						}
 						if(seq.dir){_seq("off",btnClass);}
 						break;
 					case "click":
+					 (seq.mouseIsDown) ?  e.preventDefault() : "";
 						if(seq.type!=="stepped" || d.tweenRunning){return;}
-						_seq("on",btnClass);
+						//_seq("on",btnClass);
 						break;
 				}
-				function _seq(a,c){
+				function _seq(a,c){					
 					seq.scrollAmount=o.scrollButtons.scrollAmount;
 					_sequentialScroll($this,a,c);
 				}
@@ -1780,7 +1804,7 @@ and dependencies (minified).
 				function _seq(a,c){
 					seq.type=o.keyboard.scrollType;
 					seq.scrollAmount=o.keyboard.scrollAmount;
-					if(seq.type==="stepped" && d.tweenRunning){return;}
+					//if(seq.type==="stepped" && d.tweenRunning){return;}
 					_sequentialScroll($this,a,c);
 				}
 			}
@@ -1792,9 +1816,13 @@ and dependencies (minified).
 		_sequentialScroll=function(el,action,trigger,e,s){
 			var d=el.data(pluginPfx),o=d.opt,seq=d.sequential,
 				mCSB_container=$("#mCSB_"+d.idx+"_container"),
-				once=seq.type==="stepped" ? true : false,
+				once=seq.type==="stepped" ? false : false,
 				steplessSpeed=o.scrollInertia < 26 ? 26 : o.scrollInertia, /* 26/1.5=17 */
 				steppedSpeed=o.scrollInertia < 1 ? 17 : o.scrollInertia;
+				
+				if(seq.mouseIsDown || seq.mouseIsDown === undefined){once = false;}
+				else{once = true;}
+			
 			switch(action){
 				case "on":
 					seq.dir=[
@@ -1802,7 +1830,7 @@ and dependencies (minified).
 						(trigger===classes[13] || trigger===classes[15] || trigger===38 || trigger===37 ? -1 : 1)
 					];
 					_stop(el);
-					if(_isNumeric(trigger) && seq.type==="stepped"){return;}
+					//if(_isNumeric(trigger) && seq.type==="stepped"){return;}
 					_on(once);
 					break;
 				case "off":
@@ -1815,6 +1843,8 @@ and dependencies (minified).
 			
 			/* starts sequence */
 			function _on(once){
+			
+
 				if(o.snapAmount){seq.scrollAmount=!(o.snapAmount instanceof Array) ? o.snapAmount : seq.dir[0]==="x" ? o.snapAmount[1] : o.snapAmount[0];} /* scrolling snapping */
 				var c=seq.type!=="stepped", /* continuous scrolling */
 					t=s ? s : !once ? 1000/60 : c ? steplessSpeed/1.5 : steppedSpeed, /* timer */
@@ -1828,14 +1858,15 @@ and dependencies (minified).
 					onComplete=!once ? false : true;
 				if(once && t<17){
 					to=seq.dir[0]==="x" ? contentPos[1] : contentPos[0];
-				}
+				}				
 				_scrollTo(el,to.toString(),{dir:seq.dir[0],scrollEasing:easing,dur:t,onComplete:onComplete});
+
 				if(once){
 					seq.dir=false;
 					return;
 				}
 				clearTimeout(seq.step);
-				seq.step=setTimeout(function(){
+				seq.step=setTimeout(function(){					
 					_on();
 				},t);
 			}
