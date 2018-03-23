@@ -11604,6 +11604,7 @@ and dependencies (minified).
             $container.find('#continuousStallTorque').text(numberFormatter.format(settings.motorData[motorIndex].continuousStallTorque));
             $container.find('#solutionTitle').text('#' + (motorIndex + 1));
             $container.find('#motorName').text('(' + settings.motorData[motorIndex].motorPartNo + ')');
+            $container.find('#tsMotorName').text('Motor T-S Curve : ' + settings.motorData[motorIndex].motorPartNo + ')');
 
 
 
@@ -11707,8 +11708,8 @@ and dependencies (minified).
                     break;
                 case "PeakSpeed":
                     settings.rmsMotorData[0] = settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
-                    tsPlotSeries[1].data[0][0] = tsPlotSeries[3].data[0][0] = settings.rmsMotorData[0];
                     $container.find('.peakSpeedMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[0]);
+                    tsPlotSeries[1].data[0][0] = tsPlotSeries[3].data[0][0] = settings.rmsMotorData[0] = settings.peakMotorData[0] = settings.peakSpeedRpm;
 
                     break;
                 case "RmsAcceleration":
@@ -12341,16 +12342,20 @@ and dependencies (minified).
                     "comboBox": "50%"
                 },
                 callBackFn: function () {
-                    $peakSpeedLoadSide.setSIValue(this.SIValue);
-                    if (this.type != undefined && this.type != 'dropdown') {
-                        if (this.unit = "revolutionsperminute") {
-                            settings.peakPoints[0] = this.value;
-                            updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
-                        }
+              
+                    if (this.type != undefined && this.type != 'dropdown') {                    
+                        
+                          settings.peakPoints[0] = this.value;
+                          
+                          settings.peakSpeedRpm = COSMATT.UNITCONVERTER.getUnitConvertedValue('ANGULARVELOCITY', this.value,this.unit, 'revolutionsperminute');
+                         
+                          updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
+                    
 
                     }
                     if (this.type == 'dropdown') {
-                        $container.find('.peakSpeedMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
+                        
+                       $container.find('.peakSpeedMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
                     }
                 }
             });
@@ -13319,7 +13324,7 @@ and dependencies (minified).
                 snapOffset: 0,
                 callbacks: {
                     whileScrolling : function () {
-                       // console.log('onScroll', this.mcs.leftPct);
+                      //console.log('onScroll', this.mcs.leftPct);
                         if (settings.transmTextChange == false) {
                             calculteSliderLogVal(this.mcs.leftPct);
                         }
@@ -13349,7 +13354,8 @@ and dependencies (minified).
                 settings.transmTextChange = false;
 
             });
-            $("#mCSB_1_dragger_horizontal").mouseenter(function () {
+            $("#mCSB_1_dragger_horizontal, .mCSB_dragger").mouseenter(function () {
+
                 settings.transmTextChange = false;
             });
 
@@ -13362,7 +13368,7 @@ and dependencies (minified).
         // generates TS Curve grapgh plot area
         var generateTSCurvePlotArea = function ($containerEle) {
 
-            var $titleSection = $('<div class="titleSection">Motor T-S Curve</div>');
+            var $titleSection = $('<div class="titleSection" id="tsMotorName">Motor T-S Curve : '+settings.motorData[settings.motorSelectedIndex].motorPartNo +'</div>');
             $containerEle.append($titleSection);
 
             var $tsCurveContainer = $('<div class="tsPlotContainer"></div>');
