@@ -11604,7 +11604,7 @@ and dependencies (minified).
             $container.find('#continuousStallTorque').text(numberFormatter.format(settings.motorData[motorIndex].continuousStallTorque));
             $container.find('#solutionTitle').text('#' + (motorIndex + 1));
             $container.find('#motorName').text('(' + settings.motorData[motorIndex].motorPartNo + ')');
-            $container.find('#tsMotorName').text('Motor T-S Curve : ' + settings.motorData[motorIndex].motorPartNo + ')');
+            $container.find('#tsMotorName').text('Motor T-S Curve : ' + settings.motorData[motorIndex].motorPartNo );
 
 
 
@@ -13541,7 +13541,7 @@ and dependencies (minified).
                                 title = "RMS T/S Point <br />";
                                 break;
                         }
-                        return title + "Speed: " + xval + ", Torque: " + yval;
+                        return title + "Speed: " + numberFormatter.format(xval) + ", Torque: " + numberFormatter.format(yval);
                     },
                     defaultTheme: false,
                     shifts: {
