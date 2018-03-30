@@ -771,7 +771,7 @@
             var $tsPointsPanelContainer = $('<div id="tsPointsPanelContainer"></div>');
             $tsPointsPanelBody.append($tsPointsPanelContainer);
 
-            var $operatingPointTitle = $('<div class="row vertical-divider" id="sliderContainer"></div>');
+            var $operatingPointTitle = $('<div class="row vertical-divider" ></div>');
             $tsPointsPanelContainer.append($operatingPointTitle);
 
             var $operatingPointLevel = $('<div class="col-xs-3 col-3 title"></div>');
@@ -784,14 +784,14 @@
             $operatingPointTitle.append($operatingPointTitle2);
 
 
-            var $peakTorqueSliderContainer = $('<div id="sliderContainer" class="row greyClass vertical-divider"></div>');
+            var $peakTorqueSliderContainer = $('<div  class="row greyClass vertical-divider"></div>');
             $tsPointsPanelContainer.append($peakTorqueSliderContainer);
 
             var $peakTorqueTitle = $('<div class="col-xs-3 col-3 title">Peak Torque:</div>');
             $peakTorqueSliderContainer.append($peakTorqueTitle);
 
 
-            var $peakTorqueDataSide = $('<div class="col-xs-5 col-5  peakTorqueDataSide"></div>');
+            var $peakTorqueDataSide = $('<div class="col-xs-5 col-5  peakTorqueDataSide appComboBox"></div>');
             $peakTorqueSliderContainer.append($peakTorqueDataSide);
 
             var $peakTorqueMotorSide = $('<div class="col-xs-4 col-4  peakTorqueMotorSide"> </div>')
@@ -932,7 +932,7 @@
 */
 
 
-            var $rmsTorqueSliderContainer = $('<div id="sliderContainer" class="row vertical-divider"></div>');
+            var $rmsTorqueSliderContainer = $('<div class="row vertical-divider"></div>');
             $tsPointsPanelContainer.append($rmsTorqueSliderContainer);
 
             var $rmsTorqueTitle = $('<div class="col-xs-3 col-3 title"><span id="rmsTorqueTitle" title="RMS Torque">RMS Torque: </sapn></div>');
@@ -946,7 +946,7 @@
             var $rmsTorqueInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="rmsTorqueSpinner"><input id="rmsTorqueValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.rmsMaxTorque+'" data-min="0" data-step="0.1"  value="' + settings.rmsPoints[1] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;Nm</div>');
             $rmsTorqueSliderContainer.append($rmsTorqueInput);*/
 
-            var $rmsTorqueLoadSide = $('<div class="col-xs-5 col-5  rmsTorqueLoadSide"></div>');
+            var $rmsTorqueLoadSide = $('<div class="col-xs-5 col-5  rmsTorqueLoadSide appComboBox"></div>');
             $rmsTorqueSliderContainer.append($rmsTorqueLoadSide);
 
             var $rmsTorqueMotorSide = $('<div class="col-xs-4 col-4  rmsTorqueMotorSide"> </div>');
@@ -1081,7 +1081,7 @@
              });*/
 
 
-            var $peakSpeedSliderContainer = $('<div id="sliderContainer" class="row greyClass vertical-divider"></div>');
+            var $peakSpeedSliderContainer = $('<div  class="row greyClass vertical-divider"></div>');
             $tsPointsPanelContainer.append($peakSpeedSliderContainer);
 
             var $peakSpeedTitle = $('<div class="col-xs-3 col-3 title"><span id="peakSpeedTitle" title="Peak Speed">Peak Speed: </sapn></div>');
@@ -1093,7 +1093,7 @@
             var $peakSpeedInput = $('<div class="col-xs-5 col-5   display-flex margin-bottom"> <div class="input-group spinner" data-trigger="spinner" id="peakSpeedSpinner"><input id="peakSpeedValue" type="text" class="form-control text-center widget-textbox-height" data-max="'+settings.sliderLimit.peakMaxSpeed+'" data-min="0" data-step="1"  value="' + settings.peakPoints[0] + '" data-rule="currency"><div class="input-group-addon"><a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a><a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a></div></div><label class="value"></label>&nbsp;&nbsp;rad/sec</div>')
             $peakSpeedSliderContainer.append($peakSpeedInput);*/
 
-            var $peakSpeedLoadSide = $('<div class="col-xs-5 col-5  peakSpeedLoadSide"></div>');
+            var $peakSpeedLoadSide = $('<div class="col-xs-5 col-5  peakSpeedLoadSide appComboBox"></div>');
             $peakSpeedSliderContainer.append($peakSpeedLoadSide);
 
             var $peakSpeedMotorSide = $('<div class="col-xs-4 col-4  peakSpeedMotorSide"></div>')
@@ -1239,13 +1239,13 @@
 
 
 
-            var $peakAccContainer = $('<div id="sliderContainer" class="row vertical-divider"></div>');
+            var $peakAccContainer = $('<div  class="row vertical-divider"></div>');
             $tsPointsPanelContainer.append($peakAccContainer);
 
             var $peakAccTitle = $('<div class="col-xs-3 col-3 title"><div title="Peak Acceleration" class="peakAccele">Peak Acceleration: </div></div>');
             $peakAccContainer.append($peakAccTitle);
 
-            var $peakAccelerationLoadSide = $('<div class="col-xs-5 col-5  peakAccelerationLoadSide"></div>');
+            var $peakAccelerationLoadSide = $('<div class="col-xs-5 col-5  peakAccelerationLoadSide appComboBox"></div>');
             $peakAccContainer.append($peakAccelerationLoadSide);
 
             var $peakAccelerationMotorSide = $('<div class="col-xs-4 col-4  peakAccelerationMotorSide"></div>');
@@ -1379,14 +1379,14 @@
                 
                 
             });*/
-            var $rmsAccContainer = $('<div id="sliderContainer" class="row greyClass vertical-divider"></div>');
+            var $rmsAccContainer = $('<div  class="row greyClass vertical-divider"></div>');
             $tsPointsPanelContainer.append($rmsAccContainer);
 
             var $rmsSpeedTitle = $('<div class="col-xs-3 col-3 title"><div id="rmsSpeedTitle" title="RMS Acceleration" class="rmsAccele">RMS Acceleration: </div></div>');
             $rmsAccContainer.append($rmsSpeedTitle);
 
 
-            var $rmsAccelerationLoadSide = $('<div class="col-xs-5 col-5  rmsAccelerationLoadSide"></div>');
+            var $rmsAccelerationLoadSide = $('<div class="col-xs-5 col-5  rmsAccelerationLoadSide appComboBox"></div>');
             $rmsAccContainer.append($rmsAccelerationLoadSide);
 
             var $rmsAccelerationMotorSide = $('<div class="col-xs-4 col-4  rmsAccelerationMotorSide"></div>');
@@ -1451,7 +1451,7 @@
             }
 
             if (settings.showMotorTsCurve) {
-                var $statusContainer = $('<div id="sliderContainer" class="row"></div>');
+                var $statusContainer = $('<div  class="row"></div>');
                 $tsPointsPanelContainer.append($statusContainer);
             }
 
@@ -1502,7 +1502,7 @@
             var $envFactorsPanelContainer = $('<div id="envFactorsPanelContainer"></div>');
             $containerEle.append($envFactorsPanelContainer);
 
-            var $tempSliderContainer = $('<div id="sliderContainer" class="row"></div>');
+            var $tempSliderContainer = $('<div  class="row"></div>');
             $envFactorsPanelContainer.append($tempSliderContainer);
 
             var $tempTitle = $('<div class="col-xs-3 col-3 title"><span id="tempTitle">Temperature: </span></div>');
@@ -1760,7 +1760,7 @@
             };
 
 
-            var $altitudeSliderContainer = $('<div id="sliderContainer" class="row"></div>');
+            var $altitudeSliderContainer = $('<div  class="row"></div>');
             $envFactorsPanelContainer.append($altitudeSliderContainer);
 
             var $altitudeTitle = $('<div class="col-xs-3 col-3 title"><span id="altitudeTitle">Altitude: </span></div>');
@@ -1964,7 +1964,7 @@
             var $transmissionRatioPanelContainer = $('<div id="transmissionRatioPanelContainer"></div>');
             $containerEle.append($transmissionRatioPanelContainer);
 
-            var $trRatioSliderContainer = $('<div id="sliderContainer" class="row"></div>');
+            var $trRatioSliderContainer = $('<div  class="row"></div>');
             $transmissionRatioPanelContainer.append($trRatioSliderContainer);
 
             var $trRatioTitle = $('<div class="col-xs-3 col-3 title"><span id="trRatioTitle">Transmission Ratio: </span></div>');
@@ -2037,9 +2037,11 @@
                         }
                         setAlertMessage("");
 
-                        settings.transmissionRaioVal = $(self).val();
-                        setTransmSliderPointer($(self).val());
-                        updateMotorOperatingPoints('TransmissionRatio', $(self).val());
+                        var txtFormattedVal = numberFormatter.format($(self).val());
+                        $(self).val(txtFormattedVal);
+                        settings.transmissionRaioVal = txtFormattedVal;
+                        setTransmSliderPointer(txtFormattedVal);
+                        updateMotorOperatingPoints('TransmissionRatio', txtFormattedVal);
 
                     }), 800);
 
@@ -2119,7 +2121,7 @@
             var calculteSliderLogVal = function (value) {
 
                 var logVal = Math.pow(1.07151930525057, (value));
-                //logVal = logVal.toFixed(4);
+                logVal = numberFormatter.format(logVal);
                 if (logVal > 12) {
                     logVal = Math.round(logVal);
                 }
@@ -2848,7 +2850,7 @@
         };
 
         var attachResizeToPlots = function () {
-
+          
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()", ele.width())
@@ -2910,8 +2912,7 @@
                     ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
 
-
-
+               
             });
 
         };
