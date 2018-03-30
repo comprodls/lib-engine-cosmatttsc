@@ -177,6 +177,7 @@ define([
 
         //add callback function to appData
         __content.appData.options.data.assessmentCallback = userResponseHandler;
+        __content.appData.options.data.autoResizer = autoResizeEngine;
         __pluginInstance = $pluginArea.TSCurve(__content.appData.options.data);
 
         $questionContainer.append($questionArea);
@@ -210,7 +211,9 @@ define([
       function getConfig() {
         return __config;
       }
-
+      function autoResizeEngine() {
+        activityAdaptor.autoResizeActivityIframe();
+      }
       function userResponseHandler(callbackValue) {
         for (var property in callbackValue) {
           if (callbackValue.hasOwnProperty(property) && callbackValue[property].value  !== undefined) {
