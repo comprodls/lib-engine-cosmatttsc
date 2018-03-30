@@ -14094,6 +14094,7 @@ and dependencies (minified).
 
         var attachResizeToPlots = function () {
 
+            var autoResizerTimer = 0;
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()", ele.width())
@@ -14156,7 +14157,18 @@ and dependencies (minified).
                 }
 
 
+               if (autoResizerTimer > 0) {
+                    clearTimeout(autoResizerTimer);
+                }
+                
+                // this is done to support auto resizing in test-runner engine COSMATTSC
+                if (settings.autoResizer) {
+                  autoResizerTimer = setTimeout(function () {
+                    settings.autoResizer();                  
+                  }, 500);
+                }
 
+               
             });
 
         };
@@ -14601,6 +14613,7 @@ define('cosmatttsc',[
 
         //add callback function to appData
         __content.appData.options.data.assessmentCallback = userResponseHandler;
+        __content.appData.options.data.autoResizer = autoResizeEngine;
         __pluginInstance = $pluginArea.TSCurve(__content.appData.options.data);
 
         $questionContainer.append($questionArea);
@@ -14634,7 +14647,9 @@ define('cosmatttsc',[
       function getConfig() {
         return __config;
       }
-
+      function autoResizeEngine() {
+        activityAdaptor.autoResizeActivityIframe();
+      }
       function userResponseHandler(callbackValue) {
         for (var property in callbackValue) {
           if (callbackValue.hasOwnProperty(property) && callbackValue[property].value  !== undefined) {
