@@ -11259,6 +11259,7 @@ and dependencies (minified).
             quadrant: 1,
             transmissionRaioVal: 1,
             openAppReqPanel: false,
+            openTransmPanel: true,
             sliderLimit: {
                 peakMaxSpeed: 800,
                 peakMaxTorque: 100,
@@ -11531,15 +11532,16 @@ and dependencies (minified).
                 generateTSPointsAccordion($panelGroup);
             }
 
+            if (settings.showTransmissionForm) {
+                // transmission ratio accordion
+                generateTransmissionRatioAccordion($panelGroup);
+            }
             if (settings.showEnviorForm) {
                 // environmentalFactors accordion
                 generateEnvFactorsAccordion($panelGroup);
             }
 
-            if (settings.showTransmissionForm) {
-                // transmission ratio accordion
-                generateTransmissionRatioAccordion($panelGroup);
-            }
+
             updateMotorStatus();
         };
 
@@ -11585,16 +11587,16 @@ and dependencies (minified).
             var $driveInfo = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="maxSpeedTitle">Maximum Speed:&nbsp;</span><span class="maxSpeedValue" id="driveNameId">' + settings.motorData[settings.motorSelectedIndex - 1].maxSpeed + '</span><span class="unitStyle">&nbsp;rpm</span></div>');
             $solutionInfoRowOne.append($driveInfo);
 
-            var $motorInfo = $('<div class="col-xs-6 col-6 padding-left-right-zero"><span class="inertiaTitle">Inertia:&nbsp;</span><span class="inertiaValue" id="voltageInfoId">' + settings.motorData[settings.motorSelectedIndex -1].motorInertia + '</span><div class="display-inline unitStyle">&nbsp;kg-m<sup>2</sup></div></div>');
+            var $motorInfo = $('<div class="col-xs-6 col-6 padding-left-right-zero"><span class="inertiaTitle">Inertia:&nbsp;</span><span class="inertiaValue" id="voltageInfoId">' + settings.motorData[settings.motorSelectedIndex - 1].motorInertia + '</span><div class="display-inline unitStyle">&nbsp;kg-m<sup>2</sup></div></div>');
             $solutionInfoRowOne.append($motorInfo);
 
             var $solutionInfoRowthree = $('<div class="col-xs-12 col-12 solutionInfoContainer row"></div>');
             $motorDataContainer.append($solutionInfoRowthree);
 
-            var $peakStallTorque = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="pkStallTorqueTitle">Peak Stall Torque:&nbsp;</span><span class="peakStaTorqueVal" id="peakStallTorque">' + settings.motorData[settings.motorSelectedIndex -1].peakStallTorque + '</span><span class="unitStyle">&nbsp;N-m</span></div>');
+            var $peakStallTorque = $('<div class="col-xs-6 col-6 padding-right-zero"><span class="pkStallTorqueTitle">Peak Stall Torque:&nbsp;</span><span class="peakStaTorqueVal" id="peakStallTorque">' + settings.motorData[settings.motorSelectedIndex - 1].peakStallTorque + '</span><span class="unitStyle">&nbsp;N-m</span></div>');
             $solutionInfoRowthree.append($peakStallTorque);
 
-            var $contStallTorque = $('<div class="col-xs-6 col-6 padding-left-right-zero"><div class="contStallTorqueTitle">Continuous Stall Torque:&nbsp;</div><div class="continuousStaTorqueVal" id="continuousStallTorque">' + settings.motorData[settings.motorSelectedIndex -1].continuousStallTorque + '</div><div class="unitStyle">&nbsp;N-m</div></div>');
+            var $contStallTorque = $('<div class="col-xs-6 col-6 padding-left-right-zero"><div class="contStallTorqueTitle">Continuous Stall Torque:&nbsp;</div><div class="continuousStaTorqueVal" id="continuousStallTorque">' + settings.motorData[settings.motorSelectedIndex - 1].continuousStallTorque + '</div><div class="unitStyle">&nbsp;N-m</div></div>');
             $solutionInfoRowthree.append($contStallTorque);
 
 
@@ -11626,7 +11628,7 @@ and dependencies (minified).
             $container.find('#continuousStallTorque').text(numberFormatter.format(settings.motorData[motorIndex].continuousStallTorque));
             $container.find('#solutionTitle').text('#' + (motorIndex + 1));
             $container.find('#motorName').text('(' + settings.motorData[motorIndex].motorPartNo + ')');
-            $container.find('#tsMotorName').text('Motor T-S Curve : ' + settings.motorData[motorIndex].motorPartNo );
+            $container.find('#tsMotorName').text('Motor T-S Curve : ' + settings.motorData[motorIndex].motorPartNo);
 
 
 
@@ -11731,7 +11733,7 @@ and dependencies (minified).
                 case "PeakSpeed":
                     settings.rmsMotorData[0] = settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
                     $container.find('.peakSpeedMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[0]);
-                    tsPlotSeries[1].data[0][0] = tsPlotSeries[3].data[0][0] = settings.rmsMotorData[0] = settings.peakMotorData[0] = settings.peakSpeedRpm;
+                    tsPlotSeries[1].data[0][0] = tsPlotSeries[3].data[0][0] = settings.rmsMotorData[0] = settings.peakMotorData[0] = settings.peakSpeedRpm * settings.transmissionRaioVal;
 
                     break;
                 case "RmsAcceleration":
@@ -12364,20 +12366,20 @@ and dependencies (minified).
                     "comboBox": "50%"
                 },
                 callBackFn: function () {
-              
-                    if (this.type != undefined && this.type != 'dropdown') {                    
-                        
-                          settings.peakPoints[0] = this.value;
-                          
-                          settings.peakSpeedRpm = COSMATT.UNITCONVERTER.getUnitConvertedValue('ANGULARVELOCITY', this.value,this.unit, 'revolutionsperminute');
-                         
-                          updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
-                    
+
+                    if (this.type != undefined && this.type != 'dropdown') {
+
+                        settings.peakPoints[0] = this.value;
+
+                        settings.peakSpeedRpm = COSMATT.UNITCONVERTER.getUnitConvertedValue('ANGULARVELOCITY', this.value, this.unit, 'revolutionsperminute');
+
+                        updateMotorOperatingPoints('PeakSpeed', settings.transmissionRaioVal);
+
 
                     }
                     if (this.type == 'dropdown') {
-                        
-                       $container.find('.peakSpeedMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
+
+                        $container.find('.peakSpeedMotorSide').data('unitsComboBox').setDropBoxItem(this.unit);
                     }
                 }
             });
@@ -13185,8 +13187,12 @@ and dependencies (minified).
 
             var $trRatioPanelHeading = $('<div class="panel-heading" role="tab" id="headingFour"> <h4 class="panel-title"> <a role="button"  data-toggle="collapse"  href="#collapseFour' + settings.uniqeId + '" aria-controls="collapseFour" aria-expanded="false"><span> Transmission Ratio</span> <span class="accordion-plus-minus glyphicon pull-right glyphicon-chevron-down fa fa-chevron-down" aria-hidden="true" style="color: grey;"></span> </a> </h4> </div>');
             $trRatioPanel.append($trRatioPanelHeading);
+            var transmissionPane = 'show';
+            if(settings.openTransmPanel == false){
+                transmissionPane = 'in';
+            }
 
-            var $trRatioPanelBodyContainer = $('<div id="collapseFour' + settings.uniqeId + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour"></div>');
+            var $trRatioPanelBodyContainer = $('<div id="collapseFour' + settings.uniqeId + '" class="panel-collapse collapse in '+transmissionPane+'" role="tabpanel" aria-labelledby="headingFour"></div>');
             $trRatioPanel.append($trRatioPanelBodyContainer);
 
             var $trRatioPanelBody = $('<div class="panel-body"></div>')
@@ -13248,19 +13254,56 @@ and dependencies (minified).
                 transmissionTxtEnable = 'false';
                 transmissionComboBoxEnable = 'false';
             }
-            setTimeout(function () {
-                        generateTransmSlider('26', '26');
-             }, 50);
 
+            var $containerWidth = $container.find('.tsCruveContainer').find('#transmissionRatioPanelContainer');
+           
+            if ($containerWidth.width() <= 502) {
+                $containerWidth.find(".transmContainer").css('width', '210px');
+                $containerWidth.find(".transmInnerContainer").css('width', '2310px');
+                $containerWidth.find(".transmLabel").find('li.firstLi').css('left', '35px');
+                $containerWidth.find(".transmLabel").find('li.secondLi').css('left', '83px');
+                $containerWidth.find(".transmLabel").find('li.thirdLi').css('left', '132px');
+                $containerWidth.find(".transmLabel").find('li.fourthLi').css('left', '182px');
+                setTimeout(function () {                     
+                    generateTransmSlider('21', '21');
+                }, 500);
 
-
-
+            }else{
+                setTimeout(function () {
+                    generateTransmSlider('26', '26');
+                }, 50);
+            }
+            
             var timerId = 0;
+            var formatTextBoxValue = function(value){
+
+                 if($container.find("input.transInputBox").is(":focus")) {
+                  
+                    console.log("input has focus, don't format")
+                    return;
+                  }
+
+                  if(numberFormatter) {
+                    value = numberFormatter.format(value, true);
+                  }
+                  $container.find("input.transInputBox").val(value);
+
+            }
 
             var transmTextboxEventHandler = function () {
+                $container.find("input.transInputBox").on('focus', function () {   
+                                    
+                   $(this).val(settings.transmissionRaioVal);
+                });
+
+                $container.find("input.transInputBox").on('blur', function () {                          
+                  
+                   formatTextBoxValue(this.value);
+                });
                 $container.find("input.transInputBox").on('input', function () {
 
                     var self = this;
+                    settings.value = $(self).val();
                     if (timerId > 0) {
                         clearTimeout(timerId);
                     }
@@ -13273,18 +13316,15 @@ and dependencies (minified).
                             return false;
                         }
 
-                        if (self.value <= '0') {
+                        if (self.value <= 0) {
                             $(self).val(settings.transmissionRaioVal);
                             setAlertMessage("Transmission ratio value can not be less than 1.");
                             return false;
                         }
-                        setAlertMessage("");
-
-                        var txtFormattedVal = numberFormatter.format($(self).val());
-                        $(self).val(txtFormattedVal);
-                        settings.transmissionRaioVal = txtFormattedVal;
-                        setTransmSliderPointer(txtFormattedVal);
-                        updateMotorOperatingPoints('TransmissionRatio', txtFormattedVal);
+                         setAlertMessage("");
+                         settings.transmissionRaioVal = $(self).val();
+                        setTransmSliderPointer($(self).val());
+                        updateMotorOperatingPoints('TransmissionRatio', $(self).val());
 
                     }), 800);
 
@@ -13346,9 +13386,10 @@ and dependencies (minified).
                 scrollInertia: 10,
                 snapAmount: snapAmount,
                 snapOffset: 0,
+                advanced:{ autoExpandHorizontalScroll: 2, updateOnContentResize: true },                
                 callbacks: {
-                    whileScrolling : function () {
-                      //console.log('onScroll', this.mcs.leftPct);
+                    whileScrolling: function () {
+                        console.log('onScroll', this.mcs.leftPct);
                         if (settings.transmTextChange == false) {
                             calculteSliderLogVal(this.mcs.leftPct);
                         }
@@ -13357,8 +13398,10 @@ and dependencies (minified).
             });
 
             settings.transmTextChange = true;
-            settings.sliderVal = Math.log(settings.transmissionRaioVal) / Math.log('1.071519305');           
-            $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
+            settings.sliderVal = Math.log(settings.transmissionRaioVal) / Math.log('1.071519305');
+            $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%',{
+                timeout:1000
+            });
 
 
             var calculteSliderLogVal = function (value) {
@@ -13392,7 +13435,7 @@ and dependencies (minified).
         // generates TS Curve grapgh plot area
         var generateTSCurvePlotArea = function ($containerEle) {
 
-            var $titleSection = $('<div class="titleSection" id="tsMotorName">Motor T-S Curve : '+settings.motorData[settings.motorSelectedIndex].motorPartNo +'</div>');
+            var $titleSection = $('<div class="titleSection" id="tsMotorName">Motor T-S Curve : ' + settings.motorData[settings.motorSelectedIndex].motorPartNo + '</div>');
             $containerEle.append($titleSection);
 
             var $tsCurveContainer = $('<div class="tsPlotContainer"></div>');
@@ -13564,8 +13607,8 @@ and dependencies (minified).
                             case 3:
                                 title = "RMS T/S Point <br />";
                                 break;
-                        }
-                        return title + "Speed: " + numberFormatter.format(xval) + ", Torque: " + numberFormatter.format(yval);
+                        }                      
+                        return title + "Speed: " + numberFormatter.format(xval,true) + ", Torque: " + numberFormatter.format(yval,true);
                     },
                     defaultTheme: false,
                     shifts: {
@@ -13773,6 +13816,10 @@ and dependencies (minified).
             }
 
             if (settings.showApplicationPoints) {
+                settings.peakMotorData[0] = numberFormatter.format(settings.peakMotorData[0]); 
+                settings.peakMotorData[1] = numberFormatter.format(settings.peakMotorData[1]); 
+                settings.rmsMotorData[0] = numberFormatter.format(settings.rmsMotorData[0]); 
+                settings.rmsMotorData[1] = numberFormatter.format(settings.rmsMotorData[1]); 
                 applicationElementGraphData.push(settings.peakMotorData);
                 applicationRMSGraphData.push(settings.rmsMotorData);
             }
@@ -14093,20 +14140,20 @@ and dependencies (minified).
         };
 
         var attachResizeToPlots = function () {
-
             var autoResizerTimer = 0;
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()", ele.width())
-              
+
                 if (ele.find('#transmissionRatioPanelContainer').width() <= 502) {
                     ele.find(".transmContainer").css('width', '210px');
                     ele.find(".transmInnerContainer").css('width', '2310px');
-                    $container.find(".transmContainer").mCustomScrollbar("destroy");
+                    // $container.find(".transmContainer").mCustomScrollbar("destroy");
 
-                    setTimeout(function () {                     
+                    setTimeout(function () {
                         generateTransmSlider('21', '21');
                     }, 500);
+                   // $container.find(".transmContainer").mCustomScrollbar("update");
 
 
                     ele.find(".transmLabel").find('li.firstLi').css('left', '35px');
@@ -14118,12 +14165,13 @@ and dependencies (minified).
 
                     ele.find(".transmContainer").css('width', '260px');
                     ele.find(".transmInnerContainer").css('width', '2860px');
-                    $container.find(".transmContainer").mCustomScrollbar("destroy");
+                    //$container.find(".transmContainer").mCustomScrollbar("destroy");
 
-                    setTimeout(function () {                       
+                    setTimeout(function () {
                         generateTransmSlider('26', '26');
                     }, 500);
 
+                    //$container.find(".transmContainer").mCustomScrollbar("update");
 
 
                     ele.find(".transmLabel").find('li.firstLi').css('left', '28px');
@@ -14157,18 +14205,17 @@ and dependencies (minified).
                 }
 
 
-               if (autoResizerTimer > 0) {
+                if (autoResizerTimer > 0) {
                     clearTimeout(autoResizerTimer);
                 }
-                
                 // this is done to support auto resizing in test-runner engine COSMATTSC
-                if (settings.autoResizer) {
-                  autoResizerTimer = setTimeout(function () {
-                    settings.autoResizer();                  
-                  }, 500);
+                if (settings.autoResizer && !autoResizerTimer) {
+                    autoResizerTimer = setTimeout(function () {
+                        settings.autoResizer();
+                    }, 500);
                 }
 
-               
+
             });
 
         };
@@ -14285,9 +14332,9 @@ and dependencies (minified).
             }
             if (params.transmissionRatio) {
                 settings.sliderVal = Math.log(params.transmissionRatio.value) / Math.log('1.071519305');
-                 $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
-                 $container.find('.transInputBox').val(params.transmissionRatio.value);
-                 updateMotorOperatingPoints('TransmissionRatio', params.transmissionRatio.value);
+                $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%');
+                $container.find('.transInputBox').val(params.transmissionRatio.value);
+                updateMotorOperatingPoints('TransmissionRatio', params.transmissionRatio.value);
             }
             if (params.motorSelectedIndex) {
                 $container.find('#solutionSliderId').slider('setValue', parseInt(settings.motorSelectedIndex));
@@ -14398,8 +14445,8 @@ and dependencies (minified).
                     'align-items': 'center'
                 });
                 $container.find(".trRatioSlider").addClass('pointer-events-none');
-                $container.find('.transInputBox').css('width','40%');
-                $container.find('.transInputBox').attr('disabled','disabled');
+                $container.find('.transInputBox').css('width', '40%');
+                $container.find('.transInputBox').attr('disabled', 'disabled');
                 $container.find('#transmissionRatioPanelContainer').find('.trRatioValue').find('.response-status').find('span.fa').addClass(cssClass);
 
                 var correctAns = params.transmissionRatio.status ? '' : '(' + params.transmissionRatio.correctAnswer + ' : 1)';
