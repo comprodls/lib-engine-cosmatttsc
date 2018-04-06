@@ -2897,7 +2897,7 @@
         };
 
         var attachResizeToPlots = function () {
-            var autoResizerTimer = 0;
+            
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()", ele.width())
@@ -2962,15 +2962,7 @@
                 }
 
 
-                if (autoResizerTimer > 0) {
-                    clearTimeout(autoResizerTimer);
-                }
-                // this is done to support auto resizing in test-runner engine COSMATTSC
-                if (settings.autoResizer && !autoResizerTimer) {
-                    autoResizerTimer = setTimeout(function () {
-                        settings.autoResizer();
-                    }, 500);
-                }
+                settings.autoResizer();
 
 
             });

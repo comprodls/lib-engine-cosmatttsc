@@ -14139,8 +14139,8 @@ and dependencies (minified).
 
         };
 
-        var attachResizeToPlots = function () {          
-            var timer;
+        var attachResizeToPlots = function () {
+            
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()", ele.width())
@@ -14204,13 +14204,8 @@ and dependencies (minified).
                     ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
 
-                // this is done to support auto resizing in test-runner engine COSMATTSC
-                if (settings.autoResizer && !timer) {
-                    timer = setTimeout(function () {
-                      settings.autoResizer();
-                      timer = undefined;
-                    }, 0);
-                }
+
+                settings.autoResizer();
 
 
             });
