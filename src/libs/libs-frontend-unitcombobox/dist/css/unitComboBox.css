@@ -103,7 +103,7 @@
 
 .cosmatt-unitComboBox .spinner.input-group .input-group-addon .spin-up .fa, .spinner.input-group .input-group-addon .spin-down .fa,
 .cosmatt-unitComboBox .defaultTextBox.input-group .input-group-addon .spin-up .fa, .defaultTextBox.input-group .input-group-addon .spin-down .fa{
-  margin-top: 0;
+  margin-top: -3px;
   vertical-align: initial;
 }
 
