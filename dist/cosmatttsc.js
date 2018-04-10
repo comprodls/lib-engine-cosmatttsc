@@ -14314,12 +14314,12 @@ and dependencies (minified).
             }
             if (params.temperature) {
                 $container.find('#tempSlider').slider('setValue', params.temperature.value);
-                $container.find(".amount_TEMPERATURE").val(params.temperature.value);
+                $container.find(".temp-unit-dropdown").data('unitsComboBox').setTextBoxValue(params.temperature.value);
                 // updateApplicationRequPoints("Temperature");
             }
             if (params.altitude) {
                 $container.find('#altitudeSlider').slider('setValue', params.altitude.value);
-                $container.find(".amount_ALTITUDE").val(params.altitude.value);
+                $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(params.altitude.value);
                 //updateApplicationRequPoints("Altitude");
             }
             if (params.transmissionRatio) {
