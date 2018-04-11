@@ -17,6 +17,8 @@
             transmissionRaioVal: 1,
             openAppReqPanel: false,
             openTransmPanel: true,
+            temperature:40,
+            altitude:0,
             sliderLimit: {
                 peakMaxSpeed: 800,
                 peakMaxTorque: 100,
@@ -393,11 +395,11 @@
 
             settings.motorInertia = settings.motorData[motorIndex].motorInertia;
 
-            $container.find('#tempSlider').slider('setValue', settings.motorData[settings.motorSelectedIndex].temp);
-            $container.find(".amount_TEMPERATURE").val(settings.motorData[settings.motorSelectedIndex].temp);
+            $container.find('#tempSlider').slider('setValue', settings.temperature);
+            $container.find(".amount_TEMPERATURE").val(settings.temperature);
 
-            $container.find('#altitudeSlider').slider('setValue', settings.motorData[settings.motorSelectedIndex].altitude);
-            $container.find(".amount_ALTITUDE").val(settings.motorData[settings.motorSelectedIndex].altitude);
+            $container.find('#altitudeSlider').slider('setValue', settings.altitude);
+            $container.find(".amount_ALTITUDE").val(settings.altitude);
 
             //settings.defalutMotorContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
 
@@ -1534,14 +1536,14 @@
 
 
             $tempSliderContainer.find('#tempSlider').slider({
-                value: settings.motorData[settings.motorSelectedIndex].temp,
+                value: settings.temperature,
                 min: 0,
                 max: sliderMax,
                 step: 1,
             }).on('change', function (slideEvt) {
 
                 $(".temp-unit-dropdown").data('unitsComboBox').setTextBoxValue(slideEvt.value.newValue);
-                settings.motorData[settings.motorSelectedIndex].temp = slideEvt.value.newValue;
+                settings.temperature = slideEvt.value.newValue;
                 var deltaTemp = (slideEvt.value.newValue - slideEvt.value.oldValue);
 
                 if (deltaTemp !== 0) {
@@ -1562,7 +1564,7 @@
                 "step": '1',
                 "dataRule": "currency",
                 "min": 0,
-                "value": settings.motorData[settings.motorSelectedIndex].temp,
+                "value": settings.temperature,
                 "comboBoxWidthRatio": {
                     "textBox": "45%",
                     "comboBox": "35%"
@@ -1570,7 +1572,7 @@
                 callBackFn: function () {
 
                     if (this.type != undefined && this.type != 'dropdown') {
-                        settings.motorData[settings.motorSelectedIndex].temp = this.value;
+                        settings.temperature = this.value;
                         $container.find('#tempSlider').slider('setValue', parseInt(this.value));
                         tempImpactOnTScurve(this.value);
                     }
@@ -1783,7 +1785,7 @@
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
 
             $altitudeSlider.find('#altitudeSlider').slider({
-                value: settings.motorData[settings.motorSelectedIndex].altitude,
+                value: settings.altitude,
                 min: 0,
                 max: 10000,
                 step: 1,
@@ -1803,7 +1805,7 @@
                 "step": '1',
                 "dataRule": "currency",
                 "min": 0,
-                "value": settings.motorData[settings.motorSelectedIndex].altitude,
+                "value": settings.altitude,
                 "comboBoxWidthRatio": {
                     "textBox": "45%",
                     "comboBox": "35%"
@@ -1907,7 +1909,7 @@
             $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(changedValue);
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
-            settings.motorData[settings.motorSelectedIndex].altitude = changedValue;
+            settings.altitude = changedValue;
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
@@ -2961,8 +2963,10 @@
                     ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
 
-
-                settings.autoResizer();
+                if (settings.autoResizer){
+                    settings.autoResizer();
+                }
+                
 
 
             });
@@ -3071,13 +3075,12 @@
             }
             if (params.temperature) {
                 $container.find('#tempSlider').slider('setValue', params.temperature.value);
-                $container.find(".amount_TEMPERATURE").val(params.temperature.value);
-                // updateApplicationRequPoints("Temperature");
+                $container.find(".temp-unit-dropdown").data('unitsComboBox').setTextBoxValue(params.temperature.value);
             }
             if (params.altitude) {
                 $container.find('#altitudeSlider').slider('setValue', params.altitude.value);
-                $container.find(".amount_ALTITUDE").val(params.altitude.value);
-                //updateApplicationRequPoints("Altitude");
+                $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(params.altitude.value);
+                
             }
             if (params.transmissionRatio) {
                 settings.sliderVal = Math.log(params.transmissionRatio.value) / Math.log('1.071519305');
