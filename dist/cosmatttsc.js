@@ -11286,6 +11286,7 @@ and dependencies (minified).
                 "peakTSCurve": "#FF0808",
                 "contionusTSCurve": "#9ADC54"
             },
+            motorCheckedIndex:[],
             motorData: [{
                 "motorPartNo": "CPB-1-01",
                 "drivePartNo": "CB-250",
@@ -11654,6 +11655,12 @@ and dependencies (minified).
             settings.defaultPeakTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
+
+            if(settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1){
+                settings.motorCheckedIndex.push(settings.motorSelectedIndex);
+                settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
+                settings.motorData[settings.motorSelectedIndex].defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
+            }
             settings.motorSelectedIndex = motorIndex;
             settings.peakMotorData = [];
             settings.rmsMotorData = [];
@@ -13160,13 +13167,14 @@ and dependencies (minified).
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
+            
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
 
-                rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.defaultContinuousStallTorque * altitConstant).toFixed(3);
+                rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque * altitConstant).toFixed(3);
 
-                rmsPlotData[1][1] = (settings.defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
+                rmsPlotData[1][1] = (settings.motorData[settings.motorSelectedIndex].defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
 
                 tsPlotSeries[2].data = rmsPlotData;
                 settings.motorData[settings.motorSelectedIndex].continuousStallTorque = rmsPlotData[0][1];
@@ -14281,12 +14289,12 @@ and dependencies (minified).
                         "value": settings.peakAcceMotor,
                         "unit": "rad/sec2"
                     },
-                    "temperature": {
-                        "value": $container.find(".amount_TEMPERATURE").val(),
+                     "temperature": {
+                        "value": settings.temperature,
                         "unit": "C"
                     },
                     "altitude": {
-                        "value": $container.find('.amount_ALTITUDE').val(),
+                        "value": settings.altitude,
                         "unit": "m"
                     },
                     "transmissionRatio": {
