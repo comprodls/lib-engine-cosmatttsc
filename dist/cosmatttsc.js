@@ -11693,7 +11693,9 @@ and dependencies (minified).
             }
 
             updateMotorStatus();
-
+            if($container.find(".altitude-unit-combobox").length > 0){
+                altitudeImpactOnTSCurve(settings.altitude);
+            }
             calculateTSCurevePoints();
 
         }
@@ -13056,7 +13058,9 @@ and dependencies (minified).
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
-                        altitudeImpactOnTSCurve(parseInt(this.value));
+                       settings.altitude = this.value;
+                       $container.find('#altitudeSlider').slider('setValue', this.value);
+                       altitudeImpactOnTSCurve(parseInt(this.value));
                     }
                 }
             });
@@ -13148,6 +13152,9 @@ and dependencies (minified).
         };
 
         var altitudeImpactOnTSCurve = function (changedValue) {
+           if(tsPlot == undefined){
+                return;
+            }
 
             $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(changedValue);
             var tsPlotSeries = tsPlot.getData();
@@ -14125,6 +14132,7 @@ and dependencies (minified).
             updatePlotMaxMinValues();
             tsPlot.setupGrid();
             tsPlot.draw();
+
         };
 
         var plotTSGraph = function (data, options) {
