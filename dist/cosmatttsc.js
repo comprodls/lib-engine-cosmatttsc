@@ -14351,8 +14351,8 @@ and dependencies (minified).
                 updateMotorOperatingPoints('TransmissionRatio', params.transmissionRatio.value);
             }
             if (params.motorSelectedIndex) {
-                $container.find('#solutionSliderId').slider('setValue', parseInt(settings.motorSelectedIndex));
-                $container.find('#PaginationDiv').Folio({ activePage: settings.motorSelectedIndex });
+                var selectedMotor = parseInt(parseInt(params.motorSelectedIndex.value) + 1);
+                $container.find('#PaginationDiv').GetFolio().setActivePage(selectedMotor);               
             }
         }
 
