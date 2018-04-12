@@ -43,6 +43,7 @@
                 "peakTSCurve": "#FF0808",
                 "contionusTSCurve": "#9ADC54"
             },
+            motorCheckedIndex:[],
             motorData: [{
                 "motorPartNo": "CPB-1-01",
                 "drivePartNo": "CB-250",
@@ -411,6 +412,13 @@
             settings.defaultPeakTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
+debugger;
+            if(settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1){
+                settings.motorCheckedIndex.push(settings.motorSelectedIndex);
+                settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
+                settings.motorData[settings.motorSelectedIndex].defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
+            }
+            
             settings.motorSelectedIndex = motorIndex;
             settings.peakMotorData = [];
             settings.rmsMotorData = [];
@@ -450,6 +458,11 @@
             }
 
             updateMotorStatus();
+           
+            if($container.find(".altitude-unit-combobox").length > 0){
+                altitudeImpactOnTSCurve(settings.altitude);
+            }
+            
 
             calculateTSCurevePoints();
 
@@ -1579,7 +1592,7 @@
 
                 }
             });
-            $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $tempInput.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
 
             if (settings.disableControls && settings.disableControls.tempTextBox) {
@@ -1813,6 +1826,8 @@
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
+                        settings.altitude = this.value;
+                        $container.find('#altitudeSlider').slider('setValue', this.value);
                         altitudeImpactOnTSCurve(parseInt(this.value));
                     }
                 }
@@ -1855,7 +1870,7 @@
 
             });*/
 
-            $altitudeInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $altitudeInput.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
             /*$container.find('#altitudeValue').on('change',function(e){
                     var currentTextBoxVal = parseInt(e.target.value);
@@ -1906,17 +1921,21 @@
 
         var altitudeImpactOnTSCurve = function (changedValue) {
 
+            if(tsPlot == undefined){
+                return;
+            }
             $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(changedValue);
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
+          debugger;
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
 
-                rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.defaultContinuousStallTorque * altitConstant).toFixed(3);
+                rmsPlotData[0][1] = rmsPlotData[10][1] = (settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque * altitConstant).toFixed(3);
 
-                rmsPlotData[1][1] = (settings.defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
+                rmsPlotData[1][1] = (settings.motorData[settings.motorSelectedIndex].defaultContinuosTorqueAtMaxSpeed * altitConstant).toFixed(3);
 
                 tsPlotSeries[2].data = rmsPlotData;
                 settings.motorData[settings.motorSelectedIndex].continuousStallTorque = rmsPlotData[0][1];
@@ -3031,11 +3050,11 @@
                         "unit": "rad/sec2"
                     },
                     "temperature": {
-                        "value": $container.find(".amount_TEMPERATURE").val(),
+                        "value": settings.temperature,
                         "unit": "C"
                     },
                     "altitude": {
-                        "value": $container.find('.amount_ALTITUDE').val(),
+                        "value": settings.altitude,
                         "unit": "m"
                     },
                     "transmissionRatio": {

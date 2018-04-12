@@ -11655,12 +11655,13 @@ and dependencies (minified).
             settings.defaultPeakTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
-
+debugger;
             if(settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1){
                 settings.motorCheckedIndex.push(settings.motorSelectedIndex);
                 settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
                 settings.motorData[settings.motorSelectedIndex].defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
             }
+            
             settings.motorSelectedIndex = motorIndex;
             settings.peakMotorData = [];
             settings.rmsMotorData = [];
@@ -11700,9 +11701,12 @@ and dependencies (minified).
             }
 
             updateMotorStatus();
+           
             if($container.find(".altitude-unit-combobox").length > 0){
                 altitudeImpactOnTSCurve(settings.altitude);
             }
+            
+
             calculateTSCurevePoints();
 
         }
@@ -12831,7 +12835,7 @@ and dependencies (minified).
 
                 }
             });
-            $tempInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $tempInput.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
 
             if (settings.disableControls && settings.disableControls.tempTextBox) {
@@ -13065,9 +13069,9 @@ and dependencies (minified).
                 },
                 callBackFn: function () {
                     if (this.type != undefined && this.type != 'dropdown') {
-                       settings.altitude = this.value;
-                       $container.find('#altitudeSlider').slider('setValue', this.value);
-                       altitudeImpactOnTSCurve(parseInt(this.value));
+                        settings.altitude = this.value;
+                        $container.find('#altitudeSlider').slider('setValue', this.value);
+                        altitudeImpactOnTSCurve(parseInt(this.value));
                     }
                 }
             });
@@ -13109,7 +13113,7 @@ and dependencies (minified).
 
             });*/
 
-            $altitudeInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $altitudeInput.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
             /*$container.find('#altitudeValue').on('change',function(e){
                     var currentTextBoxVal = parseInt(e.target.value);
@@ -13159,15 +13163,15 @@ and dependencies (minified).
         };
 
         var altitudeImpactOnTSCurve = function (changedValue) {
-           if(tsPlot == undefined){
+
+            if(tsPlot == undefined){
                 return;
             }
-
             $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(changedValue);
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
-            
+          debugger;
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
@@ -14140,7 +14144,6 @@ and dependencies (minified).
             updatePlotMaxMinValues();
             tsPlot.setupGrid();
             tsPlot.draw();
-
         };
 
         var plotTSGraph = function (data, options) {
@@ -14289,7 +14292,7 @@ and dependencies (minified).
                         "value": settings.peakAcceMotor,
                         "unit": "rad/sec2"
                     },
-                     "temperature": {
+                    "temperature": {
                         "value": settings.temperature,
                         "unit": "C"
                     },
