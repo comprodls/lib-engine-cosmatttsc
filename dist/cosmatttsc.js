@@ -11655,7 +11655,7 @@ and dependencies (minified).
             settings.defaultPeakTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
-debugger;
+
             if(settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1){
                 settings.motorCheckedIndex.push(settings.motorSelectedIndex);
                 settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
@@ -13171,7 +13171,7 @@ debugger;
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
-          debugger;
+    
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
