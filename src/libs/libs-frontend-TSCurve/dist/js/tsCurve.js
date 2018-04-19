@@ -412,7 +412,7 @@
             settings.defaultPeakTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].peakTorqueAtMaxSpeed;
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
-debugger;
+
             if(settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1){
                 settings.motorCheckedIndex.push(settings.motorSelectedIndex);
                 settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
@@ -1912,7 +1912,7 @@ debugger;
 
 
 
-            if (settings.disableControls && settings.disableControls.transmRatioTextBox) {
+            if (settings.disableControls && settings.disableControls.altitudeTextBox) {
                 $container.find('.amount_ALTITUDE').attr("disabled", true);
             }
 
@@ -1928,7 +1928,7 @@ debugger;
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
-          debugger;
+         
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
@@ -3108,8 +3108,8 @@ debugger;
                 updateMotorOperatingPoints('TransmissionRatio', params.transmissionRatio.value);
             }
             if (params.motorSelectedIndex) {
-                $container.find('#solutionSliderId').slider('setValue', parseInt(settings.motorSelectedIndex));
-                $container.find('#PaginationDiv').Folio({ activePage: settings.motorSelectedIndex });
+                var selectedMotor = parseInt(parseInt(params.motorSelectedIndex.value) + 1);
+                $container.find('#PaginationDiv').GetFolio().setActivePage(selectedMotor);    
             }
         }
 

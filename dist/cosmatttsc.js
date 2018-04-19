@@ -13155,7 +13155,7 @@ and dependencies (minified).
 
 
 
-            if (settings.disableControls && settings.disableControls.transmRatioTextBox) {
+            if (settings.disableControls && settings.disableControls.altitudeTextBox) {
                 $container.find('.amount_ALTITUDE').attr("disabled", true);
             }
 
@@ -13171,7 +13171,7 @@ and dependencies (minified).
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
-    
+         
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
@@ -14352,7 +14352,7 @@ and dependencies (minified).
             }
             if (params.motorSelectedIndex) {
                 var selectedMotor = parseInt(parseInt(params.motorSelectedIndex.value) + 1);
-                $container.find('#PaginationDiv').GetFolio().setActivePage(selectedMotor);               
+                $container.find('#PaginationDiv').GetFolio().setActivePage(selectedMotor);    
             }
         }
 
