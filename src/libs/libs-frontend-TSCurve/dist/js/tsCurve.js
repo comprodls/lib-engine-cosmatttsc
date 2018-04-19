@@ -17,8 +17,8 @@
             transmissionRaioVal: 1,
             openAppReqPanel: false,
             openTransmPanel: true,
-            temperature:40,
-            altitude:0,
+            temperature: 40,
+            altitude: 0,
             sliderLimit: {
                 peakMaxSpeed: 800,
                 peakMaxTorque: 100,
@@ -43,7 +43,7 @@
                 "peakTSCurve": "#FF0808",
                 "contionusTSCurve": "#9ADC54"
             },
-            motorCheckedIndex:[],
+            motorCheckedIndex: [],
             motorData: [{
                 "motorPartNo": "CPB-1-01",
                 "drivePartNo": "CB-250",
@@ -413,12 +413,12 @@
             settings.defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
             settings.defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
 
-            if(settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1){
+            if (settings.motorCheckedIndex.indexOf(settings.motorSelectedIndex) == -1) {
                 settings.motorCheckedIndex.push(settings.motorSelectedIndex);
                 settings.motorData[settings.motorSelectedIndex].defaultContinuousStallTorque = settings.motorData[settings.motorSelectedIndex].continuousStallTorque;
                 settings.motorData[settings.motorSelectedIndex].defaultContinuosTorqueAtMaxSpeed = settings.motorData[settings.motorSelectedIndex].continuosTorqueAtMaxSpeed;
             }
-            
+
             settings.motorSelectedIndex = motorIndex;
             settings.peakMotorData = [];
             settings.rmsMotorData = [];
@@ -458,11 +458,11 @@
             }
 
             updateMotorStatus();
-           
-            if($container.find(".altitude-unit-combobox").length > 0){
+
+            if ($container.find(".altitude-unit-combobox").length > 0) {
                 altitudeImpactOnTSCurve(settings.altitude);
             }
-            
+
 
             calculateTSCurevePoints();
 
@@ -1921,14 +1921,14 @@
 
         var altitudeImpactOnTSCurve = function (changedValue) {
 
-            if(tsPlot == undefined){
+            if (tsPlot == undefined) {
                 return;
             }
             $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(changedValue);
             var tsPlotSeries = tsPlot.getData();
             var rmsPlotData = tsPlotSeries[2].data;
             settings.altitude = changedValue;
-         
+
             if (changedValue > 1500) {
 
                 var altitConstant = [1 - (changedValue - 1500) / 10000];
@@ -1966,11 +1966,11 @@
             var $trRatioPanelHeading = $('<div class="panel-heading" role="tab" id="headingFour"> <h4 class="panel-title"> <a role="button"  data-toggle="collapse"  href="#collapseFour' + settings.uniqeId + '" aria-controls="collapseFour" aria-expanded="false"><span> Transmission Ratio</span> <span class="accordion-plus-minus glyphicon pull-right glyphicon-chevron-down fa fa-chevron-down" aria-hidden="true" style="color: grey;"></span> </a> </h4> </div>');
             $trRatioPanel.append($trRatioPanelHeading);
             var transmissionPane = 'show';
-            if(settings.openTransmPanel == false){
+            if (settings.openTransmPanel == false) {
                 transmissionPane = 'in';
             }
 
-            var $trRatioPanelBodyContainer = $('<div id="collapseFour' + settings.uniqeId + '" class="panel-collapse collapse in '+transmissionPane+'" role="tabpanel" aria-labelledby="headingFour"></div>');
+            var $trRatioPanelBodyContainer = $('<div id="collapseFour' + settings.uniqeId + '" class="panel-collapse collapse in ' + transmissionPane + '" role="tabpanel" aria-labelledby="headingFour"></div>');
             $trRatioPanel.append($trRatioPanelBodyContainer);
 
             var $trRatioPanelBody = $('<div class="panel-body"></div>')
@@ -2034,7 +2034,7 @@
             }
 
             var $containerWidth = $container.find('.tsCruveContainer').find('#transmissionRatioPanelContainer');
-           
+
             if ($containerWidth.width() <= 502) {
                 $containerWidth.find(".transmContainer").css('width', '210px');
                 $containerWidth.find(".transmInnerContainer").css('width', '2310px');
@@ -2042,41 +2042,41 @@
                 $containerWidth.find(".transmLabel").find('li.secondLi').css('left', '83px');
                 $containerWidth.find(".transmLabel").find('li.thirdLi').css('left', '132px');
                 $containerWidth.find(".transmLabel").find('li.fourthLi').css('left', '182px');
-                setTimeout(function () {                     
+                setTimeout(function () {
                     generateTransmSlider('21', '21');
                 }, 500);
 
-            }else{
+            } else {
                 setTimeout(function () {
                     generateTransmSlider('26', '26');
                 }, 50);
             }
-            
-            var timerId = 0;
-            var formatTextBoxValue = function(value){
 
-                 if($container.find("input.transInputBox").is(":focus")) {
-                  
+            var timerId = 0;
+            var formatTextBoxValue = function (value) {
+
+                if ($container.find("input.transInputBox").is(":focus")) {
+
                     console.log("input has focus, don't format")
                     return;
-                  }
+                }
 
-                  if(numberFormatter) {
+                if (numberFormatter) {
                     value = numberFormatter.format(value, true);
-                  }
-                  $container.find("input.transInputBox").val(value);
+                }
+                $container.find("input.transInputBox").val(value);
 
             }
 
             var transmTextboxEventHandler = function () {
-                $container.find("input.transInputBox").on('focus', function () {   
-                                    
-                   $(this).val(settings.transmissionRaioVal);
+                $container.find("input.transInputBox").on('focus', function () {
+
+                    $(this).val(settings.transmissionRaioVal);
                 });
 
-                $container.find("input.transInputBox").on('blur', function () {                          
-                  
-                   formatTextBoxValue(this.value);
+                $container.find("input.transInputBox").on('blur', function () {
+
+                    formatTextBoxValue(this.value);
                 });
                 $container.find("input.transInputBox").on('input', function () {
 
@@ -2099,8 +2099,8 @@
                             setAlertMessage("Transmission ratio value can not be less than 1.");
                             return false;
                         }
-                         setAlertMessage("");
-                         settings.transmissionRaioVal = $(self).val();
+                        setAlertMessage("");
+                        settings.transmissionRaioVal = $(self).val();
                         setTransmSliderPointer($(self).val());
                         updateMotorOperatingPoints('TransmissionRatio', $(self).val());
 
@@ -2164,7 +2164,7 @@
                 scrollInertia: 10,
                 snapAmount: snapAmount,
                 snapOffset: 0,
-                advanced:{ autoExpandHorizontalScroll: 2, updateOnContentResize: true },                
+                advanced: { autoExpandHorizontalScroll: 2, updateOnContentResize: true },
                 callbacks: {
                     whileScrolling: function () {
                         console.log('onScroll', this.mcs.leftPct);
@@ -2177,8 +2177,8 @@
 
             settings.transmTextChange = true;
             settings.sliderVal = Math.log(settings.transmissionRaioVal) / Math.log('1.071519305');
-            $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%',{
-                timeout:1000
+            $container.find(".transmContainer").mCustomScrollbar('scrollTo', settings.sliderVal + '%', {
+                timeout: 1000
             });
 
 
@@ -2385,8 +2385,8 @@
                             case 3:
                                 title = "RMS T/S Point <br />";
                                 break;
-                        }                      
-                        return title + "Speed: " + numberFormatter.format(xval,true) + ", Torque: " + numberFormatter.format(yval,true);
+                        }
+                        return title + "Speed: " + numberFormatter.format(xval, true) + ", Torque: " + numberFormatter.format(yval, true);
                     },
                     defaultTheme: false,
                     shifts: {
@@ -2594,10 +2594,10 @@
             }
 
             if (settings.showApplicationPoints) {
-                settings.peakMotorData[0] = numberFormatter.format(settings.peakMotorData[0]); 
-                settings.peakMotorData[1] = numberFormatter.format(settings.peakMotorData[1]); 
-                settings.rmsMotorData[0] = numberFormatter.format(settings.rmsMotorData[0]); 
-                settings.rmsMotorData[1] = numberFormatter.format(settings.rmsMotorData[1]); 
+                settings.peakMotorData[0] = numberFormatter.format(settings.peakMotorData[0]);
+                settings.peakMotorData[1] = numberFormatter.format(settings.peakMotorData[1]);
+                settings.rmsMotorData[0] = numberFormatter.format(settings.rmsMotorData[0]);
+                settings.rmsMotorData[1] = numberFormatter.format(settings.rmsMotorData[1]);
                 applicationElementGraphData.push(settings.peakMotorData);
                 applicationRMSGraphData.push(settings.rmsMotorData);
             }
@@ -2918,7 +2918,7 @@
         };
 
         var attachResizeToPlots = function () {
-            
+
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
                 //console.log("ele.width()", ele.width())
@@ -2931,7 +2931,7 @@
                     setTimeout(function () {
                         generateTransmSlider('21', '21');
                     }, 500);
-                   // $container.find(".transmContainer").mCustomScrollbar("update");
+                    // $container.find(".transmContainer").mCustomScrollbar("update");
 
 
                     ele.find(".transmLabel").find('li.firstLi').css('left', '35px');
@@ -2982,10 +2982,10 @@
                     ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
 
-                if (settings.autoResizer){
+                if (settings.autoResizer) {
                     settings.autoResizer();
                 }
-                
+
 
 
             });
@@ -3099,7 +3099,7 @@
             if (params.altitude) {
                 $container.find('#altitudeSlider').slider('setValue', params.altitude.value);
                 $container.find(".altitude-unit-combobox").data('unitsComboBox').setTextBoxValue(params.altitude.value);
-                
+
             }
             if (params.transmissionRatio) {
                 settings.sliderVal = Math.log(params.transmissionRatio.value) / Math.log('1.071519305');
@@ -3109,7 +3109,7 @@
             }
             if (params.motorSelectedIndex) {
                 var selectedMotor = parseInt(parseInt(params.motorSelectedIndex.value) + 1);
-                $container.find('#PaginationDiv').GetFolio().setActivePage(selectedMotor);    
+                $container.find('#PaginationDiv').GetFolio().setActivePage(selectedMotor);
             }
         }
 
