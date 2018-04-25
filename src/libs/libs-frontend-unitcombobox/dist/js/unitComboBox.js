@@ -1086,18 +1086,24 @@ COSMATT.UNITCONVERTER = (function() {
   var convertedValue = function(unitType, value, unitFrom, unitTo) {
     try {
       var convertedValue = "";
-      var unitFromConverionFactor = "";
-      var unitToConverionFactor = "";
-      unitNode = unitData.unitType[unitType].unit;
-      for (var loop = 0; loop < unitNode.length; loop++) {
-        if (unitNode[loop].id == unitFrom) {
-          unitFromConverionFactor = (unitNode[loop].conversionFactor);
-        }
-        if (unitNode[loop].id == unitTo) {
-          unitToConverionFactor = (unitNode[loop].conversionFactor);
-        }
+      if(unitType === 'TEMPERATURE'){
+        convertedValue = temperatureConversion (value, unitFrom, unitTo);
       }
-      convertedValue = (unitToConverionFactor / unitFromConverionFactor) * value;
+      else{
+        var unitFromConverionFactor = "";
+        var unitToConverionFactor = "";
+        unitNode = unitData.unitType[unitType].unit;
+        for (var loop = 0; loop < unitNode.length; loop++) {
+          if (unitNode[loop].id == unitFrom) {
+            unitFromConverionFactor = (unitNode[loop].conversionFactor);
+          }
+          if (unitNode[loop].id == unitTo) {
+            unitToConverionFactor = (unitNode[loop].conversionFactor);
+          }
+        }
+        convertedValue = (unitToConverionFactor / unitFromConverionFactor) * value;
+      }
+      
       return (convertedValue);
     } catch (errorMessage) {
 
@@ -1105,6 +1111,25 @@ COSMATT.UNITCONVERTER = (function() {
 
     }
 
+  };
+
+
+ /*  Function to convert tempertature from celsius to fahrenheit and vise versa
+   * value : input box current value
+   * unitFrom : combo box current selected unit name
+   * unitTo : combo box changed unit name
+   */
+  var temperatureConversion = function(value, unitFrom, unitTo){
+      var convertedValue = '';
+      switch (unitFrom) {
+        case "celsius":            
+          convertedValue = (value * 9 / 5 ) + 32;
+        break;
+        case "fahrenheit":
+          convertedValue = (value - 32) * 5 / 9;
+        break;
+      }
+      return convertedValue;
   };
 
   /*  units function return array of units.
@@ -1442,6 +1467,7 @@ COSMATT.UNITCONVERTER = (function() {
             // conversionfactor = COSMATT.UNITCONVERTER.getConversionFactor(plugin.settings.unitType, $(this).val());
 
             plugin.settings.unit = $element.find('a.selected').data('id');
+            plugin.settings.userEnteredUnit = plugin.settings.unit; 
             plugin.setTextBoxValue(convertedVal);
         }
         /** public function to set Value in SI unit **/
@@ -1464,7 +1490,10 @@ COSMATT.UNITCONVERTER = (function() {
             plugin.settings.value = value;
 
             /** Update the stored values if we update dynamically textbox value from x to y **/
-            saveUserEnteredData();
+            if(plugin.settings.userEnteredUnit === plugin.settings.unit){
+                saveUserEnteredData();
+            }
+            
 
             plugin.formatTextBoxValue(value);
             // if (plugin.settings.roundOfNumber !== '' && stringToNum !== '') {

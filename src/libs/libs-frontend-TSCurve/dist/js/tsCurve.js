@@ -2572,20 +2572,9 @@
             var updateDataforTorqueGraph = function (motorPoints) {
 
                 resetData();
-                if (settings.sequenceIndex == '0') {
-                    var motorNewPoints = addTempEffectOnMotorData(motorPoints);
-                    interpolatePositiveVelocityDataPoints(motorNewPoints);
-                    interpolateNegativeVelocityDataPoints(motorNewPoints);
-
-                    updateFourQuadrantData(motorNewPoints);
-                } else {
-
-                    interpolatePositiveVelocityDataPoints(motorPoints);
-                    interpolateNegativeVelocityDataPoints(motorPoints);
-
-                    updateFourQuadrantData(motorPoints);
-                }
-
+                interpolatePositiveVelocityDataPoints(motorPoints);
+                interpolateNegativeVelocityDataPoints(motorPoints);
+                updateFourQuadrantData(motorPoints);
 
             };
 
