@@ -14622,7 +14622,7 @@ define('cosmatttsc',[
               __content.userAnswersJSON[interactionId].maxscore = interactionMaxScore;
 
 
-              if (Math.round(parseFloat(callbackValue[property].value) * 100) / 100 == parseFloat(__content.answersJSON[interactionId].correct)) {
+              if (Math.round(parseFloat(callbackValue[property].value) * 1000) / 1000 == parseFloat(__content.answersJSON[interactionId].correct)) {
                 __content.userAnswersJSON[interactionId].score = interactionMaxScore;
                 __content.userAnswersJSON[interactionId].status = 'correct';
               } else {
