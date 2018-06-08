@@ -1852,8 +1852,10 @@ COSMATT.UNITCONVERTER = (function() {
       this.oldValue = this.value();
       var step = $.isFunction(this.options.step) ? this.options.step.call(this, dir) : this.options.step;
       var multipler = dir === 'up' ? 1 : -1;
+      
 
-      this.value(this.oldValue + Number(step) * multipler);
+      //this.value(this.oldValue + Number(step) * multipler); /*** Commented line to fix JIRA issue COSMATT-1538 ***/
+      this.value(Math.round((this.oldValue + step * multipler) * 1e12 ) / 1e12);
     },
 
     value: function(v) {

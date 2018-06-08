@@ -214,8 +214,6 @@
         var numberFormatter = new Cosmatt.NumberFormatter(settings.numberFormatterOptions);
         settings.selectIndex = (settings.motorSelectedIndex - 1);
 
-        var speedRpm = (60 / 6.28) * settings.peakPoints[0];
-        settings.peakPoints[0] = speedRpm;
         var tickFormatter = function (value, axis) {
             if (value.toString().trim() === '') {
                 return value;
@@ -423,6 +421,11 @@
             settings.peakMotorData = [];
             settings.rmsMotorData = [];
 
+            if(settings.showAppPointsForm == false){
+                settings.peakPoints[0] = COSMATT.UNITCONVERTER.getUnitConvertedValue("ANGULARVELOCITY", settings.peakPoints[0],  "radianpersecond", "revolutionsperminute");
+                settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
+            }
+            
 
             settings.peakAcceMotor = (settings.peakAcceData * settings.transmissionRaioVal);
 
@@ -469,10 +472,13 @@
         }
         var checkContainerWidth = function () {
 
-            var $containerWidth = $container.find('.tsCruveContainer');
-            // console.log("$containerWidth.width()",$containerWidth.width())
+            var $containerWidth = $container.find('.tsCruveContainer');            
 
-            if ($containerWidth.width() <= 940) {
+            if (($containerWidth.width() < 1041 && $( window ).width() < 1263 ) ) {
+                $containerWidth.find('#servoMotorArea').addClass('resizeWidth');
+                $containerWidth.find('#servoMotorTSCurve').addClass('resizeWidth');
+            }
+            else if(($containerWidth.width() < 1013 && $( window ).width() < 1583 ) ) {
                 $containerWidth.find('#servoMotorArea').addClass('resizeWidth');
                 $containerWidth.find('#servoMotorTSCurve').addClass('resizeWidth');
             }
@@ -867,7 +873,9 @@
                 }
             });
             $peakTorqueMotorSide.setSIValue(settings.peakMotorData[1]);
-            $peakTorqueMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $peakTorqueDataSide.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+
+            //$peakTorqueMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
             /* var peakTorqueSlider = $peakTorqueSlider.find('#peakTorqueSlider').slider({
                  min: 0,
                  max: settings.sliderLimit.peakMaxTorque,
@@ -1018,7 +1026,9 @@
                 }
             });
             $rmsTorqueMotorSide.setSIValue(settings.rmsMotorData[1]);
-            $rmsTorqueMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $rmsTorqueLoadSide.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+
+            //$rmsTorqueMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
             /*var rmsTorqueSlider = $rmsTorqueSlider.find('#rmsTorqueSlider').slider({
                 min: 0,
                 max: settings.sliderLimit.rmsMaxTorque,
@@ -1123,7 +1133,8 @@
                 pksTextboxEnable = 'false';
                 pksComboBoxEnable = 'false';
             }
-
+            settings.peakPoints[0] = COSMATT.UNITCONVERTER.getUnitConvertedValue("ANGULARVELOCITY", settings.peakPoints[0],  "radianpersecond", "revolutionsperminute");
+            settings.peakMotorData[0] = (settings.peakPoints[0] * settings.transmissionRaioVal);
             $peakSpeedLoadSide.unitsComboBox({
                 "unitType": "ANGULARVELOCITY",
                 "unit": 'revolutionsperminute',
@@ -1169,8 +1180,10 @@
                 }
             });
 
-            $peakSpeedMotorSide.setSIValue(settings.peakPoints[0]);
-            $peakSpeedMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+           // $peakSpeedMotorSide.setSIValue(settings.peakPoints[0]);
+            $peakSpeedLoadSide.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+
+            //$peakSpeedMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
             /*var peakSpeedSlider = $peakSpeedSlider.find('#peakSpeedSlider').slider({
                 min: 0,
                 max: settings.sliderLimit.peakMaxSpeed,
@@ -1322,7 +1335,9 @@
             });
 
             $peakAccelerationMotorSide.setSIValue(settings.peakAcceMotor);
-            $peakAccelerationMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $peakAccelerationLoadSide.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+
+            //$peakAccelerationMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
 
             /* var rmsSpeedSlider = $rmsSpeedSlider.find('#rmsSpeedSlider').slider({
@@ -1462,7 +1477,9 @@
                 }
             });
             $rmsAccelerationMotorSide.setSIValue(settings.rmsAcceMotor);
-            $rmsAccelerationMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+            $rmsAccelerationLoadSide.find('.cosmatt-unitComboBox').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
+
+            //$rmsAccelerationMotorSide.find('.cosmatt-unitLabelControl').append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
             if (settings.disableControls && settings.disableControls.rmsSpeedTextBox) {
                 $container.find('#rmsSpeedValue').attr("disabled", true);
             }
@@ -1584,8 +1601,8 @@
                 },
                 callBackFn: function () {
 
-                    if (this.type != undefined && this.type != 'dropdown') {
-                        settings.temperature = this.value;
+                    if (this.type != undefined && this.type != 'dropdown' ) {
+                        settings.temperature = this.SIValue;
                         $container.find('#tempSlider').slider('setValue', parseInt(this.value));
                         tempImpactOnTScurve(this.value);
                     }
@@ -2117,11 +2134,13 @@
             $trRatioInput.append('<div class="response-status"><span class="fa"></span><span class="correct-answer"></span></div>');
 
             if (settings.disableControls && settings.disableControls.transmRatioSlider) {
-                $trRatioSlider.find('#trRatioSlider').slider("disable");
-            }
+             
+                $container.find(".trRatioSlider").addClass('pointer-events-none');
+                
+            }         
 
             if (settings.disableControls && settings.disableControls.transmRatioTextBox) {
-                $container.find('#trRatioValue').attr("disabled", true);
+                $container.find('.trRatioValue').find('.transInputBox ').attr("disabled", true);
             }
 
             $transmissionRatioPanelContainer.append('<div id="alertMessageContainer" class="alert alert-warning"><strong>Warning:-&nbsp;&nbsp;</strong><span></span></div>');
@@ -2583,10 +2602,11 @@
             }
 
             if (settings.showApplicationPoints) {
-                settings.peakMotorData[0] = numberFormatter.format(settings.peakMotorData[0]);
-                settings.peakMotorData[1] = numberFormatter.format(settings.peakMotorData[1]);
-                settings.rmsMotorData[0] = numberFormatter.format(settings.rmsMotorData[0]);
-                settings.rmsMotorData[1] = numberFormatter.format(settings.rmsMotorData[1]);
+               
+                settings.peakMotorData[0] = (settings.peakMotorData[0]);
+                settings.peakMotorData[1] = (settings.peakMotorData[1]);
+                settings.rmsMotorData[0] = (settings.rmsMotorData[0]);
+                settings.rmsMotorData[1] = (settings.rmsMotorData[1]);
                 applicationElementGraphData.push(settings.peakMotorData);
                 applicationRMSGraphData.push(settings.rmsMotorData);
             }
@@ -2629,15 +2649,27 @@
                 "rmsTorque": settings.rmsPoints[1],
                 "peakAcceleration": settings.peakAcceData,
                 "rmsAcceleration": settings.rmsAcceData,
-                "temperature": settings.motorData[settings.motorSelectedIndex].temp,
-                "altitude": settings.motorData[settings.motorSelectedIndex].altitude,
+                "temperature":settings.temperature,
+                "altitude": settings.altitude,
                 "motorIndex": settings.motorSelectedIndex
             }
 
             var outputData = {
                 "motorInertia": settings.motorInertia,
-                "motorStatus": settings.motorStatus
-            }
+                "motorStatus": settings.motorStatus,
+                "temperature":settings.temperature,
+                "altitude": settings.altitude,
+                "transmissionRatio": settings.transmissionRaioVal,
+                "peakTorqueMotorSide":settings.peakMotorData[1],
+                "rmsTorqueMotorSide":settings.rmsMotorData[1],
+                "peakSpeedMotorSide": settings.peakMotorData[0],
+                "peakAccelerationMotorSide": settings.peakAcceMotor,
+                "rmsAccelerationMotorSide":settings.rmsAcceMotor,
+                "selectedMotor": settings.motorData[settings.motorSelectedIndex].motorPartNo,
+                "maxSpeed": settings.motorData[settings.motorSelectedIndex].maxSpeed,
+                "contStallTorque": settings.motorData[settings.motorSelectedIndex].continuousStallTorque,
+                "peakStallTorque": settings.motorData[settings.motorSelectedIndex].peakStallTorque
+            };
 
             if (settings.notifyIOData && typeof settings.notifyIOData == "function") {
                 settings.notifyIOData({ "inputs": inputData, "output": outputData });
@@ -2910,8 +2942,7 @@
 
             $container.find('.tsCruveContainer').resize(function (e) {
                 var ele = $(this);
-                //console.log("ele.width()", ele.width())
-
+               
                 if (ele.find('#transmissionRatioPanelContainer').width() <= 502) {
                     ele.find(".transmContainer").css('width', '210px');
                     ele.find(".transmInnerContainer").css('width', '2310px');
@@ -2948,28 +2979,22 @@
 
                 }
 
-                if (ele.width() <= 940) {
+                if ((ele.width() < 1041  && $( window ).width() < 1263 ) ) {
                     ele.find('#servoMotorArea').addClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').addClass('resizeWidth');
-                    ele.find('.tsPlotArea').css('min-height', ele.find('.tsPlotArea').width());
                     ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
-                else if (ele.width() > 940 && ele.width() < 1280) {
-
-                    ele.find('#servoMotorArea').removeClass('resizeWidth');
-                    ele.find('#servoMotorTSCurve').removeClass('resizeWidth');
-                    ele.find('.tsPlotArea').css('min-height', ele.find('.tsPlotArea').width());
-                    ele.find('#servoMotorArea').find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').css('width', 'auto');
-                    ele.find('#servoMotorArea').find('.response-status').attr('title', $container.find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').text());
-
-
+                else if((ele.width() < 1013 && $( window ).width() < 1583 ) ) {
+                    ele.find('#servoMotorArea').addClass('resizeWidth');
+                    ele.find('#servoMotorTSCurve').addClass('resizeWidth');
+                    ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
                 }
                 else {
                     ele.find('#servoMotorArea').removeClass('resizeWidth');
                     ele.find('#servoMotorTSCurve').removeClass('resizeWidth');
-                    ele.find('.tsPlotArea').css('min-height', ele.find('.tsPlotArea').width());
-                    ele.find('#servoMotorArea').find('.response-status').find('.correct-answer').css('width', '88%');
+                    ele.find('#servoMotorArea').find('#envFactorsPanelContainer').find('.response-status').find('.correct-answer').css('width', 'auto');
                 }
+                ele.find('.tsPlotArea').css('min-height', ele.find('.tsPlotArea').width());                
 
                 if (settings.autoResizer) {
                     settings.autoResizer();
@@ -2988,14 +3013,27 @@
                 "rmsTorque": settings.rmsPoints[1],
                 "peakAcceleration": settings.peakAcceData,
                 "rmsAcceleration": settings.rmsAcceData,
-                "temperature": settings.motorData[settings.motorSelectedIndex].temp,
-                "altitude": settings.motorData[settings.motorSelectedIndex].altitude,
+                "temperature":settings.temperature,
+                "altitude": settings.altitude,
                 "motorIndex": settings.motorSelectedIndex
             }
             var outputData = {
                 "motorInertia": settings.motorInertia,
-                "motorStatus": settings.motorStatus
-            }
+                "motorStatus": settings.motorStatus,
+                "temperature":settings.temperature,
+                "altitude": settings.altitude,
+                "transmissionRatio": settings.transmissionRaioVal,
+                "peakTorqueMotorSide":settings.peakMotorData[1],
+                "rmsTorqueMotorSide":settings.rmsMotorData[1],
+                "peakSpeedMotorSide": settings.peakMotorData[0],
+                "peakAccelerationMotorSide": settings.peakAcceMotor,
+                "rmsAccelerationMotorSide":settings.rmsAcceMotor,
+                "selectedMotor": settings.motorData[settings.motorSelectedIndex].motorPartNo,
+                "maxSpeed": settings.motorData[settings.motorSelectedIndex].maxSpeed,
+                "contStallTorque": settings.motorData[settings.motorSelectedIndex].continuousStallTorque,
+                "peakStallTorque": settings.motorData[settings.motorSelectedIndex].peakStallTorque
+            };
+
             if (settings.notifyIOData && typeof settings.notifyIOData == "function") {
                 settings.notifyIOData({ "inputs": inputData, "output": outputData });
             }
@@ -3035,7 +3073,7 @@
                         "unit": "rad/sec2"
                     },
                     "rmsAcceData": {
-                        "value": settings.peakAcceMotor,
+                        "value": settings.rmsAcceData,
                         "unit": "rad/sec2"
                     },
                     "temperature": {
@@ -3060,26 +3098,31 @@
 
 
         var updateInputs = function (params) {
-
             if (params.peakTorque) {
+                settings.peakPoints[1] = params.peakTorque.value;
                 $container.find('.peakTorqueDataSide').data('unitsComboBox').setSIValue(params.peakTorque.value);
-                // updateApplicationRequPoints("PeakTorque");
+                $container.find('.peakTorqueMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[1]);
+               
             }
             if (params.peakSpeed) {
-                $container.find('.peakSpeedLoadSide').data('unitsComboBox').setSIValue(params.peakSpeed.value);
-                //updateApplicationRequPoints("PeakSpeed");
+                settings.peakPoints[0] = params.peakSpeed.value;
+                $container.find('.peakSpeedLoadSide').data('unitsComboBox').setTextBoxValue(params.peakSpeed.value);
+                $container.find('.peakSpeedMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[0]);
             }
             if (params.rmsTorque) {
+                settings.rmsPoints[1] = params.rmsTorque.value;
                 $container.find('.rmsTorqueLoadSide').data('unitsComboBox').setSIValue(params.rmsTorque.value);
-                //updateApplicationRequPoints("RmsTorque");
+                $container.find('.rmsTorqueMotorSide').data('unitsComboBox').setTextBoxValue(settings.rmsMotorData[1]);                
             }
             if (params.peakAcceData) {
+                settings.peakAcceData = params.peakAcceData.value;
                 $container.find('.peakAccelerationLoadSide').data('unitsComboBox').setSIValue(params.peakAcceData.value);
-                //updateApplicationRequPoints("peakAcceData");
+                $container.find('.peakTorqueMotorSide').data('unitsComboBox').setTextBoxValue(settings.peakMotorData[1]);
             }
             if (params.rmsAcceData) {
+                settings.rmsAcceData = params.rmsAcceData.value;
                 $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').setSIValue(params.rmsAcceData.value);
-                //updateApplicationRequPoints("RmsSpeed");
+                $container.find('.rmsAccelerationMotorSide').data('unitsComboBox').setTextBoxValue(settings.rmsAcceMotor);
             }
             if (params.temperature) {
                 $container.find('#tempSlider').slider('setValue', params.temperature.value);
@@ -3105,17 +3148,18 @@
         var markAnswers = function (params) {
             var cssClass;
 
-
             if (params.peakTorque) {
                 cssClass = params.peakTorque.status ? 'correct' : 'incorrect';
                 $container.find('.peakTorqueDataSide').find('input.amount_TORQUE').addClass(cssClass);
                 cssClass = params.peakTorque.status ? 'fa-check correct' : 'fa-times incorrect';
-                $container.find('.peakTorqueMotorSide').find('.response-status').css({
+                $container.find('.peakTorqueDataSide').find('.response-status').css({
                     'display': 'inline',
                     'align-items': 'center'
                 });
-                $container.find('.peakTorqueMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
-
+                $container.find('.peakTorqueDataSide').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.peakTorque.status ? '' : '(' + params.peakTorque.correctAnswer + ')';
+                $container.find('.peakTorqueDataSide').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('.peakTorqueDataSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
 
                 // disable slider and input
             }
@@ -3123,33 +3167,44 @@
                 cssClass = params.peakSpeed.status ? 'correct' : 'incorrect';
                 $container.find('.peakSpeedLoadSide').find('input.amount_ANGULARVELOCITY').addClass(cssClass);
                 cssClass = params.peakSpeed.status ? 'fa-check correct' : 'fa-times incorrect';
-                $container.find('.peakSpeedMotorSide').find('.response-status').css({
+                $container.find('.peakSpeedLoadSide').find('.response-status').css({
                     'display': 'inline',
                     'align-items': 'center'
                 });
-                $container.find('.peakSpeedMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
-                // disable slider and input
+                $container.find('.peakSpeedLoadSide').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.peakSpeed.status ? '' : '(' + params.peakSpeed.correctAnswer + ')';
+                $container.find('.peakSpeedLoadSide').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('.peakSpeedLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
             }
             if (params.rmsTorque) {
                 cssClass = params.rmsTorque.status ? 'correct' : 'incorrect';
                 $container.find('.rmsTorqueLoadSide').find('input.amount_TORQUE').addClass(cssClass);
                 cssClass = params.rmsTorque.status ? 'fa-check correct' : 'fa-times incorrect';
-                $container.find('.rmsTorqueMotorSide').find('.response-status').css({
+                $container.find('.rmsTorqueLoadSide').find('.response-status').css({
                     'display': 'inline',
                     'align-items': 'center'
                 });
-                $container.find('.rmsTorqueMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
+
+                $container.find('.rmsTorqueLoadSide').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.rmsTorque.status ? '' : '(' + params.rmsTorque.correctAnswer + ')';
+                $container.find('.rmsTorqueLoadSide').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('.rmsTorqueLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
+
                 // disable slider and input
             }
             if (params.peakAcceData) {
                 cssClass = params.peakAcceData.status ? 'correct' : 'incorrect';
                 $container.find('.peakAccelerationLoadSide').find('input.amount_ANGULARACCELERATION').addClass(cssClass);
                 cssClass = params.peakAcceData.status ? 'fa-check correct' : 'fa-times incorrect';
-                $container.find('.peakAccelerationMotorSide').find('.response-status').css({
+                $container.find('.peakAccelerationLoadSide').find('.response-status').css({
                     'display': 'inline',
                     'align-items': 'center'
                 });
-                $container.find('.peakAccelerationMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
+                $container.find('.peakAccelerationLoadSide').find('.response-status').find('span.fa').addClass(cssClass);
+
+                var correctAns = params.peakAcceData.status ? '' : '(' + params.peakAcceData.correctAnswer + ')';
+                $container.find('.peakAccelerationLoadSide').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('.peakAccelerationLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
 
                 // disable slider and input
             }
@@ -3157,12 +3212,14 @@
                 cssClass = params.rmsAcceData.status ? 'correct' : 'incorrect';
                 $container.find('.rmsAccelerationLoadSide').find('input.amount_ANGULARACCELERATION').addClass(cssClass);
                 cssClass = params.rmsAcceData.status ? 'fa-check correct' : 'fa-times incorrect';
-                $container.find('.rmsAccelerationMotorSide').find('.response-status').css({
+                $container.find('.rmsAccelerationLoadSide').find('.response-status').css({
                     'display': 'inline',
                     'align-items': 'center'
                 });
-                $container.find('.rmsAccelerationMotorSide').find('.response-status').find('span.fa').addClass(cssClass);
-                // disable slider and input
+                $container.find('.rmsAccelerationLoadSide').find('.response-status').find('span.fa').addClass(cssClass);
+                var correctAns = params.rmsAcceData.status ? '' : '(' + params.rmsAcceData.correctAnswer + ')';
+                $container.find('.rmsAccelerationLoadSide').find('.response-status').find('.correct-answer').append(correctAns);
+                $container.find('.rmsAccelerationLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
             }
             if (params.temperature) {
 
