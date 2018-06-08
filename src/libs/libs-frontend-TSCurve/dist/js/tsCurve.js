@@ -3162,6 +3162,9 @@
                 $container.find('.peakTorqueDataSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
 
                 // disable slider and input
+                $container.find('.peakTorqueDataSide').data('unitsComboBox').update({
+                    "enable": {"textbox" : "false","comboBox" : "false" }
+                });
             }
             if (params.peakSpeed) {
                 cssClass = params.peakSpeed.status ? 'correct' : 'incorrect';
@@ -3175,6 +3178,10 @@
                 var correctAns = params.peakSpeed.status ? '' : '(' + params.peakSpeed.correctAnswer + ')';
                 $container.find('.peakSpeedLoadSide').find('.response-status').find('.correct-answer').append(correctAns);
                 $container.find('.peakSpeedLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
+
+                $container.find('.peakSpeedLoadSide').data('unitsComboBox').update({
+                    "enable": {"textbox" : "false","comboBox" : "false" }
+                });
             }
             if (params.rmsTorque) {
                 cssClass = params.rmsTorque.status ? 'correct' : 'incorrect';
@@ -3191,6 +3198,9 @@
                 $container.find('.rmsTorqueLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
 
                 // disable slider and input
+                $container.find('.rmsTorqueLoadSide').data('unitsComboBox').update({
+                    "enable": {"textbox" : "false","comboBox" : "false" }
+                });
             }
             if (params.peakAcceData) {
                 cssClass = params.peakAcceData.status ? 'correct' : 'incorrect';
@@ -3207,6 +3217,10 @@
                 $container.find('.peakAccelerationLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
 
                 // disable slider and input
+
+                $container.find('.peakAccelerationLoadSide').data('unitsComboBox').update({
+                    "enable": {"textbox" : "false","comboBox" : "false" }
+                });
             }
             if (params.rmsAcceData) {
                 cssClass = params.rmsAcceData.status ? 'correct' : 'incorrect';
@@ -3220,6 +3234,10 @@
                 var correctAns = params.rmsAcceData.status ? '' : '(' + params.rmsAcceData.correctAnswer + ')';
                 $container.find('.rmsAccelerationLoadSide').find('.response-status').find('.correct-answer').append(correctAns);
                 $container.find('.rmsAccelerationLoadSide').find('.response-status').find('.correct-answer').attr('title',correctAns);
+
+                $container.find('.rmsAccelerationLoadSide').data('unitsComboBox').update({
+                    "enable": {"textbox" : "false","comboBox" : "false" }
+                });
             }
             if (params.temperature) {
 
